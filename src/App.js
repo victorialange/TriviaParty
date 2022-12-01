@@ -27,6 +27,7 @@ function App() {
   return (
     <div className="App">
       <h1>Trivia!</h1>
+      <h2>Come play a game!</h2>
     </div>
   );
 }
