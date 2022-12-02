@@ -10,7 +10,7 @@ function App() {
   // state that holds the questions, answer choices and ids from my API
   const [question, setQuestion] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
-  const [incorrectAnswers, setIncorrectAnswers] = useState( [] );
+  // const [incorrectAnswers, setIncorrectAnswers] = useState( [] );
   // used concatenation to combine incorrect answerw with correct answer
   // const [answers, setAnswers] = useState( [] );
   // first answer (incorrect answer)
@@ -20,7 +20,7 @@ function App() {
   // third answer (incorrect answer)
   const [answerThree, setAnswerThree] = useState('');
   
-  const [questionId, setQuestionId] = useState(''); 
+  // const [questionId, setQuestionId] = useState(''); 
 
   useEffect( () => { 
   // axios
@@ -38,7 +38,7 @@ function App() {
       setQuestion(response.data[0].question);
       console.log(question);
       setCorrectAnswer(response.data[0].correctAnswer);
-      setIncorrectAnswers(response.data[0].incorrectAnswers);
+      // setIncorrectAnswers(response.data[0].incorrectAnswers);
       // console.log(response.data[0].incorrectAnswers, response.data[0].correctAnswer);
 
       // const answerChoices = incorrectAnswers.concat(correctAnswer);
@@ -65,7 +65,7 @@ function App() {
       console.log(correctAnswer);
 
   });
-}, []) 
+}, [question, answerOne, answerTwo, answerThree, correctAnswer]) 
 
   return (
     <div className="App">
