@@ -65,12 +65,15 @@ function App() {
       console.log(correctAnswer);
 
   });
-}, [question, answerOne, answerTwo, answerThree, correctAnswer]) 
+}, []) 
+
 
   return (
     <div className="App">
       <h1>Trivia!</h1>
       <h2>Come play a game!</h2>
+      <p>Only check one possible answer from the 4 choices below!</p>
+      <p>If you don't like a question, click on the get a different question button.</p>
       <DisplayForm
         // handleSubmit={}
         question={question}
@@ -112,3 +115,7 @@ export default App;
 // maybe no useEffect, put it in state to have it show up every time user submits/clicks (eventHandler func)
 // functionality to check with array ids in state to avoid showing same question
 // no new pages
+
+// inputs changed to type=radio to limit user to only one choice (checkbox better for more possible answers, here only one answer)
+
+// or maybe use ul with li items instead of form element
