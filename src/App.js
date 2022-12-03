@@ -108,7 +108,7 @@ function App() {
 
     }
     
-  const intro = "Feeling ready? Then let's get this trivia party started  🎈  🎊";
+  const intro = "Feeling ready? Then let's get this trivia party started 🎊🎈🎉";
   const next = "Don't feel this question or already answered this one?"
   const [initialIntro, setInitialIntro] = useState(intro);  
   
@@ -131,7 +131,7 @@ function App() {
       // setId(id);
   }
 
-  // defining the leaveClickHandler function to pass into as a prop into another leaveHandler function in DisplayForm component in order to set the initial intro back to intro value
+  // defining the leaveClickHandler function to pass intro as a prop into another leaveHandler function in DisplayForm component in order to set the initial intro back to intro value
   const leaveClickHandler = () => {
     // setQuestion("")
     // setAllAnswers([""]);
@@ -153,8 +153,8 @@ function App() {
       <div className="App wrapper">
       
         <h1>Trivia Party!!!</h1>
-        <h2>Come play a game and get smarter at the same time!</h2>
-        <p>Only choose one answer from the four possible answer choices for each question!</p>
+        <h2>Let's get nerdy 🤓🧠</h2>
+        <p>For each question select only one answer from the four possible answer choices!</p>
         <p>There is no timer to stress you out, this party is meant to be chill 🏖️ So take your sweet precious time to answer each question  ⏳ (You could take a bath or go for a nap, we won't be able to tell  😜 )</p>
         
       </div>

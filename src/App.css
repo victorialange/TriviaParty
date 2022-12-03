@@ -86,18 +86,19 @@ button {
 
 /* next button when quiz is shown */
 .next {
-  font-size: 1.3rem;
-  padding: 10px 50px;
+  font-size: 1.2rem;
+  padding: 8px 20px;
 }
 
-/* visually-hidden className to hide arrow description span by default, but still visible/readable for screenreaders  */
+/* visually-hidden className to hide arrow description span and hidden labels from disabled input or button by default, but still visible/readable for screenreaders for  */
 .visually-hidden {
   color: white;
   font-size: smaller;
+  position: absolute;
+  left: -450px;
 }
 
 /* form quiz */
-
 /* form without content before button turns from start into new question */
 .noContent {
   display: none;
@@ -174,16 +175,29 @@ form button {
   background-color: red;
 }
 
+/* limitSubmitMessage for when user has submitted and gets instruction on how to keep playing */
+.limitSubmitMessage p:first-of-type {
+  font-size: 1rem;
+}
+
+.limitSubmitMessage {
+  margin-top: 35px;
+}
+
 /* leave field */
 .leaveField p:first-of-type {
   font-size: 1rem;
+}
+
+.leaveField p:last-of-type {
+  margin-top: 0;
 }
 
 .leaveField {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 120px;
 }
 
 .leaveField button {
