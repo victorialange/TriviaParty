@@ -78,7 +78,7 @@ function App() {
       // console.log(answers);
 
       // creating new array to add correct answer string value to already from API provided incorrect answers array
-      let answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
+      const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
       console.log(answers);
       // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
       setAllAnswers(answers);
@@ -131,6 +131,13 @@ function App() {
       // setId(id);
   }
 
+  // defining the leaveClickHandler function to pass into as a prop into another leaveHandler function in DisplayForm component in order to set the initial intro back to intro value
+  const leaveClickHandler = () => {
+    // setQuestion("")
+    // setAllAnswers([""]);
+    setInitialIntro(intro);
+  }
+
 
   return (
     // Fragment in order to use multiple parent elements
@@ -164,19 +171,26 @@ function App() {
           <span className="visually-hidden">Click the button down below</span>
           <DisplayForm
             // handleSubmit={}
+            next={next}
+            intro={intro}
+            initialIntro={initialIntro}
             clickHandler={clickHandler}
             question={question}
             allAnswers={allAnswers}
             // incorrectAnswers={incorrectAnswers}
             correctAnswer={correctAnswer}
             id={id}
-                
+            leaveClickHandler={leaveClickHandler}
+               
             // answerTwo={answerTwo}
             // answerThree={answerThree}
             // correctAnswer={correctAnswer}
           />
         </div>
         {/* end wrapper */}
+      </section>
+      <section className="ending">
+      
       </section>
     </main>
     {/* Footer with copyright */}

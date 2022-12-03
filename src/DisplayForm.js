@@ -32,6 +32,7 @@ const DisplayForm = ( props ) => {
    
     const [isActive, setActive] = useState(false);
 
+    const [leaving, setLeaving] = useState(false);
 
     const handleChange = (e) => {
 
@@ -91,6 +92,8 @@ const DisplayForm = ( props ) => {
         props.clickHandler();
         // clearing of feedback
         setGenerator(next);
+        // setting leaving back to false, so that leavingField appears again, when generator is set back to next
+        setLeaving(false);
         if (feedback) {
             setFeedback("");
             setUserChoice("");
@@ -98,10 +101,19 @@ const DisplayForm = ( props ) => {
         }
     } 
 
+    const leaveHandler = () => {
+        props.leaveClickHandler();
+        // setUserChoice("");
+        setLeaving(true);
+        // setting generator back to start, which invokes form/quiz disappearing, all I needed to make entire form disappear since it's the same value when user hits start button
+        setGenerator(start);
+    }
+
 
     return(
     <Fragment>
-       <button 
+        
+        <button 
         // type="button"
         onClick={anotherClickHandler}
         // conditional rendering of className based on whether button is start button or generates next question
@@ -112,11 +124,11 @@ const DisplayForm = ( props ) => {
         </button>
          {/* FORM WITH API CONTENT for quiz  */}
         
-        <form onSubmit={submitHandler} aria-label="quiz" className={`${generator!== "New question" ? "noContent" : "content"}`}
+        <form onSubmit={submitHandler} aria-label="quiz" className={`${generator === next ? "content" : "noContent"}`}
         >
        
             
-                <fieldset>
+            <fieldset>
                 <legend>{props.question}</legend>
                 <div className="inputs" onChange={handleChange}>
                 {/* mapping through created array inside async getQuiz function that allAnswers (incorrect and correct)  */}
@@ -178,22 +190,38 @@ const DisplayForm = ( props ) => {
                         />{props.correctAnswer}
                     </label> */}
                 </div>
-        </fieldset>  
+            </fieldset>  
             
             
-        {/* Buttons */}
+            {/* Buttons */}
         
-        {/* submit button */}
-        <button 
-        type="submit"
-        // onClick= {submitHandler}
-        >Submit answer
-        </button>
-        {/* conditional rendering of class for feedback field, if div active after submitting, className="message", else "noMessage", also for whether feedback is for right or wrong answer */}
-        <div className={`${isActive ? "message" : "noMessage"} ${feedback === right && isActive ? "right": ""} ${feedback === wrong && isActive ? "wrong": "" } `}>
-            <p>{feedback}</p>
-        </div>
+            {/* submit button */}
+            <button 
+                type="submit"
+                // onClick= {submitHandler}
+            >Submit answer
+            </button>
+            {/* conditional rendering of class for feedback field, if div active after submitting, className="message", else "noMessage", also for whether feedback is for right or wrong answer */}
+            <div className={`${isActive ? "message" : "noMessage"} ${feedback === right && isActive ? "right": ""} ${feedback === wrong && isActive ? "wrong": "" } `}>
+                <p>{feedback}</p>
+            </div>
         </form>
+        <div className={
+            `${generator!== next || leaving === true ? "noContent" : "leaveField"}`
+        }>
+            <p>Feeling tired or just wanna leave the party early?</p>
+            <p aria-hidden="true">⬇</p>
+            <span className="visually-hidden">Click the button down below</span>
+            <button 
+            className="end"
+            onClick={leaveHandler}
+            >
+                Leave Trivia Party
+            </button> 
+            <p>Sad to see you go 😥  But also, you deserve it 😊</p>
+            <p>Hope you feel like rejoining the party soon 🤩</p>
+        </div>
+        
     </Fragment> 
     )
 

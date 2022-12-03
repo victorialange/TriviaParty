@@ -63,7 +63,8 @@ main {
   margin-bottom: 5px;
 }
 
-.quizForm p:first-of-type {
+.quizForm p:first-of-type,
+.leaveField p:nth-of-type(2) {
   font-size: 4rem;
   margin-bottom: 0px;
   margin-top: 7px;
@@ -173,7 +174,21 @@ form button {
   background-color: red;
 }
 
+/* leave field */
+.leaveField p:first-of-type {
+  font-size: 1rem;
+}
 
+.leaveField {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.leaveField button {
+  font-size: 1rem;
+}
 
 /* footer copyright */
 footer {
