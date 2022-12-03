@@ -1,7 +1,7 @@
 import { useState} from 'react';
 // import axios from 'axios';
 import DisplayForm from './DisplayForm.js';
-
+import { Fragment } from 'react';
 import './App.css';
 
 
@@ -108,8 +108,9 @@ function App() {
 
     }
     
-
-
+  const intro = "Feeling ready? Then let's get this trivia party started!";
+  const next = "Don't feel this question or want to continue onto the next one?"
+  const [initialIntro, setInitialIntro] = useState(intro);  
   
 
   // clickHandler function to refresh page and show new question
@@ -117,7 +118,7 @@ function App() {
     // call async function getQuiz() with API data everytime user clicks the get different question button
     getQuiz();
 
-    
+    setInitialIntro(next);
       // setQuestion(question);
       // console.log(question);
 
@@ -132,29 +133,56 @@ function App() {
 
 
   return (
-    <div className="App wrapper">
-      <h1>Trivia!</h1>
-      <h2>Come play a game!</h2>
-      <p>Only check one possible answer from the 4 choices below!</p>
-      <p>If you don't like a question</p>
-
-      {/* refresh button */}
+    // Fragment in order to use multiple parent elements
+    <> 
+    {/* HEADER */}
+    <header>
+      {/* WRAPPER */}
+      <div className="App wrapper">
       
-      <DisplayForm
-        // handleSubmit={}
-        clickHandler={clickHandler}
-        question={question}
-        allAnswers={allAnswers}
-        // incorrectAnswers={incorrectAnswers}
-        correctAnswer={correctAnswer}
-        id={id}
-          
-          // answerTwo={answerTwo}
-          // answerThree={answerThree}
-          // correctAnswer={correctAnswer}
-      />
-  
-    </div>
+        <h1>Trivia Party!!!</h1>
+        <h2>Come play a game and get smarter at the same time!</h2>
+        <p>Only choose one answer from the four possible answer choices for each question!</p>
+        <p>There is no timer to stress you out, this party is meant to be chill 🏖️ So take your sweet and precious time to answer each question!</p>
+        <h3>{initialIntro}</h3>
+        <p aria-hidden="true">⬇</p>
+        <span className="visually-hidden">Click the button down below</span>
+      </div>
+      {/* END WRAPPER */}
+    </header>
+      
+    {/* Main with one quiz section*/}
+    <main id='mainContent'>
+      <section id='quiz' className='quizForm'>
+        {/* Wrapper */}
+        <div className="App wrapper">
+          <DisplayForm
+            // handleSubmit={}
+            clickHandler={clickHandler}
+            question={question}
+            allAnswers={allAnswers}
+            // incorrectAnswers={incorrectAnswers}
+            correctAnswer={correctAnswer}
+            id={id}
+                
+            // answerTwo={answerTwo}
+            // answerThree={answerThree}
+            // correctAnswer={correctAnswer}
+          />
+        </div>
+        {/* end wrapper */}
+      </section>
+    </main>
+    {/* Footer with copyright */}
+    <footer>
+      {/* wrapper */}
+      <div className="App wrapper">
+        <p>Copyright ©️  Juno College 2022</p>
+      </div>
+      {/* end wrapper */}
+    </footer>
+   
+  </> 
   );
 }
 

@@ -1,8 +1,9 @@
 // this will be the form that shows the quiz content (questions, answer choices) from the Trivia API
 
+
 import { useState } from "react";
 import { Fragment } from "react";
-
+import './App.css';
 
 const DisplayForm = ( props ) => {
 
@@ -17,12 +18,24 @@ const DisplayForm = ( props ) => {
     //     answerFour: ""
     // });
 
+    // variables that holds feedback for either right or wrong answer
+    const right = "Result: Yayyy you're right!";
+    
+    const wrong = `Result: Nooo, you were wrong! 
+        The right answer would have been: "${props.correctAnswer}".`
+     ;
     const [feedback, setFeedback] = useState("");
 
-    const [generator, setGenerator] = useState("Start");
+    const start = "Start";
+    const next = "New question";
+    const [generator, setGenerator] = useState(start);
+   
+    const [isActive, setActive] = useState(false);
+
 
     const handleChange = (e) => {
 
+       
         // const id= ref.current.id;
         // const {id, value} = e.target;
         // const id = e.target.id;
@@ -51,18 +64,23 @@ const DisplayForm = ( props ) => {
         // console.log(formData);
         // setFormData("");
         
-        setUserChoice("");
-        console.log(userChoice);
+            setUserChoice("");
+            console.log(userChoice);
+            
+            // setFormData("");
+            // console.log(formData);
+            setActive(true);
+            // conditional rendering to check if userChoice is equal to correct answer (based on value, which is equal to the string value of the API), allows me to destructure/shuffle/randomize order between incorrect and correct answer
+            
+            if (userChoice !== props.correctAnswer) {
+                setFeedback(wrong);
+            } else {
+                setFeedback(right);
+            } 
         
-        // setFormData("");
-        // console.log(formData);
+        
 
-        // conditional rendering to check if userChoice is equal to correct answer (based on value, which is equal to the string value of the API), allows me to destructure/shuffle/randomize order between incorrect and correct answer
-        if (userChoice !== props.correctAnswer) {
-            setFeedback("Result: Nooo, you were wrong!");
-        } else {
-            setFeedback("Result: Yayyy you're right!");
-        }
+        
     }
 
     // let index = 0;
@@ -72,39 +90,50 @@ const DisplayForm = ( props ) => {
         // calling clickHandler function created in App.js that calls the async getQuiz() function
         props.clickHandler();
         // clearing of feedback
-        setGenerator("New question");
+        setGenerator(next);
         if (feedback) {
             setFeedback("");
+            setUserChoice("");
+            setActive(false);
         }
     } 
+
 
     return(
     <Fragment>
        <button 
         // type="button"
         onClick={anotherClickHandler}
+        // conditional rendering of className based on whether button is start button or generates next question
+        className={
+        `${generator === start ? "start" : "next"}`
+        }
         >{generator}
         </button>
          {/* FORM WITH API CONTENT for quiz  */}
-        <form onSubmit={submitHandler}>
-            <fieldset>
-                <legend>{props.question}:</legend>
+        
+        <form onSubmit={submitHandler} aria-label="quiz" className={`${generator!== "New question" ? "noContent" : "content"}`}
+        >
+       
+            
+                <fieldset>
+                <legend>{props.question}</legend>
                 <div className="inputs" onChange={handleChange}>
-                {/* all answer choice (incorrect and correct)  */}
+                {/* mapping through created array inside async getQuiz function that allAnswers (incorrect and correct)  */}
                 {props.allAnswers.map((answer, index) => {
                     return(
-                        <div className="answers">
+                        <div className="answer">
                             
-                           <input 
+                           <input
                             type="radio" 
-                            id={answer}
+                            id={index}
                             // index="0"
                             name="quiz"
                             required 
                             // onChange={handleFirstChange}
                             value={answer}
-                            key={index}
-                            // onClick={() => setFormData({radioChecked: true})}
+                            key={props.id + index}
+                            
                             // checked={userChoice === 'firstAnswer'} 
                             /> 
                             <label htmlFor={props.allAnswers[index]}>  
@@ -150,6 +179,8 @@ const DisplayForm = ( props ) => {
                     </label> */}
                 </div>
         </fieldset>  
+            
+            
         {/* Buttons */}
         
         {/* submit button */}
@@ -158,8 +189,9 @@ const DisplayForm = ( props ) => {
         // onClick= {submitHandler}
         >Submit answer
         </button>
-        <div>
-            {feedback}
+        {/* conditional rendering of class for feedback field, if div active after submitting, className="message", else "noMessage", also for whether feedback is for right or wrong answer */}
+        <div className={`${isActive ? "message" : "noMessage"} ${feedback === right && isActive ? "right": ""} ${feedback === wrong && isActive ? "wrong": "" } `}>
+            <p>{feedback}</p>
         </div>
         </form>
     </Fragment> 
