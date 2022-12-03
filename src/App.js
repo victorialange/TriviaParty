@@ -108,8 +108,8 @@ function App() {
 
     }
     
-  const intro = "Feeling ready? Then let's get this trivia party started!";
-  const next = "Don't feel this question or want to continue onto the next one?"
+  const intro = "Feeling ready? Then let's get this trivia party started 🥳";
+  const next = "Don't feel this question or already answered this one?"
   const [initialIntro, setInitialIntro] = useState(intro);  
   
 
@@ -134,7 +134,12 @@ function App() {
 
   return (
     // Fragment in order to use multiple parent elements
-    <> 
+    <>
+    {/* skip link to main*/}
+    <a href="#mainContent" className='skipLink'>
+      Skip to main content
+    </a>
+
     {/* HEADER */}
     <header>
       {/* WRAPPER */}
@@ -143,10 +148,8 @@ function App() {
         <h1>Trivia Party!!!</h1>
         <h2>Come play a game and get smarter at the same time!</h2>
         <p>Only choose one answer from the four possible answer choices for each question!</p>
-        <p>There is no timer to stress you out, this party is meant to be chill 🏖️ So take your sweet and precious time to answer each question!</p>
-        <h3>{initialIntro}</h3>
-        <p aria-hidden="true">⬇</p>
-        <span className="visually-hidden">Click the button down below</span>
+        <p>There is no timer to stress you out, this party is meant to be chill 🏖️ So take your sweet precious time to answer each question! (You could take a bath or go for a nap, we won't be able to tell  😜 )</p>
+        
       </div>
       {/* END WRAPPER */}
     </header>
@@ -156,6 +159,9 @@ function App() {
       <section id='quiz' className='quizForm'>
         {/* Wrapper */}
         <div className="App wrapper">
+          <h3>{initialIntro}</h3>
+          <p aria-hidden="true">⬇</p>
+          <span className="visually-hidden">Click the button down below</span>
           <DisplayForm
             // handleSubmit={}
             clickHandler={clickHandler}
