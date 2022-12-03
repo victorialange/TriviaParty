@@ -19,7 +19,8 @@ function App() {
   const [allAnswers, setAllAnswers] = useState( [
     '', '','', '' 
   ] );
-  const [id, setId] = useState('');
+  const [currentQuestionId, setCurrentQuestionId] = useState("");
+  const [questionId, setQuestionId] = useState([]);
   // const [answers, setAnswers] = useState( [] );
 
   // const [quiz, setQuiz] = useState( [] );
@@ -73,7 +74,23 @@ function App() {
 
       setCorrectAnswer(data[0].correctAnswer);
       console.log(correctAnswer);
+      // if questionId array contains data[0].id, then call getQuiz() again.
+      // try throw catch to skip over error (when data[0].id is contained in questionId array)
 
+
+      // have an array of ids on every render
+      setQuestionId(current => [...current, data[0].id]);
+      // setQuestionId(...data[0].id,
+      //   nextId++);
+      
+      console.log(questionId);
+      
+      // id string values
+      setCurrentQuestionId(data[0].id);
+      console.log(currentQuestionId);
+      
+
+      // console.log(questionId);
       // const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
       // console.log(answers);
 
@@ -81,7 +98,12 @@ function App() {
       const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
       console.log(answers);
       // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
-      setAllAnswers(answers);
+
+      // shuffle to randomize order of answers array so that user won't be able to figure out position of correct answer
+      const randomAnswers = answers.sort(() => 0.5 - Math.random());
+      console.log(randomAnswers);
+
+      setAllAnswers(randomAnswers);
       console.log(allAnswers);
 
       // console logging state can be misleading, value is stored in stateful variable even if not visible in the console right away
@@ -104,7 +126,7 @@ function App() {
       // setAllAnswers();
       // console.log(allAnswers);
 
-      setId(data[0].id);
+      
 
     }
     
@@ -179,7 +201,7 @@ function App() {
             allAnswers={allAnswers}
             // incorrectAnswers={incorrectAnswers}
             correctAnswer={correctAnswer}
-            id={id}
+            id={questionId}
             leaveClickHandler={leaveClickHandler}
                
             // answerTwo={answerTwo}
