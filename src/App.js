@@ -108,11 +108,11 @@ function App() {
 
     }
     
-  const intro = "Feeling ready? Then let's get this trivia party started 🥳";
+  const intro = "Feeling ready? Then let's get this trivia party started  🎈  🎊";
   const next = "Don't feel this question or already answered this one?"
   const [initialIntro, setInitialIntro] = useState(intro);  
   
-
+  
   // clickHandler function to refresh page and show new question
   const clickHandler = () => {
     // call async function getQuiz() with API data everytime user clicks the get different question button
@@ -155,7 +155,7 @@ function App() {
         <h1>Trivia Party!!!</h1>
         <h2>Come play a game and get smarter at the same time!</h2>
         <p>Only choose one answer from the four possible answer choices for each question!</p>
-        <p>There is no timer to stress you out, this party is meant to be chill 🏖️ So take your sweet precious time to answer each question! (You could take a bath or go for a nap, we won't be able to tell  😜 )</p>
+        <p>There is no timer to stress you out, this party is meant to be chill 🏖️ So take your sweet precious time to answer each question  ⏳ (You could take a bath or go for a nap, we won't be able to tell  😜 )</p>
         
       </div>
       {/* END WRAPPER */}
