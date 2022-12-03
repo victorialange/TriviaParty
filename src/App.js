@@ -1,4 +1,4 @@
-import { useEffect, useState} from 'react';
+import { useState} from 'react';
 // import axios from 'axios';
 import DisplayForm from './DisplayForm.js';
 
@@ -15,7 +15,7 @@ function App() {
   const [question, setQuestion] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [incorrectAnswers, setIncorrectAnswers] = useState( [] );
-  // combines incorrect answers array and correct answer string value
+  // combines incorrect answers array and correct answer string value, important for mapping through whole answers array as opposed to just through the incorrect answers => gonna create a new array inside async function called getQuiz()
   const [allAnswers, setAllAnswers] = useState( [
     '', '','', '' 
   ] );
@@ -77,8 +77,10 @@ function App() {
       // const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
       // console.log(answers);
 
+      // creating new array to add correct answer string value to already from API provided incorrect answers array
       let answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
       console.log(answers);
+      // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
       setAllAnswers(answers);
       console.log(allAnswers);
 
@@ -112,8 +114,9 @@ function App() {
 
   // clickHandler function to refresh page and show new question
   const clickHandler = () => {
-    // call asyn function getQuiz with API data everytime user clicks the get different question button
+    // call async function getQuiz() with API data everytime user clicks the get different question button
     getQuiz();
+
     
       // setQuestion(question);
       // console.log(question);
@@ -136,13 +139,10 @@ function App() {
       <p>If you don't like a question</p>
 
       {/* refresh button */}
-      <button 
-        // type="button"
-        onClick={clickHandler}
-        >Get a different question
-      </button>
+      
       <DisplayForm
         // handleSubmit={}
+        clickHandler={clickHandler}
         question={question}
         allAnswers={allAnswers}
         // incorrectAnswers={incorrectAnswers}
