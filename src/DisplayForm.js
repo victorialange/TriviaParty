@@ -2,95 +2,147 @@
 
 import { useState } from "react";
 
+
+
 const DisplayForm = ( props ) => {
 
     // create a piece of state to hold the user's choice when switching in between radio inputs (in order to update the onChange of the )
     const [userChoice, setUserChoice] = useState("");
+    // const [userString, setUserString] = useState("");
 
-    // handleChange function, gets called whenever user changes radio button choice
-    const handleFirstChange = () => {
-      // set new value of checked radio button to state with setState func (async)
-      setUserChoice('firstAnswer');
-      console.log(userChoice);
-    }
-    
-    const handleSecondChange = () => {
-        // set new value of checked radio button to state with setState func (async)
-        setUserChoice('secondAnswer');
-        console.log(userChoice);
-    }
+    const [formData, setFormData] = useState({
+        answerOne: "",
+        answerTwo: "",
+        answerThree: "",
+        answerFour: ""
+    });
 
-    const handleThirdChange = () => {
-        // set new value of checked radio button to state with setState func (async)
-        setUserChoice('thirdAnswer');
-        console.log(userChoice);
-    }
+    const [feedback, setFeedback] = useState("");
 
-    const handleLastChange = () => {
-        // set new value of checked radio button to state with setState func (async)
-        setUserChoice('lastAnswer');
-        console.log(userChoice);
-    }
+    const handleChange = (e) => {
+
+        // const id= ref.current.id;
+        // const {id, value} = e.target;
+        // const id = e.target.id;
+        // const value = e.target.value;
+        // setFormData((previousData) => {
+        //     // 
+        //     return{
+        //         // ...prevFormData,
+        //         ...previousData,
+        //         [id]: value
+        //     };
+        // })
+        setUserChoice(e.target.value);
+        // setUserString()
+        console.log(e.target.value);
+        // console.log(formData);
+        
+    };
 
     // const resetRadioState = () => {
-    //     setUserChoice('');
+        
     // }
 
+    const submitHandler = (e) => {
+        e.preventDefault();
+        console.log(formData);
+        // setFormData("");
+        
+        setUserChoice("");
+        console.log(userChoice);
+        
+        setFormData("");
+        console.log(formData);
+
+        // conditional rendering to check if userChoice is equal to correct answer (based on value, which is equal to the string value of the API)
+        if (userChoice != props.correctAnswer) {
+            setFeedback("Nooo, you were wrong!");
+        } else {
+            setFeedback("Yayyy you're right!");
+        }
+    }
+
+    // let index = 0;
+
     return(
-        <form>
+        <form onSubmit={submitHandler}>
             <fieldset>
                 <legend>{props.question}:</legend>
-                {/* first answer choice (incorrect) */}
-                <input 
-                    type="radio" 
-                    id="answerOne" 
-                    name="quiz" 
-                    onChange={handleFirstChange}
-                    checked={userChoice === 'firstAnswer'}
-                    // checked={userChoice === 'firstAnswer'} 
-                />
-                <label htmlFor="answerOne">{props.answerOne}</label>
+                <div className="inputs" onChange={handleChange}>
+                {/* all answer choice (incorrect and correct)  */}
+                {props.allAnswers.map((answer, index) => {
+                    return(
+                        <div className="answers">
+                           <input 
+                            type="radio" 
+                            id={props.allAnswers[index]}
+                            // index="0"
+                            name="quiz"
+                            required 
+                            // onChange={handleFirstChange}
+                            value={answer}
+                            key={props.id}
+                            // onClick={() => setFormData({radioChecked: true})}
+                            // checked={userChoice === 'firstAnswer'} 
+                            /> 
+                            <label htmlFor={props.allAnswers[index]}>  
+                            {answer}
+                        </label>
+                        </div>
+                    );
+                })}
+                
                 {/* second answer choice (incorrect) */}
-                <input 
-                    type="radio" 
-                    id="answerTwo" 
-                    name="quiz" 
-                    onChange={handleSecondChange}
-                    checked={userChoice === 'secondAnswer'}
-                    // checked={userChoice === 'secondAnswer'} 
-                />
-                <label htmlFor="answerTwo">{props.answerTwo}</label>
-                {/* third answer choice (incorrect) */}
-                <input 
-                    type="radio" 
-                    id="answerThree" 
-                    name="quiz" 
-                    onChange={handleThirdChange}
-                    checked={userChoice === "thirdAnswer"}
-                    // checked={userChoice === 'thirdAnswer'}  
-                />
-                <label htmlFor="answerThree">{props.answerThree}</label>
-                {/* fourth answer choice (correct) */}
-                <input 
-                    type="radio" 
-                    id="answerFour" 
-                    name="quiz" 
-                    onChange={handleLastChange}
-                    checked={userChoice === "lastAnswer"}
-                    // checked={userChoice === 'lastAnswer'}  
-                />
-                <label htmlFor="answerFour">{props.correctAnswer}</label>
-                {/* Buttons */}
-                <button>Get a different question</button>
-                <button 
-                type="submit"
-                // onClick={resetRadioState}
-                >
-                    Submit answer
-                </button>
-            </fieldset>
+                    {/* <input 
+                        type="radio" 
+                        id="answerTwo" 
+                        name="quiz"
+                        // onChange={handleSecondChange}
+                        value='secondAnswer'
+                        onClick={() => setFormData({radioChecked: true})}
+                        // checked={userChoice === 'secondAnswer'} 
+                    />
+                    <label htmlFor="answerTwo">{triviaSet.incorrectAnswers}</label> */}
+                    {/* third answer choice (incorrect) */}
+                    {/* <input 
+                        type="radio" 
+                        id="answerThree" 
+                        name="quiz"
+                        // onChange={handleThirdChange}
+                        value="thirdAnswer"
+                        onClick={() => setFormData({radioChecked: true})}
+                        // checked={userChoice === 'thirdAnswer'}  
+                    /> */}
+                    {/* <label htmlFor="answerThree">{props.answerThree}</label>
+                    {/* fourth answer choice (correct) */}
+                    {/* <label htmlFor="answerFour">
+                        <input 
+                        type="radio" 
+                        id="answerFour" 
+                        name="quiz" 
+                        // onChange={handleLastChange}
+                        value="correctAnswer"
+                        // onClick={() => setFormData({radioChecked: true})}
+                        // checked={userChoice === 'lastAnswer'}  
+                        />{props.correctAnswer}
+                    </label> */}
+                </div>
+        </fieldset>  
+        {/* Buttons */}
+        
+        {/* submit button */}
+        <button 
+        type="submit"
+        // onClick= {submitHandler}
+        >Submit answer
+        </button>
+        <div>
+            Result: {feedback}
+        </div>
         </form>
     )
+
 }
 
 export default DisplayForm;

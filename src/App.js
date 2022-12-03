@@ -1,87 +1,159 @@
 import { useEffect, useState} from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import DisplayForm from './DisplayForm.js';
+
 import './App.css';
 
 
 
 function App() {
+  // let answerObjects = [
+  //   '', '','', '' 
+  // ];
 
   // state that holds the questions, answer choices and ids from my API
   const [question, setQuestion] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
-  // const [incorrectAnswers, setIncorrectAnswers] = useState( [] );
+  const [incorrectAnswers, setIncorrectAnswers] = useState( [] );
+  // combines incorrect answers array and correct answer string value
+  const [allAnswers, setAllAnswers] = useState( [
+    '', '','', '' 
+  ] );
+  const [id, setId] = useState('');
+  // const [answers, setAnswers] = useState( [] );
+
+  // const [quiz, setQuiz] = useState( [] );
   // used concatenation to combine incorrect answerw with correct answer
   // const [answers, setAnswers] = useState( [] );
   // first answer (incorrect answer)
-  const [answerOne, setAnswerOne] = useState('');
+  // const [answerOne, setAnswerOne] = useState('');
   // second answer (incorrect answer)
-  const [answerTwo, setAnswerTwo] = useState('');
+  // const [answerTwo, setAnswerTwo] = useState('');
   // third answer (incorrect answer)
-  const [answerThree, setAnswerThree] = useState('');
+  // const [answerThree, setAnswerThree] = useState('');
   
   // const [questionId, setQuestionId] = useState(''); 
 
-  useEffect( () => { 
+  // useEffect( () => { 
   // axios
-    axios({
-      url: "https://the-trivia-api.com/api/questions",
-      method: "GET",
-      dataResponse: "json",
-      params: {
+    const getQuiz = async () => {
+      const url = new URL('https://the-trivia-api.com/api/questions')
+
+      url.search = new URLSearchParams({
         limit: 1
-      },
-    })
-    .then( (response) => {
-      console.log(response.data);
+      })
+      
+      const response = await fetch(url);
+      const data = await response.json();
+
+      console.log(data);
+
       // console.log(response.data[0].question);
-      setQuestion(response.data[0].question);
-      console.log(question);
-      setCorrectAnswer(response.data[0].correctAnswer);
+      
+      // setIncorrectAnswers(response.data[0].incorrectAnswers);
+      // setCorrectAnswer(response.data[0].correctAnswer);
       // setIncorrectAnswers(response.data[0].incorrectAnswers);
       // console.log(response.data[0].incorrectAnswers, response.data[0].correctAnswer);
 
-      // const answerChoices = incorrectAnswers.concat(correctAnswer);
-      // console.log(answerChoices);
-      // setAnswers(answerChoices);
-      // console.log(answers);
+      // const answerChoices = response.data[0].incorrectAnswers.concat(response.data[0].correctAnswer);
+      // const quizSet = response.data[0].incorrectAnswers.concat(response.data[0].correctAnswer, response.data[0].question);
+      // console.log(quizSet);
+      // setQuiz(quizSet.reverse());
+      // console.log(quiz);
 
       // find will grab first value of array
-      setAnswerOne(response.data[0].incorrectAnswers[0]);
-      console.log(answerOne);
+      // setAnswerOne(response.data[0].incorrectAnswers[0]);
+      // console.log(answerOne);
+      
+      setQuestion(data[0].question);
+      console.log(question);
 
-      // find will return second value of array with if statement that specifies index number
-      // const answerChoiceTwo = answerChoices.find( (otherAnswerObj, i) => {
-      //   if (i !== 0 && i < 2) return true;
-      // });
-      setAnswerTwo(response.data[0].incorrectAnswers[1]);
-      console.log(answerTwo);
+      setIncorrectAnswers(data[0].incorrectAnswers);
+      console.log(incorrectAnswers);
 
-      // find will return second value of array with if statement that specifies index number
-      setAnswerThree(response.data[0].incorrectAnswers[2]);
-      console.log(answerThree);
-
-      setCorrectAnswer(response.data[0].correctAnswer);
+      setCorrectAnswer(data[0].correctAnswer);
       console.log(correctAnswer);
 
-  });
-}, []) 
+      // const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
+      // console.log(answers);
+
+      let answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
+      console.log(answers);
+      setAllAnswers(answers);
+      console.log(allAnswers);
+
+      // console logging state can be misleading, value is stored in stateful variable even if not visible in the console right away
+
+      // const newAnswers = answers.map( (answer) => {
+      //    return answer.correctAnswer;
+      // } )
+      // console.log(newAnswers);
+
+
+      // setAllAnswers(answers);
+      // console.log(allAnswers);
+
+      // const cloneAnswers = [...answers];
+      // console.log(cloneAnswers);
+
+      // const incorrectArray = data[0].incorrectAnswers;
+
+
+      // setAllAnswers();
+      // console.log(allAnswers);
+
+      setId(data[0].id);
+
+    }
+    
+
+
+  
+
+  // clickHandler function to refresh page and show new question
+  const clickHandler = () => {
+    // call asyn function getQuiz with API data everytime user clicks the get different question button
+    getQuiz();
+    
+      // setQuestion(question);
+      // console.log(question);
+
+      // setIncorrectAnswers(incorrectAnswers);
+      // console.log(incorrectAnswers);
+
+      // setCorrectAnswer(correctAnswer);
+      // console.log(correctAnswer);
+
+      // setId(id);
+  }
 
 
   return (
-    <div className="App">
+    <div className="App wrapper">
       <h1>Trivia!</h1>
       <h2>Come play a game!</h2>
       <p>Only check one possible answer from the 4 choices below!</p>
-      <p>If you don't like a question, click on the get a different question button.</p>
+      <p>If you don't like a question</p>
+
+      {/* refresh button */}
+      <button 
+        // type="button"
+        onClick={clickHandler}
+        >Get a different question
+      </button>
       <DisplayForm
         // handleSubmit={}
         question={question}
-        answerOne={answerOne}
-        answerTwo={answerTwo}
-        answerThree={answerThree}
+        allAnswers={allAnswers}
+        // incorrectAnswers={incorrectAnswers}
         correctAnswer={correctAnswer}
+        id={id}
+          
+          // answerTwo={answerTwo}
+          // answerThree={answerThree}
+          // correctAnswer={correctAnswer}
       />
+  
     </div>
   );
 }
