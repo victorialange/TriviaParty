@@ -19,13 +19,18 @@ const DisplayForm = ( props ) => {
     // });
 
     // variables that holds feedback for either right or wrong answer
-    const right = "Result: Yayyy you're right!";
+    // const right = "Result: Yayyy you're right!";
     
-    const wrong = `Result: Nooo, you were wrong! 
-        The right answer would have been: "${props.correctAnswer}".`
-     ;
+    // const wrong = `Result: Nooo, you were wrong! 
+    //     The right answer would have been: "${props.correctAnswer}".`
+    //  ;
     // stateful variable for feedback/message upon form submission
-    const [feedback, setFeedback] = useState("");
+    // const [feedback, setFeedback] = useState("");
+
+    
+
+
+    
 
     // setting variables to pass into generator state for start/new question button later on in anotherClickHandler function
     const start = "Start";
@@ -50,11 +55,54 @@ const DisplayForm = ( props ) => {
     // limitSubmitMessage state that represents message to user when the input and submit button are disabled, instructions on how to keep playing; initial value set to empty string, only gets updated upon form submission, returns back to empty string when user decides to leave/return to start
     const [limitSubmitMessage, setLimitSubmitMessage] = useState("");
 
+    // num as a stateful variable to hold index number of individual items of customWrong and customRight array, default value 0 (randomizing it with Math.random later on in func in order to get individual value of array in randomized order)
+    const [num, setNum] = useState(0);
+
+    // variables to pass into customRight array as items
+    const rightOne = "100% correct! Nice job 👊";
+    const rightTwo = "Wowwww!!! You're like a genius or something 🤯";
+    const rightThree = "Yayyyy, you got it right! Happy dance 🕺";
+    const rightFour = "Are you sure you're not cheating 👀 I guess you're a trivia pro after all!";
+
+    // defining my own custom array that holds feedback for when user has selected correct answer (randomizing it with num as index number later on, along with passing it to message state)
+    const customRight = [rightOne, rightTwo, rightThree, rightFour];
+
+    // defining variable as consistent attached message to items for customWrong array (tells the user what would have been the right answer)
+    const shouldHave = `The correct answer would have been: ${props.correctAnswer}`
+
+    // variables to pass into customWrong array as items with shouldHave variable
+    const wrongOne = `Oh no! You got it wrong 😞${shouldHave}`;
+    const wrongTwo = `It's ok, it's ok, just take a few deep breaths, come back later and try again. I know you can do it 😉${shouldHave}`;
+    const wrongThree = `Hmmm, maybe you like submitted the wrong answer on accident 🤔${shouldHave}`;
+    const wrongFour = `Wrong! And you're out. Nah, just kidding, you can try as many times as you like, we're nice after all 😃${shouldHave}`;
+
+    // defining my own custom array that holds feedback for when user has selected incorrect answer (randomizing it with num as index number later on, along with passing it to message state)
+    const customWrong = [wrongOne, wrongTwo, wrongThree, wrongFour];
+
+    // message as stateful variable that will hold the customRight and the customWrong array with randomized index number num, default value set to empty string, as message will only get displayed when user submits the form
+    const [message, setMessage] = useState("");
+      
+// setCustomRight(randomRight);
+// setCustomWrong(randomWrong);
+    //   const rightArray = [rightOne, rightTwo, rightThree, rightFour];
+      
+      // setCustomRight([rightOne, rightTwo, rightThree, rightFour]);
+      // console.log(customRight);
+    //   const randomRight = rightArray.sort(() => 0.5 - Math.random());
+    //   console.log(randomRight);
+
+    //   const wrongArray = [wrongOne, wrongTwo, wrongThree, wrongFour];
+    //   const randomWrong = wrongArray.sort(() => 0.5 - Math.random());
+    //   console.log(randomWrong);
+      
+    // randomizer function to generate random index number for displayed message according to which array applies
+    const randomNumberInRange = (min, max) => {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
     // handleRadioClick function as event handler for when radio input is clicked (sets the userInput defined as a stateful variable userChoice equal to the selected answer)
     const handleRadioClick = (e) => {
 
-       
         // const id= ref.current.id;
         // const {id, value} = e.target;
         // const id = e.target.id;
@@ -73,7 +121,6 @@ const DisplayForm = ( props ) => {
         // setUserString()
         console.log(e.target.value);
         // console.log(formData);
-        
         
     };
 
@@ -96,18 +143,28 @@ const DisplayForm = ( props ) => {
         // update value of stateful variable isActive to true, meaning the form has been submitted, so other events can occur (showing feedback message/ not showing feedback when not submitted and relevant styling based on that)
         setActive(true);
 
-        // conditional rendering to check if userChoice is equal to correct answer (based on value, which is equal to the string value of the API), allows me to destructure/shuffle/randomize order between incorrect and correct answer
+        // update index num of both arrays by calling the randomizer function in between the ranges of 0 and 3 (passing them as arguments)
+        setNum(randomNumberInRange(0, 3));
+
+        // conditional rendering to check if userChoice is equal to correct answer (based on value, which is equal to the string value of the API), allows me to destructure/shuffle/randomize order between incorrect and correct answer, as I don't have to rely on index anymore to know whether it's the correct answer or not
         if (userChoice !== props.correctAnswer) {
-            setFeedback(wrong);
+            // updating the value of message state to array item of customWrong at randomized index number (when incorrect answer chosen)
+            setMessage(customWrong[num]);
+            console.log(customWrong);
+            console.log(num);
         } else {
-            setFeedback(right);
+            // setCustomRight({num});
+            // updating the value of message state to array item of customRight at randomized index number (when correct answer chosen)
+            setMessage(customRight[num]);
+            console.log(customRight);
+            console.log(num);
         }
 
         // update value of stateful variable limitSubmit to true, so that submit button and radio input are disabled when the user has already submitted the form once 
         setLimitSubmit(true);
 
         // update the value of the limitSubmitMessage stateful variable to a string that tells the user how to proceed when the button and radio inputs are disabled after submission
-        setLimitSubmitMessage(`You submitted an answer, great! Now click on the button above that says "New Question" in order to keep trivia partying 🤓`);
+        setLimitSubmitMessage(`You submitted an answer, great! Now click on the button above that says "New Question" in order to keep trivia partying 🎊`);
     }
 
     // let index = 0;
@@ -115,7 +172,10 @@ const DisplayForm = ( props ) => {
     // creating another click handler function for the different question button to remove the feedback each time when that button is clicked
     const anotherClickHandler = () => {
         // calling clickHandler function created in App.js that calls the async getQuiz() function
+        // if (props.questionId.some(value => value.id === props.currentQuestionId) === false) {
         props.clickHandler();
+        // }
+        
         // clearing of feedback
 
         // update value of generator to next variable (so that it its text is displayed as new question instead of start)
@@ -123,17 +183,17 @@ const DisplayForm = ( props ) => {
         setFirstLabel(newLabel);
         // update value of limit submit variable back to starting point/default value
         setLimitSubmit(false);
-
         // setting leaving back to false, so that leavingField appears again, when generator's value is set back to next variable
         setLeaving(false);
-
-        // if statement to check if feedback present, set the feedback's value back to start again, so that it doesn't stay there when user goes to next question, also sets active stateful variable back to false, so that appropriate class with styling based on that gets applied
-        if (feedback) {
-            setFeedback("");
-            setUserChoice("");
+        // setUserChoice("");
+        // if statement to check if message present, set the message's value back to start again, so that it doesn't stay there when user goes to next question, also sets active stateful variable back to false, so that appropriate class with styling based on that gets applied
+        if (message) {
+            setMessage("");
             setActive(false);
             setLimitSubmitMessage("");
-        }
+            // setUserChoice("");
+        } 
+        
     } 
 
     // different click handler function for when user clicks on the leave button, sets generator value of first button (start or new question) back to default state (start), which also encompasses the form with the noContent className, resulting in a display: none of the form (like before showing the quiz same as start/initial display)
@@ -149,6 +209,7 @@ const DisplayForm = ( props ) => {
 
         // setting generator back to start, which invokes form/quiz disappearing, all I needed to make entire form disappear since it's the same value when user hits start button
         setGenerator(start);
+        // setUserChoice("");
 
         // important to not forget to set the limitSubmitMessage stateful variable back to its inital empty string value when the user return to the start display/leaves the game
         setLimitSubmitMessage("");
@@ -183,6 +244,23 @@ const DisplayForm = ( props ) => {
         <form onSubmit={submitHandler} aria-label="quiz" className={`${generator === next ? "content" : "noContent"}`}
         
         >
+            {/* properties container */}
+            <div className="properties">
+                {/* category property */}
+                <div className="category">
+                    <p>{`Category: ${props.category}`}</p>
+                </div>
+                {/* level property */}
+                {/* conditional rendering in order to avoid getting undefined property onto the page */}
+                {
+                    props.level !== undefined ?
+                    <div className="level">
+                        <p>{`Level: ${props.level}`}</p>
+                    </div>
+                    : ""
+                }
+                 
+            </div>
             
             {/* FIELDSET with question from API as legend and inputs and labels as elements */}
             <fieldset>
@@ -211,7 +289,7 @@ const DisplayForm = ( props ) => {
 
                             // value set to string value of each answer
                             value={answer}
-                            key={props.id + index}
+                            key={props.currentQuestionId + index}
 
                             // pass the onClick the handleRadioClick function in order to control the value of the userChoice each time an input gets clicked
                             onClick={handleRadioClick}
@@ -284,9 +362,18 @@ const DisplayForm = ( props ) => {
             >Submit answer
             </button>
             {/* conditional rendering of class for feedback field, if div active after submitting, className="message", else "noMessage", also for whether feedback is for right or wrong answer */}
-            <div className={`${isActive ? "message" : "noMessage"} ${feedback === right && isActive ? "right": ""} ${feedback === wrong && isActive ? "wrong": "" } `}>
+            {/* <div className={`${isActive ? "message" : "noMessage"} ${feedback === right && isActive ? "right": ""} ${feedback === wrong && isActive ? "wrong": "" } `}>
                 <p>{feedback}</p>
-            </div>
+            </div> */}
+            <div className={`${isActive ? "message" : "noMessage"}`}>
+                <div className={`${userChoice !== props.correctAnswer && isActive ? "wrong": "right"}`}>
+                    <p>{message}</p>
+                </div>    
+            </div>  
+                    
+                
+           
+
             {/* {
                 limitSubmit === true && radioCli  ?
                 alert("You have already submitted your answer. Please go to the next question.")

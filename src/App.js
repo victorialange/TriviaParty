@@ -16,11 +16,18 @@ function App() {
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [incorrectAnswers, setIncorrectAnswers] = useState( [] );
   // combines incorrect answers array and correct answer string value, important for mapping through whole answers array as opposed to just through the incorrect answers => gonna create a new array inside async function called getQuiz()
-  const [allAnswers, setAllAnswers] = useState( [
-    '', '','', '' 
-  ] );
+  const [allAnswers, setAllAnswers] = useState( [] );
   const [currentQuestionId, setCurrentQuestionId] = useState("");
   const [questionId, setQuestionId] = useState([]);
+
+  // stateful variable for category property of API data
+  const [category, setCategory] = useState("");
+
+  // stateful variable for difficulty level
+  const [level, setLevel] = useState(""); 
+
+  
+
   // const [answers, setAnswers] = useState( [] );
 
   // const [quiz, setQuiz] = useState( [] );
@@ -88,6 +95,19 @@ function App() {
       // id string values
       setCurrentQuestionId(data[0].id);
       console.log(currentQuestionId);
+
+      if (questionId.some(value => value.id === currentQuestionId) === true) {
+        console.log(questionId.some(value => value.id === currentQuestionId));
+      }
+      
+      // pass in data from API into stateful variable
+      setCategory(data[0].category);
+      console.log(category);
+      
+      setLevel(data[0].difficulty);
+      if (data[0].difficulty !== undefined) {
+        console.log(level);
+      }
       
 
       // console.log(questionId);
@@ -128,11 +148,19 @@ function App() {
 
       
 
+
+      
+      
+      // setCustomWrong([wrongOne, wrongTwo, wrongThree, wrongFour]);
+      // console.log(customWrong);
+      
+
     }
     
-  const intro = "Feeling ready? Then let's get this trivia party started 🎊🎈🎉";
+  const intro = "Feeling ready? Then let's get this trivia party started 🎈🎉";
   const next = "Don't feel this question or already answered this one?"
   const [initialIntro, setInitialIntro] = useState(intro);  
+  
   
   
   // clickHandler function to refresh page and show new question
@@ -163,7 +191,7 @@ function App() {
 
   return (
     // Fragment in order to use multiple parent elements
-    <>
+    <Fragment>
     {/* skip link to main*/}
     <a href="#mainContent" className='skipLink'>
       Skip to main content
@@ -175,7 +203,7 @@ function App() {
       <div className="App wrapper">
       
         <h1>Trivia Party!!!</h1>
-        <h2>Let's get nerdy 🤓🧠</h2>
+        <h2>Let's get nerdy 🤓🧐</h2>
         <p>For each question select only one answer from the four possible answer choices!</p>
         <p>There is no timer to stress you out, this party is meant to be chill 🏖️ So take your sweet precious time to answer each question  ⏳ (You could take a bath or go for a nap, we won't be able to tell  😜 )</p>
         
@@ -192,6 +220,12 @@ function App() {
           <p aria-hidden="true">⬇</p>
           <span className="visually-hidden">Click the button down below</span>
           <DisplayForm
+            // customRight={customRight}
+            // customWrong={customWrong}
+            level={level}
+            category={category}
+            questionId={questionId}
+            currentQuestionId={currentQuestionId}
             // handleSubmit={}
             next={next}
             intro={intro}
@@ -224,7 +258,7 @@ function App() {
       {/* end wrapper */}
     </footer>
    
-  </> 
+  </Fragment> 
   );
 }
 
