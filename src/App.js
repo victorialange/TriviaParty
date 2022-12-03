@@ -19,6 +19,13 @@ function App() {
   const [allAnswers, setAllAnswers] = useState( [] );
   const [currentQuestionId, setCurrentQuestionId] = useState("");
   const [questionId, setQuestionId] = useState([]);
+
+  // stateful variable for category property of API data
+  const [category, setCategory] = useState("");
+
+  // stateful variable for difficulty level
+  const [level, setLevel] = useState(""); 
+
   // const [answers, setAnswers] = useState( [] );
 
   // const [quiz, setQuiz] = useState( [] );
@@ -91,8 +98,14 @@ function App() {
         console.log(questionId.some(value => value.id === currentQuestionId));
       }
       
+      // pass in data from API into stateful variable
+      setCategory(data[0].category);
+      console.log(category);
       
-      
+      setLevel(data[0].difficulty);
+      if (data[0].difficulty !== undefined) {
+        console.log(level);
+      }
       
 
       // console.log(questionId);
@@ -197,6 +210,8 @@ function App() {
           <p aria-hidden="true">⬇</p>
           <span className="visually-hidden">Click the button down below</span>
           <DisplayForm
+            level={level}
+            category={category}
             questionId={questionId}
             currentQuestionId={currentQuestionId}
             // handleSubmit={}

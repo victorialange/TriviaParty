@@ -186,6 +186,23 @@ const DisplayForm = ( props ) => {
         <form onSubmit={submitHandler} aria-label="quiz" className={`${generator === next ? "content" : "noContent"}`}
         
         >
+            {/* properties container */}
+            <div className="properties">
+                {/* category property */}
+                <div className="category">
+                    <p>{`Category: ${props.category}`}</p>
+                </div>
+                {/* level property */}
+                {/* conditional rendering in order to avoid getting undefined property onto the page */}
+                {
+                    props.level !== undefined ?
+                    <div className="level">
+                        <p>{`Level: ${props.level}`}</p>
+                    </div>
+                    : ""
+                }
+                 
+            </div>
             
             {/* FIELDSET with question from API as legend and inputs and labels as elements */}
             <fieldset>
