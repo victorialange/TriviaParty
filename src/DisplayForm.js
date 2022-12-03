@@ -115,7 +115,10 @@ const DisplayForm = ( props ) => {
     // creating another click handler function for the different question button to remove the feedback each time when that button is clicked
     const anotherClickHandler = () => {
         // calling clickHandler function created in App.js that calls the async getQuiz() function
-        props.clickHandler();
+        if (props.questionId.some(value => value.id === props.currentQuestionId) === false) {
+            props.clickHandler();
+        }
+        
         // clearing of feedback
 
         // update value of generator to next variable (so that it its text is displayed as new question instead of start)
@@ -211,7 +214,7 @@ const DisplayForm = ( props ) => {
 
                             // value set to string value of each answer
                             value={answer}
-                            key={props.id + index}
+                            key={props.currentQuestionId + index}
 
                             // pass the onClick the handleRadioClick function in order to control the value of the userChoice each time an input gets clicked
                             onClick={handleRadioClick}
