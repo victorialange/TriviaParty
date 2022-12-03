@@ -26,6 +26,8 @@ function App() {
   // stateful variable for difficulty level
   const [level, setLevel] = useState(""); 
 
+  
+
   // const [answers, setAnswers] = useState( [] );
 
   // const [quiz, setQuiz] = useState( [] );
@@ -146,11 +148,19 @@ function App() {
 
       
 
+
+      
+      
+      // setCustomWrong([wrongOne, wrongTwo, wrongThree, wrongFour]);
+      // console.log(customWrong);
+      
+
     }
     
   const intro = "Feeling ready? Then let's get this trivia party started 🎈🎉";
   const next = "Don't feel this question or already answered this one?"
   const [initialIntro, setInitialIntro] = useState(intro);  
+  
   
   
   // clickHandler function to refresh page and show new question
@@ -210,6 +220,8 @@ function App() {
           <p aria-hidden="true">⬇</p>
           <span className="visually-hidden">Click the button down below</span>
           <DisplayForm
+            // customRight={customRight}
+            // customWrong={customWrong}
             level={level}
             category={category}
             questionId={questionId}
