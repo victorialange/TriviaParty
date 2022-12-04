@@ -72,10 +72,10 @@ const DisplayForm = ( props ) => {
     const shouldHave = `The correct answer would have been: ${props.correctAnswer}`
 
     // variables to pass into customWrong array as items with shouldHave variable
-    const wrongOne = `Oh no! You got it wrong 😞${shouldHave}`;
-    const wrongTwo = `It's ok, it's ok, just take a few deep breaths, come back later and try again. I know you can do it 😉${shouldHave}`;
-    const wrongThree = `Hmmm, maybe you like submitted the wrong answer on accident 🤔${shouldHave}`;
-    const wrongFour = `Wrong! And you're out. Nah, just kidding, you can try as many times as you like, we're nice after all 😃${shouldHave}`;
+    const wrongOne = `Oh no! You got it wrong 😞${shouldHave}. Not ${userChoice}`;
+    const wrongTwo = `It's ok, it's ok, just take a few deep breaths, come back later and try again. I know you can do it 😉${shouldHave}. Not ${userChoice}`;
+    const wrongThree = `Hmmm, maybe you like submitted the wrong answer by accident 🤔${shouldHave}. Not ${userChoice}`;
+    const wrongFour = `Wrong! And you're out. Nah, just kidding, you can try as many times as you like, we're nice after all 😃${shouldHave}. Not ${userChoice}`;
 
     // defining my own custom array that holds feedback for when user has selected incorrect answer (randomizing it with num as index number later on, along with passing it to message state)
     const customWrong = [wrongOne, wrongTwo, wrongThree, wrongFour];
