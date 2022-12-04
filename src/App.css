@@ -2,16 +2,253 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* new styles for app */
+
+/* general */
+html {
+  font-size: 125%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
+.wrapper {
+  margin: 0 auto;
+  width: 85%;
+  max-width: 1200px;
+  /* new styles .App as flex container for form and everything else on the page */
+  display: flex;
+  flex-direction: column;
+}
+
+/* stripping */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* SKIP LINK to MAIN CONTENT, only visible for screen readers when hitting tab */
+.skipLink {
+  position: absolute;
+  left: -1000px;
+  z-index: 10;
+  background: #fff;
+  color: black;
+  font-size: 1rem;
+  padding: 10px 0;
+}
+
+.skipLink:focus {
+left: 0;
+right: 0;
+text-align: center;
+top: 30px;
+}
+
+/* header */
+header {
+  padding-top: 40px;
+}
+
+/* initial display (h1, h2, p etc.) */
+.App p:first-of-type {
+  margin: 0;
+}
+
+
+/* main */
+main {
+  /* height: 80vh; */
+  margin-bottom: 300px;
+}
+
+.quizForm h3 {
+  margin-bottom: 5px;
+}
+
+.quizForm p:first-of-type,
+.leaveField p:nth-of-type(2) {
+  font-size: 4rem;
+  margin-bottom: 0px;
+  margin-top: 7px;
+}
+
+/* centering the initial start button */
+button {
+  align-self: center;
+  padding: 6px 15px;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+/* start button before quiz shows up */
+.start {
+  padding: 10px 50px;
+  font-size: 1.5rem;
+}
+
+/* next button when quiz is shown */
+.next {
+  font-size: 1.2rem;
+  padding: 8px 20px;
+}
+
+/* visually-hidden className to hide arrow description span and hidden labels from disabled input or button by default, but still visible/readable for screenreaders for  */
+.visually-hidden {
+  color: white;
+  font-size: smaller;
+  position: absolute;
+  left: -450px;
+}
+
+/* form quiz */
+/* form without content before button turns from start into new question */
+.noContent {
+  display: none;
+}
+
+/* center quiz items inside form element and add padding for space */
+form {
+  border: 3px solid black;
+  width: fit-content;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 60px;
+  padding-top: 20px;
+}
+
+/* properties div container inside form before fieldset */
+.properties p:first-of-type,
+.properties p:nth-of-type(2) {
+  font-size: 1rem;
+  width: fit-content;
+}
+
+.properties {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* level container */
+.level {
+  align-self: flex-end;
+  width: fit-content;
+}
+
+/* level and category container */
+.level,
+.category {
+  margin: 0 10px 20px 10px;
+}
+
+/* remove default fieldset styling */
+fieldset {
+  border: none;
+  /* padding: 0; */
+  padding: 5px 50px 12px 50px;
+}
+
+/* align legend with submit button (more padding to keep in mind of) */
+legend {
+  padding: 5px 10px;
+  border: 3px solid red;
+}
+
+/* container for all inputs and labels */
+.inputs {
+  width: fit-content;
+  text-align: left;
+  margin-top: 8px;
+}
+
+/* individual input and label container */
+.answer {
+  margin-bottom: 8px;
+}
+
+/* align submit button with other elements inside form  */
+form button {
+  align-self: flex-start;
+  /* margin-top: 12px; */
+  /* padding: 5px 10px; */
+  margin-left: 55px;
+  font-size: 1rem;
+}
+
+/* noMessage class for when no feedback message yet (before form submission) */
+.noMessage {
+  margin-bottom: 20px;
+}
+
+/* message class for when feedback message exists upon form submission */
+.message {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.message p:first-child {
+  padding: 10px 21px;
+  font-size: 1.2rem;
+}
+
+/* class for feedback for right answer */
+.right p {
+  background-color: green;
+}
+
+/* class for feedback for wrong answer */
+.wrong p {
+  background-color: red;
+}
+
+/* limitSubmitMessage for when user has submitted and gets instruction on how to keep playing */
+.limitSubmitMessage p:first-of-type {
+  font-size: 1rem;
+}
+
+.limitSubmitMessage {
+  margin-top: 35px;
+}
+
+/* leave field */
+.leaveField p:first-of-type {
+  font-size: 1rem;
+}
+
+.leaveField p:last-of-type {
+  margin-top: 0;
+}
+
+.leaveField {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 120px;
+}
+
+.leaveField button {
+  font-size: 1rem;
+}
+
+/* footer copyright */
+footer {
+  padding: 10px 0;
+  color: white;
+  background-color: black;
+}
+
+footer p {
+  margin: 0;
+}
+
+/* .App-logo {
+  height: 40vmin;
+  pointer-events: none;
+} */
+
+/* @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
-}
+} */
 
 .App-header {
   background-color: #282c34;
@@ -24,15 +261,15 @@
   color: white;
 }
 
-.App-link {
+/* .App-link {
   color: #61dafb;
-}
+} */
 
-@keyframes App-logo-spin {
+/* @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(360deg);
   }
-}
+} */
