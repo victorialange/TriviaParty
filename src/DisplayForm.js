@@ -219,196 +219,225 @@ const DisplayForm = ( props ) => {
 
     return(
     <Fragment>
-        <button 
-        // type="button"
-        // change
-
-        // passing in the function definition of anotherClickHandler that calls the clickHandler from App.js for us (which includes making the API call everytime the user clicks that button)
-        onClick={anotherClickHandler}
-
-        // pass in the firstLabel stateful variable as the value of aria-label to alternate between labels based on whether it's the start or the new question button
-        aria-label={firstLabel}
-
-        // conditional rendering of className based on whether button is start button or generates new question
-        className={
-        `${generator === start ? "start" : "next"}`
-        }>{generator}</button>
-
-        {/* limitSubmitMessage for when user has submitted form and needs instructions on how to keep playing */}
-        <div className={
-            `${limitSubmitMessage ? "limitSubmitMessage" : ""}`
-        }>
-           <p>{limitSubmitMessage}</p>
-        </div>
-
-        <div className={`${generator === next ? "content formContainer" : "noContent"}`}>
-        {/* FORM WITH API CONTENT for quiz  */}
-        <form onSubmit={submitHandler} aria-label="quiz" className={`${generator === next ? "content" : "noContent"}`}
-        
-        >
-            {/* properties container */}
-            <div className="properties">
-                {/* category property */}
-                {/* conditional rendering in order to avoid getting undefined property onto the page */}  
-                <div className="category">
-                    <p>{`Category: ${props.category}`}</p>
-                </div>
-                    
-                {/* level property */}
-                {/* conditional rendering in order to avoid getting undefined property onto the page */}
-                {
-                props.level !== undefined ?
-                <div className="level">
-                    <p>{`Level: ${props.level}`}</p>
-                </div>
-                : ""
-                }
-                 
-            </div>
-            
-            {/* FIELDSET with question from API as legend and inputs and labels as elements */}
-            <fieldset>
-                <legend
-                // className={`${generator === next ? "content" : "noContent"}`}
-                >{props.question}</legend>
-                <div className="inputs" 
-                // onChange={handleChange}
-                >
-                {/* mapping through the allAnswers array that I created inside async getQuiz function that holds incorrectAnswers array and correctAnswer string, all inside one array */}
-                {/* also good for later in case I decide to randomize/shuffle through the order of the array so that user can't predict where the correct answer is positioned */}
-                {props.allAnswers.map((answer, index) => {
-                    return(
-                        <div className={`${limitSubmit === true ? "weaker answer" : "answer" }`}>
-                           <input
-                            // chose radio button as I want the user to only check one input that gets submitted
-                            type="radio"
-                            // id of each answer input set to index position (keeps incrementing, so unique for each input) 
-                            id={index}
-                            // index="0"
-
-                            // all inputs have the same name, so that they are being grouped together
-                            name="quiz"
-
-                            // giving it the required attribute so that user can't submit without having selected one option
-                            required 
-                            // onChange={handleFirstChange}
-
-                            // value set to string value of each answer
-                            value={answer}
-                            // always make sure to have the right properties defined/set because otherwise one little mistake and the input stays checked, which is not ideal for a quiz
-                            key={props.currentQuestionId + index}
-
-                            // pass the onClick the handleRadioClick function in order to control the value of the userChoice each time an input gets clicked
-                            onClick={handleRadioClick}
-                            // set disabled attribute equal to stateful variable limitSubmit (so to true after form submission and to false before form submission)
-                            // this will prevent the user from being able to change the answer/resubmitting numerous times, which would make the whole trivia game a bit pointless
-                            // also prevents the input value from constantly changing even after submission
-                            disabled={limitSubmit}
-                            // checked={userChoice === 'firstAnswer'} 
-                            /> 
-                            <label htmlFor={index}>{answer}</label>
-                            {
-                                limitSubmit === true ?
-                                <label htmlFor={index} className="visually-hidden">
-                                    "This option is disabled because you already submitted your answer"
-                                </label>
-                                : "" 
-                            }
-                        </div>
-                    );
-                })}
-                
-                {/* second answer choice (incorrect) */}
-                    {/* <input 
-                        type="radio" 
-                        id="answerTwo" 
-                        name="quiz"
-                        // onChange={handleSecondChange}
-                        value='secondAnswer'
-                        onClick={() => setFormData({radioChecked: true})}
-                        // checked={userChoice === 'secondAnswer'} 
-                    />
-                    <label htmlFor="answerTwo">{triviaSet.incorrectAnswers}</label> */}
-                    {/* third answer choice (incorrect) */}
-                    {/* <input 
-                        type="radio" 
-                        id="answerThree" 
-                        name="quiz"
-                        // onChange={handleThirdChange}
-                        value="thirdAnswer"
-                        onClick={() => setFormData({radioChecked: true})}
-                        // checked={userChoice === 'thirdAnswer'}  
-                    /> */}
-                    {/* <label htmlFor="answerThree">{props.answerThree}</label>
-                    {/* fourth answer choice (correct) */}
-                    {/* <label htmlFor="answerFour">
-                        <input 
-                        type="radio" 
-                        id="answerFour" 
-                        name="quiz" 
-                        // onChange={handleLastChange}
-                        value="correctAnswer"
-                        // onClick={() => setFormData({radioChecked: true})}
-                        // checked={userChoice === 'lastAnswer'}  
-                        />{props.correctAnswer}
-                    </label> */}
-                </div>
-            </fieldset>  
-            
-            
-            {/* Buttons */}
-        
-            {/* submit button */}
+        <div className="App wrapper inside">
             <button 
-                type="submit"
-                // disabled={`${isActive === false ? "true" : ""}`}
-                // onClick= {submitHandler}
-                // disable submit button when user has already submitted once (lock the answer)
-                disabled={limitSubmit}
-                aria-label={`${limitSubmit === true ? "This button is currently disabled because you already submitted an answer" : ""}`}
-                className={`${limitSubmit === true ? "weaker" : "" }`}
-            >Submit answer
-            </button>
-            {/* conditional rendering of class for feedback field, if div active after submitting, className="message", else "noMessage", also for whether feedback is for right or wrong answer */}
-            {/* <div className={`${isActive ? "message" : "noMessage"} ${feedback === right && isActive ? "right": ""} ${feedback === wrong && isActive ? "wrong": "" } `}>
-                <p>{feedback}</p>
-            </div> */}
-            <div className={`${isActive ? "message" : "noMessage"}`}>
-                <div className={`${userChoice !== props.correctAnswer && isActive ? "wrong": "right"}`}>
-                    <p>{message}</p>
-                </div>    
-            </div>  
-                    
-                
-           
+            // type="button"
+            // change
 
-            {/* {
-                limitSubmit === true && radioCli  ?
-                alert("You have already submitted your answer. Please go to the next question.")
-                : ""
-            } */}
-        </form>
-        </div>
-        {/* leaveField container for when user wants to get back to initial display without questions */}
-        <div className=
+            // passing in the function definition of anotherClickHandler that calls the clickHandler from App.js for us (which includes making the API call everytime the user clicks that button)
+            onClick={anotherClickHandler}
+
+            // pass in the firstLabel stateful variable as the value of aria-label to alternate between labels based on whether it's the start or the new question button
+            aria-label={firstLabel}
+
+            // conditional rendering of className based on whether button is start button or generates new question
+            className={
+            `${generator === start ? "start" : "next"}`
+            }>{generator}</button>
+
+            {/* limitSubmitMessage for when user has submitted form and needs instructions on how to keep playing, using conditional rendering (ternary operators: if the button state is disabled/limited and if it's not the start button on the page, only then render the div with the class of alert that has the arrow and the message inside of it) */}
             {
-                `${generator!== next || leaving === true ? "noContent showImg" : "leaveField"}`
-            }>
+                limitSubmit === true && generator !== start ?
+                <div className="alert">
+                    <p aria-hidden="true">⬆</p>
+                    <div className="limitSubmitMessage"
+                    // {`${limitSubmitMessage ? "limitSubmitMessage" : ""}`
+                    // }
+                    >
+                        <p>{limitSubmitMessage}</p>
+                    </div>{/* END LIMIT SUBMIT MESSAGE */}
+                </div>
+                : ""
+            }
+            
+        </div> 
+        {/* quiz form section */}
+        <section className="quizForm">
+            {/* WRAPPER */}
+            <div className="App wrapper">
+                {/* FORM CONTAINER */}
+                <div className={`${generator === next ? "content formContainer" : "noContent"} ${limitSubmit === true ? "submitAlert" : ""}`}>
+        
+        
+                    {/* FORM WITH API CONTENT for quiz  */}
+                    <form onSubmit={submitHandler} aria-label="quiz" className={`${generator === next ? "content" : "noContent"}`}
+                    
+                    >
+                        {/* properties container */}
+                        <div className="properties">
+                            {/* category property */}
+                            {/* conditional rendering in order to avoid getting undefined property onto the page */}  
+                            <div className="category">
+                                <p>{`Category: ${props.category}`}</p>
+                            </div>
+                                
+                            {/* level property */}
+                            {/* conditional rendering in order to avoid getting undefined property onto the page */}
+                            {
+                            props.level !== undefined ?
+                            <div className="level">
+                                <p>{`Level: ${props.level}`}</p>
+                            </div>
+                            : ""
+                            }
+                            
+                        </div>
+                        
+                        {/* FIELDSET with question from API as legend and inputs and labels as elements */}
+                        <fieldset>
+                            <legend
+                            // className={`${generator === next ? "content" : "noContent"}`}
+                            >{props.question}</legend>
+                            <div className="inputs" 
+                            // onChange={handleChange}
+                            >
+                            {/* mapping through the allAnswers array that I created inside async getQuiz function that holds incorrectAnswers array and correctAnswer string, all inside one array */}
+                            {/* also good for later in case I decide to randomize/shuffle through the order of the array so that user can't predict where the correct answer is positioned */}
+                            {props.allAnswers.map((answer, index) => {
+                                return(
+                                    <div className={`${limitSubmit === true ? "weaker answer" : "answer" }`}>
+                                    <input
+                                        // chose radio button as I want the user to only check one input that gets submitted
+                                        type="radio"
+                                        // id of each answer input set to index position (keeps incrementing, so unique for each input) 
+                                        id={index}
+                                        // index="0"
+
+                                        // all inputs have the same name, so that they are being grouped together
+                                        name="quiz"
+
+                                        // giving it the required attribute so that user can't submit without having selected one option
+                                        required 
+                                        // onChange={handleFirstChange}
+
+                                        // value set to string value of each answer
+                                        value={answer}
+                                        // always make sure to have the right properties defined/set because otherwise one little mistake and the input stays checked, which is not ideal for a quiz
+                                        key={props.currentQuestionId + index}
+
+                                        // pass the onClick the handleRadioClick function in order to control the value of the userChoice each time an input gets clicked
+                                        onClick={handleRadioClick}
+                                        // set disabled attribute equal to stateful variable limitSubmit (so to true after form submission and to false before form submission)
+                                        // this will prevent the user from being able to change the answer/resubmitting numerous times, which would make the whole trivia game a bit pointless
+                                        // also prevents the input value from constantly changing even after submission
+                                        disabled={limitSubmit}
+                                        // checked={userChoice === 'firstAnswer'} 
+                                        /> 
+                                        <label htmlFor={index}>{answer}</label>
+                                        {
+                                            limitSubmit === true ?
+                                            <label htmlFor={index} className="visually-hidden">
+                                                "This option is disabled because you already submitted your answer"
+                                            </label>
+                                            : "" 
+                                        }
+                                    </div>
+                                );
+                            })}
+                            
+                            {/* second answer choice (incorrect) */}
+                                {/* <input 
+                                    type="radio" 
+                                    id="answerTwo" 
+                                    name="quiz"
+                                    // onChange={handleSecondChange}
+                                    value='secondAnswer'
+                                    onClick={() => setFormData({radioChecked: true})}
+                                    // checked={userChoice === 'secondAnswer'} 
+                                />
+                                <label htmlFor="answerTwo">{triviaSet.incorrectAnswers}</label> */}
+                                {/* third answer choice (incorrect) */}
+                                {/* <input 
+                                    type="radio" 
+                                    id="answerThree" 
+                                    name="quiz"
+                                    // onChange={handleThirdChange}
+                                    value="thirdAnswer"
+                                    onClick={() => setFormData({radioChecked: true})}
+                                    // checked={userChoice === 'thirdAnswer'}  
+                                /> */}
+                                {/* <label htmlFor="answerThree">{props.answerThree}</label>
+                                {/* fourth answer choice (correct) */}
+                                {/* <label htmlFor="answerFour">
+                                    <input 
+                                    type="radio" 
+                                    id="answerFour" 
+                                    name="quiz" 
+                                    // onChange={handleLastChange}
+                                    value="correctAnswer"
+                                    // onClick={() => setFormData({radioChecked: true})}
+                                    // checked={userChoice === 'lastAnswer'}  
+                                    />{props.correctAnswer}
+                                </label> */}
+                            </div>
+                        </fieldset>  
+                        
+                        
+                        {/* Buttons */}
+                    
+                        {/* submit button */}
+                        <button 
+                            type="submit"
+                            // disabled={`${isActive === false ? "true" : ""}`}
+                            // onClick= {submitHandler}
+                            // disable submit button when user has already submitted once (lock the answer)
+                            disabled={limitSubmit}
+                            aria-label={`${limitSubmit === true ? "This button is currently disabled because you already submitted an answer" : ""}`}
+                            className={`${limitSubmit === true ? "weaker" : "" }`}
+                        >Submit answer
+                        </button>
+                        {/* conditional rendering of class for feedback field, if div active after submitting, className="message", else "noMessage", also for whether feedback is for right or wrong answer */}
+                        {/* <div className={`${isActive ? "message" : "noMessage"} ${feedback === right && isActive ? "right": ""} ${feedback === wrong && isActive ? "wrong": "" } `}>
+                            <p>{feedback}</p>
+                        </div> */}
+                        <div className={`${isActive ? "message" : "noMessage"}`}>
+                            <div className={`${userChoice !== props.correctAnswer && isActive ? "wrong": "right"}`}>
+                                <p>{message}</p>
+                            </div>    
+                        </div>  
+                                
+                            
+                    
+
+                        {/* {
+                            limitSubmit === true && radioCli  ?
+                            alert("You have already submitted your answer. Please go to the next question.")
+                            : ""
+                        } */}
+                    </form>{/* END FORM */}
+                </div>{/* END FORM CONTAINER */}
+            </div>{/* END WRAPPER */}
+        </section>{/* END FORM SECTION */}
+        
+        {/* END SECTION */}
+        <section className=
+                {
+                    `${generator!== next || leaving === true ? "noContent" : "leaveField"}`
+                }>
+      
+            {/* leaveField container for when user wants to get back to initial display without questions */}
+            <div className="App wrapper"
+                // {
+                //     `${generator!== next || leaving === true ? "noContent showImg wrapper" : "leaveField"}`
+                // }
+                >
                 <p>Feeling tired or just wanna leave the party early?</p>
                 <p aria-hidden="true">⬇</p>
                 <span className="visually-hidden">Click the button down below</span>
                 <button 
-                className="end"
-                // pass in the function definition of leaveHandler, in which it calls the leaveClickHandler function from the App.js component with props, which also includes the initialIntro value set to intro (initial state). Thanks to the ternary operators that check whether the generator state value is start or next, string values and classNames get added or changed accordingly (and then styled fittingly) => if form's className=noContent, that invokes display:none of the whole quiz, which is what I want for when the user either hasn't hit the start button yet or when the user wants to quit the game and return to the initial start display
-                onClick={leaveHandler}
-                aria-label="Click this button to exit the trivia and return to start"
+                    className="end"
+                    // pass in the function definition of leaveHandler, in which it calls the leaveClickHandler function from the App.js component with props, which also includes the initialIntro value set to intro (initial state). Thanks to the ternary operators that check whether the generator state value is start or next, string values and classNames get added or changed accordingly (and then styled fittingly) => if form's className=noContent, that invokes display:none of the whole quiz, which is what I want for when the user either hasn't hit the start button yet or when the user wants to quit the game and return to the initial start display
+                    onClick={leaveHandler}
+                    aria-label="Click this button to exit the trivia and return to start"
                 >Leave Trivia Party</button> 
                 <p>Sad to see you go 😥  But also, you deserve the break 😊</p>
                 <p>Hope you feel like rejoining the party soon 😘</p>
-                <div className="partingImg">
-
-                </div>
-        </div>
+                
+            </div>{/* END LEAVE CONTAINER */}
+            {/* BACKGROUND IMG CONTAINER */}
+            <div className="partingImg">
+            </div>{/* END BACKGROUND IMG CONTAINER */}
+        </section>{/* END FINAL SECTION */}
         
         
         
