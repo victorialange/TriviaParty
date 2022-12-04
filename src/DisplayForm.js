@@ -173,11 +173,11 @@ const DisplayForm = ( props ) => {
     const anotherClickHandler = () => {
         // calling clickHandler function created in App.js that calls the async getQuiz() function
         // if (props.questionId.some(value => value.id === props.currentQuestionId) === false) {
+        
         props.clickHandler();
         // }
-        
         // clearing of feedback
-
+        setUserChoice("");
         // update value of generator to next variable (so that it its text is displayed as new question instead of start)
         setGenerator(next);
         setFirstLabel(newLabel);
@@ -185,7 +185,7 @@ const DisplayForm = ( props ) => {
         setLimitSubmit(false);
         // setting leaving back to false, so that leavingField appears again, when generator's value is set back to next variable
         setLeaving(false);
-        // setUserChoice("");
+        
         // if statement to check if message present, set the message's value back to start again, so that it doesn't stay there when user goes to next question, also sets active stateful variable back to false, so that appropriate class with styling based on that gets applied
         if (message) {
             setMessage("");
@@ -264,7 +264,9 @@ const DisplayForm = ( props ) => {
             
             {/* FIELDSET with question from API as legend and inputs and labels as elements */}
             <fieldset>
-                <legend>{props.question}</legend>
+                <legend
+                // className={`${generator === next ? "content" : "noContent"}`}
+                >{props.question}</legend>
                 <div className="inputs" 
                 // onChange={handleChange}
                 >

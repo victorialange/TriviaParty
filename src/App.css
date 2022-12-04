@@ -149,8 +149,13 @@ fieldset {
 /* align legend with submit button (more padding to keep in mind of) */
 legend {
   padding: 5px 10px;
-  border: 3px solid red;
+  font-weight: bold;
+  border: none;
 }
+
+/* legend.noContent {
+  border-color: white;
+} */
 
 /* container for all inputs and labels */
 .inputs {
