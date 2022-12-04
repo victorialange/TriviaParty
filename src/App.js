@@ -203,7 +203,7 @@ function App() {
       <div className="App wrapper">
       
         <h1>Trivia Party!!!</h1>
-        <h2>Let's get nerdy 🤓🧐</h2>
+        <h2>Let's get nerdy 🤓</h2>
         <p>For each question select only one answer from the four possible answer choices!</p>
         <p>There is no timer to stress you out, this party is meant to be chill 🏖️ So take your sweet precious time to answer each question  ⏳ (You could take a bath or go for a nap, we won't be able to tell  😜 )</p>
         
