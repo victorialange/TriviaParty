@@ -71,7 +71,7 @@ header p:nth-of-type(2) {
 /* main */
 main {
   /* height: 80vh; */
-  margin-bottom: 200px;
+  margin-bottom: 300px;
 }
 
 /* background image banner */
@@ -400,7 +400,8 @@ footer p {
 .partingImg {
   background-image: url("./img/brain.jpeg");
   background-size: cover;
-  height: 300px;
+  background-repeat: no-repeat;
+  height: 500px;
   margin-top: 80px;
   border-radius: 50px;
   width: 100%;
@@ -474,6 +475,11 @@ footer p {
   .leaveField {
     margin-top: 70px;
   }
+  /* last img */
+  .partingImg {
+    height: 200px;
+    background-position-x: -200px;
+  }
 }
 
 @media (min-width: 372px) {
@@ -484,6 +490,13 @@ footer p {
   /* properties div */
   .category {
     width: 28%;
+  }
+}
+
+@media (min-width: 470px) {
+  /* last img */
+  .partingImg {
+    background-position-x: -100px;
   }
 }
 
@@ -500,7 +513,12 @@ footer p {
     margin-left: 60px;
     margin-top: 40px;
   }
+  /* last img */
+  .partingImg {
+    background-position-x: -70px;
+  }
 }
+
 
 @media (min-width: 600px) {
   /* form */
@@ -523,6 +541,10 @@ footer p {
   .leaveField button {
     margin-bottom: 30px;
   }
+  /* last img */
+  .partingImg {
+    background-position-x: -30px;
+  }
 }
 
 @media (min-width: 650px) {
@@ -542,10 +564,15 @@ footer p {
   fieldset {
     padding: 20px;
   }
+  /* last img */
+  .partingImg {
+    background-position-x: -150px;
+    height: 300px;
+  }
 }
 
 /* tablet */
-@media (min-width: 892px) {
+@media (min-width: 890px) {
   /* HEADER */
   /* header {
     padding-top: 70px;
@@ -584,6 +611,11 @@ footer p {
   }
   .leaveField p:nth-of-type(2) {
     margin-top: 0;
+  }
+  /* last img */
+  .partingImg {
+    background-position-x: center;
+    height: 400px;
   }
 }
 
