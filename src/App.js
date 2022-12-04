@@ -19,15 +19,6 @@ function App() {
   const [allAnswers, setAllAnswers] = useState( [] );
   const [currentQuestionId, setCurrentQuestionId] = useState("");
   const [questionId, setQuestionId] = useState([]);
-
-  // stateful variable for category property of API data
-  const [category, setCategory] = useState("");
-
-  // stateful variable for difficulty level
-  const [level, setLevel] = useState(""); 
-
-  
-
   // const [answers, setAnswers] = useState( [] );
 
   // const [quiz, setQuiz] = useState( [] );
@@ -40,6 +31,9 @@ function App() {
   // third answer (incorrect answer)
   // const [answerThree, setAnswerThree] = useState('');
   
+  const [category, setCategory] = useState("");
+  const [level, setLevel] = useState("");
+
   // const [questionId, setQuestionId] = useState(''); 
 
   // useEffect( () => { 
@@ -95,19 +89,6 @@ function App() {
       // id string values
       setCurrentQuestionId(data[0].id);
       console.log(currentQuestionId);
-
-      if (questionId.some(value => value.id === currentQuestionId) === true) {
-        console.log(questionId.some(value => value.id === currentQuestionId));
-      }
-      
-      // pass in data from API into stateful variable
-      setCategory(data[0].category);
-      console.log(category);
-      
-      setLevel(data[0].difficulty);
-      if (data[0].difficulty !== undefined) {
-        console.log(level);
-      }
       
 
       // console.log(questionId);
@@ -132,7 +113,11 @@ function App() {
       //    return answer.correctAnswer;
       // } )
       // console.log(newAnswers);
+      setCategory(data[0].category);
+      console.log(category);
 
+      setLevel(data[0].difficulty);
+      console.log(level);
 
       // setAllAnswers(answers);
       // console.log(allAnswers);
@@ -148,19 +133,11 @@ function App() {
 
       
 
-
-      
-      
-      // setCustomWrong([wrongOne, wrongTwo, wrongThree, wrongFour]);
-      // console.log(customWrong);
-      
-
     }
     
-  const intro = "Feeling ready? Then let's get this trivia party started 🎈🎉";
-  const next = "Don't feel this question or already answered this one?"
+  const intro = "Feeling ready? Then let's get this trivia party started🎈🎉";
+  const next = "Not feeling this question or already answered this one?"
   const [initialIntro, setInitialIntro] = useState(intro);  
-  
   
   
   // clickHandler function to refresh page and show new question
@@ -191,7 +168,7 @@ function App() {
 
   return (
     // Fragment in order to use multiple parent elements
-    <Fragment>
+    <>
     {/* skip link to main*/}
     <a href="#mainContent" className='skipLink'>
       Skip to main content
@@ -200,15 +177,20 @@ function App() {
     {/* HEADER */}
     <header>
       {/* WRAPPER */}
-      <div className="App wrapper">
-      
-        <h1>Trivia Party!!!</h1>
-        <h2>Let's get nerdy 🤓</h2>
-        <p>For each question select only one answer from the four possible answer choices!</p>
-        <p>There is no timer to stress you out, this party is meant to be chill 🏖️ So take your sweet precious time to answer each question  ⏳ (You could take a bath or go for a nap, we won't be able to tell  😜 )</p>
-        
+      <div className="banner">
+      {/* background banner goes here */}
       </div>
-      {/* END WRAPPER */}
+      <div className="backgroundOne">
+        <div className="App wrapper">
+        
+          <h1>Welcome To My Trivia Party!!!</h1>
+          <h2>Let's get nerdy 🤓</h2>
+          <p>For each question select only one answer from the four possible answer choices!</p>
+          <p>There is no timer to stress you out, this party is meant to be chill 🏖️ So take your sweet precious time to answer each question  ⏳ You could take a bath or go for a nap, we won't be able to tell  😜 </p>
+          
+        </div>
+        {/* END WRAPPER */}
+      </div>
     </header>
       
     {/* Main with one quiz section*/}
@@ -217,15 +199,12 @@ function App() {
         {/* Wrapper */}
         <div className="App wrapper">
           <h3>{initialIntro}</h3>
-          <p aria-hidden="true">⬇</p>
+          <p aria-hidden="true"
+          // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
+          className={`${initialIntro === next ? "nextArrow" : "startArrow"} `}
+          >⬇</p>
           <span className="visually-hidden">Click the button down below</span>
           <DisplayForm
-            // customRight={customRight}
-            // customWrong={customWrong}
-            level={level}
-            category={category}
-            questionId={questionId}
-            currentQuestionId={currentQuestionId}
             // handleSubmit={}
             next={next}
             intro={intro}
@@ -235,9 +214,10 @@ function App() {
             allAnswers={allAnswers}
             // incorrectAnswers={incorrectAnswers}
             correctAnswer={correctAnswer}
-            id={questionId}
+            currentQuestionId={currentQuestionId}
             leaveClickHandler={leaveClickHandler}
-               
+            category={category}
+            level={level}
             // answerTwo={answerTwo}
             // answerThree={answerThree}
             // correctAnswer={correctAnswer}
@@ -258,7 +238,7 @@ function App() {
       {/* end wrapper */}
     </footer>
    
-  </Fragment> 
+  </> 
   );
 }
 

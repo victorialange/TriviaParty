@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Fragment } from "react";
 import './App.css';
 
+
 const DisplayForm = ( props ) => {
 
     // create a piece of state to hold the user's choice when switching in between radio inputs (in order to update the onChange of the )
@@ -177,7 +178,7 @@ const DisplayForm = ( props ) => {
         props.clickHandler();
         // }
         // clearing of feedback
-        setUserChoice("");
+        // setUserChoice("");
         // update value of generator to next variable (so that it its text is displayed as new question instead of start)
         setGenerator(next);
         setFirstLabel(newLabel);
@@ -240,6 +241,7 @@ const DisplayForm = ( props ) => {
            <p>{limitSubmitMessage}</p>
         </div>
 
+        <div className={`${generator === next ? "content formContainer" : "noContent"}`}>
         {/* FORM WITH API CONTENT for quiz  */}
         <form onSubmit={submitHandler} aria-label="quiz" className={`${generator === next ? "content" : "noContent"}`}
         
@@ -247,17 +249,19 @@ const DisplayForm = ( props ) => {
             {/* properties container */}
             <div className="properties">
                 {/* category property */}
+                {/* conditional rendering in order to avoid getting undefined property onto the page */}  
                 <div className="category">
                     <p>{`Category: ${props.category}`}</p>
                 </div>
+                    
                 {/* level property */}
                 {/* conditional rendering in order to avoid getting undefined property onto the page */}
                 {
-                    props.level !== undefined ?
-                    <div className="level">
-                        <p>{`Level: ${props.level}`}</p>
-                    </div>
-                    : ""
+                props.level !== undefined ?
+                <div className="level">
+                    <p>{`Level: ${props.level}`}</p>
+                </div>
+                : ""
                 }
                  
             </div>
@@ -274,7 +278,7 @@ const DisplayForm = ( props ) => {
                 {/* also good for later in case I decide to randomize/shuffle through the order of the array so that user can't predict where the correct answer is positioned */}
                 {props.allAnswers.map((answer, index) => {
                     return(
-                        <div className="answer">
+                        <div className={`${limitSubmit === true ? "weaker answer" : "answer" }`}>
                            <input
                             // chose radio button as I want the user to only check one input that gets submitted
                             type="radio"
@@ -291,6 +295,7 @@ const DisplayForm = ( props ) => {
 
                             // value set to string value of each answer
                             value={answer}
+                            // always make sure to have the right properties defined/set because otherwise one little mistake and the input stays checked, which is not ideal for a quiz
                             key={props.currentQuestionId + index}
 
                             // pass the onClick the handleRadioClick function in order to control the value of the userChoice each time an input gets clicked
@@ -361,6 +366,7 @@ const DisplayForm = ( props ) => {
                 // disable submit button when user has already submitted once (lock the answer)
                 disabled={limitSubmit}
                 aria-label={`${limitSubmit === true ? "This button is currently disabled because you already submitted an answer" : ""}`}
+                className={`${limitSubmit === true ? "weaker" : "" }`}
             >Submit answer
             </button>
             {/* conditional rendering of class for feedback field, if div active after submitting, className="message", else "noMessage", also for whether feedback is for right or wrong answer */}
@@ -382,22 +388,29 @@ const DisplayForm = ( props ) => {
                 : ""
             } */}
         </form>
-        {/* leaveField container for when user wants to get back to initial display without questions */}
-        <div className={
-            `${generator!== next || leaving === true ? "noContent" : "leaveField"}`
-        }>
-            <p>Feeling tired or just wanna leave the party early?</p>
-            <p aria-hidden="true">⬇</p>
-            <span className="visually-hidden">Click the button down below</span>
-            <button 
-            className="end"
-            // pass in the function definition of leaveHandler, in which it calls the leaveClickHandler function from the App.js component with props, which also includes the initialIntro value set to intro (initial state). Thanks to the ternary operators that check whether the generator state value is start or next, string values and classNames get added or changed accordingly (and then styled fittingly) => if form's className=noContent, that invokes display:none of the whole quiz, which is what I want for when the user either hasn't hit the start button yet or when the user wants to quit the game and return to the initial start display
-            onClick={leaveHandler}
-            aria-label="Click this button to exit the trivia and return to start"
-            >Leave Trivia Party</button> 
-            <p>Sad to see you go 😥  But also, you deserve the break 😊</p>
-            <p>Hope you feel like rejoining the party soon 😘</p>
         </div>
+        {/* leaveField container for when user wants to get back to initial display without questions */}
+        <div className=
+            {
+                `${generator!== next || leaving === true ? "noContent showImg" : "leaveField"}`
+            }>
+                <p>Feeling tired or just wanna leave the party early?</p>
+                <p aria-hidden="true">⬇</p>
+                <span className="visually-hidden">Click the button down below</span>
+                <button 
+                className="end"
+                // pass in the function definition of leaveHandler, in which it calls the leaveClickHandler function from the App.js component with props, which also includes the initialIntro value set to intro (initial state). Thanks to the ternary operators that check whether the generator state value is start or next, string values and classNames get added or changed accordingly (and then styled fittingly) => if form's className=noContent, that invokes display:none of the whole quiz, which is what I want for when the user either hasn't hit the start button yet or when the user wants to quit the game and return to the initial start display
+                onClick={leaveHandler}
+                aria-label="Click this button to exit the trivia and return to start"
+                >Leave Trivia Party</button> 
+                <p>Sad to see you go 😥  But also, you deserve the break 😊</p>
+                <p>Hope you feel like rejoining the party soon 😘</p>
+                <div className="partingImg">
+
+                </div>
+        </div>
+        
+        
         
     </Fragment> 
     )
