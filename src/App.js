@@ -195,7 +195,7 @@ function App() {
       
     {/* Main with one quiz section*/}
     <main id='mainContent'>
-      <section id='quiz' className='quizForm'>
+      <section id='quiz' className='instruction'>
         {/* Wrapper */}
         <div className="App wrapper">
           <h3>{initialIntro}</h3>
@@ -204,30 +204,32 @@ function App() {
           className={`${initialIntro === next ? "nextArrow" : "startArrow"} `}
           >⬇</p>
           <span className="visually-hidden">Click the button down below</span>
-          <DisplayForm
+        </div>{/* end wrapper */}
+      </section>{/* end instruction section */}
+      {/* DISPLAY FORM COMPONENT */}
+      <DisplayForm
             // handleSubmit={}
-            next={next}
-            intro={intro}
-            initialIntro={initialIntro}
-            clickHandler={clickHandler}
-            question={question}
-            allAnswers={allAnswers}
-            // incorrectAnswers={incorrectAnswers}
-            correctAnswer={correctAnswer}
-            currentQuestionId={currentQuestionId}
-            leaveClickHandler={leaveClickHandler}
-            category={category}
-            level={level}
-            // answerTwo={answerTwo}
-            // answerThree={answerThree}
-            // correctAnswer={correctAnswer}
-          />
-        </div>
-        {/* end wrapper */}
-      </section>
-      <section className="ending">
+        next={next}
+        intro={intro}
+        initialIntro={initialIntro}
+        clickHandler={clickHandler}
+        question={question}
+        allAnswers={allAnswers}
+        // incorrectAnswers={incorrectAnswers}
+        correctAnswer={correctAnswer}
+        currentQuestionId={currentQuestionId}
+        leaveClickHandler={leaveClickHandler}
+        category={category}
+        level={level}
+        // answerTwo={answerTwo}
+        // answerThree={answerThree}
+        // correctAnswer={correctAnswer}
+      />
+        
+     
       
-      </section>
+      
+      
     </main>
     {/* Footer with copyright */}
     <footer>

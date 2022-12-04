@@ -100,13 +100,14 @@ p {
 
 button {
   font-family: 'Source Sans Pro', sans-serif;
+  transition: all ease-in 0.3s;
 }
 
 .quizForm h3 {
   margin-bottom: 5px;
 }
 
-.quizForm p:first-of-type,
+.instruction p:first-of-type,
 .leaveField p:nth-of-type(2) {
   font-size: 4rem;
   margin-bottom: 0px;
@@ -138,6 +139,13 @@ button {
   font-weight: 600;
   border: none;
   border-radius: 10px;
+  transition: all ease-in 0.3s;
+}
+.start:hover,
+.start:focus {
+  background: rgb(163, 44, 169);
+  font-size: 1.6rem;
+  text-shadow:1px 1px 8px #fff, 1px 1px 8px #A741AC; 
 }
 
 /* next button when quiz is shown */
@@ -149,6 +157,18 @@ button {
   font-weight: 600;
   border: none;
   border-radius: 10px;
+}
+.next:hover,
+.next:focus {
+  font-size: 1.3rem;
+  background: rgb(35, 32, 185, 0.9);
+  text-shadow:1px 1px 8px #fff, 1px 1px 8px #2A28BA;
+}
+.next:not(:hover),
+.next:visited,
+.next:active {
+  text-shadow: none;
+  font-size: 1.2rem;
 }
 
 /* visually-hidden className to hide arrow description span and hidden labels from disabled input or button by default, but still visible/readable for screenreaders for  */
@@ -174,10 +194,13 @@ form {
   flex-direction: column;
   margin-top: 40px;
   margin-left: 60px;
-  border-radius: 50px;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
   background: rgb(0, 0, 0, 0.6);
   color: white;
   /* color: white; */
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
 }
 
 .formContainer {
@@ -186,6 +209,8 @@ form {
   background-size: cover;
   background-repeat: no-repeat;
   border-radius: 50px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
   height: 650px;
   display: flex;
   justify-content: center;
@@ -203,8 +228,8 @@ form {
   display: flex;
   justify-content: space-between;
   background-color: rgb(105, 1, 107, 0.8);
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
   padding-bottom: 10px;
   margin-bottom: 15px;
 }
@@ -260,19 +285,41 @@ legend {
   padding: 5px 20px;
 }
 
+.answer:hover,
+.answer:focus,
+.answer:visited,
+.answer:active {
+  background-color: rgb(105, 1, 107, 0.85);
+  font-size: 1.1rem;
+}
+
+.answer input:checked label {
+  background-color: rgb(105, 1, 107, 0.85);
+}
+
 /* if input is disabled class called weaker */
 .weaker {
   /* border-color: rgb(0, 0, 0, 0.3);
   background: rgb(0, 0, 0, 0.2);
   color: rgb(189, 189, 189); */
   border: 3px solid black;
-  background-color: rgb(13, 48, 101, 0.8);
+  /* background-color: rgb(13, 48, 101, 0.8); */
   background-color: rgb(255, 255, 255, 0.9);
   color: black;
   border-radius: 50px;
   display: flex;
   width: 100%;
   padding: 5px 20px;
+}
+
+.weaker input:checked {
+  background-color: rgb(0, 128, 0, 0.6);
+}
+
+.weaker:hover,
+.weaker:focus {
+  background-color: rgb(255, 255, 255, 0.9);
+  font-size: 1rem;
 }
 
 .weaker input {
@@ -290,6 +337,12 @@ button.weaker {
   padding: 10px 15px;
   width: fit-content;
 }
+button.weaker:hover,
+button.weaker:focus {
+  background-color: rgb(255, 255, 255, 0.8);
+  text-shadow: none;
+  font-size: 1rem;
+}
 
 
 /* align submit button with other elements inside form  */
@@ -305,6 +358,12 @@ form button {
   border: none;
   border-radius: 8px;
   padding: 10px 15px;
+}
+form button:hover,
+form button:focus {
+  background-color: rgb(105, 1, 107, 0.95);
+  text-shadow:1px 1px 8px #fff, 1px 1px 8px #2A28BA;
+  font-size: 1.1rem;
 }
 
 /* noMessage class for when no feedback message yet (before form submission) */
@@ -353,11 +412,11 @@ form button {
 
 .limitSubmitMessage {
   margin-top: 35px;
-  background-color: transparent;
+  background-color: #fff;
   border: 3px solid #2A28BA;
   border-radius: 15px;
   padding: 10px 15px;
-  margin-bottom: 10px;
+  margin-bottom: 0;
 }
 
 /* leave field */
@@ -379,11 +438,18 @@ form button {
 
 .leaveField button {
   background: #E9DCFF;
-  border: 3px solid rgb(216, 195, 252);
+  border: 3px solid rgb(197, 165, 251);
   border-radius: 10px;
   font-weight: 600;
   font-size: 1.1rem;
   padding: 10px 20px;
+  transition: all ease-in 0.5s;
+}
+.leaveField button:hover,
+.leaveField button:focus {
+  background: rgb(13, 48, 101, 0.9);
+  border-color: #282c34;
+  color: white;
 }
 
 /* footer copyright */
@@ -401,9 +467,9 @@ footer p {
   background-image: url("./img/brain.jpeg");
   background-size: cover;
   background-repeat: no-repeat;
+  background-position-x: center;
   height: 500px;
   margin-top: 80px;
-  border-radius: 50px;
   width: 100%;
 }
 
@@ -419,23 +485,23 @@ footer p {
     margin-bottom: 0;
   }
   /* quizForm section */
-  section.quizform h3 {
+  section.instruction h3 {
     margin-bottom: 0;
   }
-  section.quizform p:first-of-type {
+  section.instruction p:first-of-type {
     margin-top: 0;
   }
   /* limitSubmitMessage div */
   .limitSubmitMessage {
-    margin-top: 20px;
+    margin-top: 0px;
   }
   /* FORM */
   form {
     /* not fit-content anymore since, now form isn't respecting wrapper anymore */
     /* width: 100%; */
-    margin-left: 0;
-    width: 90%;
-    margin-bottom: 30px;
+    /* margin-left: 0; */
+    width: 100%;
+    margin: 0;
   }
 
   .inputs {
@@ -445,6 +511,9 @@ footer p {
     height: fit-content;
   }
   /* PROPERTIES */
+  .properties {
+    padding-top: 10px;
+  }
   .category,
   .level {
     margin: 0 10px 0px 10px;
@@ -469,7 +538,8 @@ footer p {
 
   /* SUBMIT BUTTON */
   form button {
-    margin-left: 10px;
+    margin-left: 18px;
+    margin-bottom: 10px;
   }
   /* leaveField */
   .leaveField {
@@ -478,8 +548,20 @@ footer p {
   /* last img */
   .partingImg {
     height: 200px;
-    background-position-x: -200px;
   }
+  /* when limit submit message present at smaller screen sizes, remove margin-top from form container*/
+  .submitAlert {
+    margin-top: 0;
+  }
+  .alert p:first-child {
+    font-size: 4rem;
+    color: #2A28BA;
+  }
+  .alert .limitSubmitMessage p:first-child {
+    font-size: 1.1rem;
+    color: black;
+  }
+  
 }
 
 @media (min-width: 372px) {
@@ -493,12 +575,12 @@ footer p {
   }
 }
 
-@media (min-width: 470px) {
+/* @media (min-width: 470px) {
   /* last img */
-  .partingImg {
+  /* .partingImg {
     background-position-x: -100px;
-  }
-}
+  } */
+/* }  */
 
 @media (min-width: 515px) {
   /* HEADER */
@@ -511,11 +593,89 @@ footer p {
   }
   form {
     margin-left: 60px;
-    margin-top: 40px;
+    margin-top: 100px;
   }
-  /* last img */
+  /* styling limit submit message, so that it gets shown inside form container, easier for user to see the important instruction on how to keep playing */
+  /* div container for limit submit message */
+  /* when limit submit message is present, have arrow and submit message inside form container pointing to button */
+  .inside {
+    position: relative;
+  }
+  .alert {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 100%;
+  }
+  .limitSubmitMessage {
+    position: absolute;
+    top: 30%;
+    margin-top: 0;
+  }
+  .alert .limitSubmitMessage p:first-child {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: black;
+    margin-bottom: 0;
+  }
+  
+  .alert p:first-child {
+    font-size: 2.7rem;
+    color: violet;
+    height: min-content;
+    margin-bottom: 80px;
+    font-weight: bold;
+  }
+   /* when limit submit message present at wider screen sizes, give margin-top from form container back*/
+   .submitAlert {
+    margin-top: 20px;
+  }
+  /* last img
   .partingImg {
     background-position-x: -70px;
+  } */
+}
+
+@media (min-width: 538px) {
+  /* limit submit message */
+  .limitSubmitMessage {
+    margin-top: 20px;
+  }
+  .alert p:first-child {
+    font-size: 3.5rem;
+  }
+  .alert .limitSubmitMessage p:first-child {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+  }
+}
+
+/* @media (min-width: 574px) { */
+  /* limit submit message */
+  /* .alert p:first-child {
+    margin-bottom: 140px;
+    /* font-size: 2.7rem; */
+  /* } */
+  /* .alert .limitSubmitMessage p:first-child {
+    margin-bottom: 0;
+    font-size: 1.1rem;
+  } */
+  /* form {
+    margin-top: 0;
+  } */
+  
+/* } */
+
+@media (min-width: 579px) {
+  /* limit submit message */
+  .alert p:first-child {
+    margin-bottom: 100px;
+  }
+  .alert .limitSubmitMessage p:first-child {
+    margin-bottom: 0;
   }
 }
 
@@ -541,9 +701,23 @@ footer p {
   .leaveField button {
     margin-bottom: 30px;
   }
-  /* last img */
+  /* limit submit message */
+  /* .limitSubmitMessage {
+    top: 250%;
+  } */
+  /* last img
   .partingImg {
     background-position-x: -30px;
+  } */
+}
+
+@media (min-width: 618px) {
+  /* limit submit message */
+  .alert p:first-child {
+    margin-bottom: 115px;
+  }
+  .alert .limitSubmitMessage p:first-child {
+    margin-bottom: 0;
   }
 }
 
@@ -566,8 +740,36 @@ footer p {
   }
   /* last img */
   .partingImg {
-    background-position-x: -150px;
+    /* background-position-x: -150px; */
     height: 300px;
+  }
+   /* limit submit message */
+   /* .limitSubmitMessage {
+    top: 270%;
+  } */
+}
+
+@media (min-width: 700px) {
+   /* limit submit message */
+  .alert p:first-child {
+    font-size: 4.5rem;
+    margin-bottom: 155px;
+  }
+  .alert .limitSubmitMessage p:first-child {
+    margin-bottom: 0;
+    font-size: 1.1rem;
+  }
+}
+
+@media (min-width: 738px) {
+  /* limit submit message */
+  .alert p:first-child {
+    font-size: 5rem;
+    margin-bottom: 200px;
+  }
+  .alert .limitSubmitMessage p:first-child {
+    font-size: 1.1rem;
+    margin-bottom: 0;
   }
 }
 
@@ -614,15 +816,19 @@ footer p {
   }
   /* last img */
   .partingImg {
-    background-position-x: center;
+    /* background-position-x: center; */
     height: 400px;
   }
 }
 
-@media (min-width: 1020px) {
+@media (min-width: 1000px) {
   /* HEADER */
   .banner {
     height: 450px;
+  }
+  /* limit submit message */
+  .limitSubmitMessage {
+    margin-top: 30px;
   }
 }
 
