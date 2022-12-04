@@ -28,9 +28,11 @@ const DisplayForm = ( props ) => {
     // stateful variable for feedback/message upon form submission
     // const [feedback, setFeedback] = useState("");
 
-    
-
-
+    // creating variables that store string value of button, one for when the user still needs to submit an answer, and another one for when user has already submitted
+    const needSubmit = "Submit answer";
+    const submitted = "Submitted :)";
+    // stateful variable for string value of submit button, default value set to needSubmit (so before the user has submitted anything)
+    const [submit, setSubmit] = useState(needSubmit);
     
 
     // setting variables to pass into generator state for start/new question button later on in anotherClickHandler function
@@ -39,8 +41,10 @@ const DisplayForm = ( props ) => {
     // stateful variable for text inside start or new question button (setting default value to start variable, so that it gets displayed with that string before api call)
     const [generator, setGenerator] = useState(start);
 
+    // variables for aria-label values of buttons (start and new question)
     const startLabel = "Click this button to start the quiz game!";
     const newLabel = "Click this button to either skip the current question or in order to continue getting a new one after you submitted your answer";
+    // stateful variable firstLabel for aria-labels of buttons (start and new question); default value of startLabel (before the user hit start to see quiz)
     const [firstLabel, setFirstLabel] = useState(startLabel);
    
     // isActive as a stateful variable that represents state of submit button (isActive set to true means answer submitted and vice versa), important for later in feedback field to "toggle" between classes based on conditional rendering (when there is no submission and therefore no feedback message to display, give it class so that it takes up less or normal space vs when there is one, style accordingly)
@@ -163,7 +167,8 @@ const DisplayForm = ( props ) => {
 
         // update value of stateful variable limitSubmit to true, so that submit button and radio input are disabled when the user has already submitted the form once 
         setLimitSubmit(true);
-
+        // update state variable submit to submitted variable when user has submitted an answer
+        setSubmit(submitted);
         // update the value of the limitSubmitMessage stateful variable to a string that tells the user how to proceed when the button and radio inputs are disabled after submission
         setLimitSubmitMessage(`You submitted an answer, great! Now click on the button above that says "New Question" in order to keep trivia partying 🎊`);
     }
@@ -184,6 +189,8 @@ const DisplayForm = ( props ) => {
         setFirstLabel(newLabel);
         // update value of limit submit variable back to starting point/default value
         setLimitSubmit(false);
+        // set value of stateful variable submit back to needSubmit, so everytime the user clicks on the new question button
+        setSubmit(needSubmit);
         // setting leaving back to false, so that leavingField appears again, when generator's value is set back to next variable
         setLeaving(false);
         
@@ -295,7 +302,15 @@ const DisplayForm = ( props ) => {
                             {/* also good for later in case I decide to randomize/shuffle through the order of the array so that user can't predict where the correct answer is positioned */}
                             {props.allAnswers.map((answer, index) => {
                                 return(
-                                    <div className={`${limitSubmit === true ? "weaker answer" : "answer" }`}>
+                                    <div className={`
+                                    ${limitSubmit === true ? "weaker answer" : "answer" } 
+                                    ${limitSubmit === true && userChoice === answer ? "selectedFinal" : ""} 
+                                    ${userChoice !== answer ? "" : "selected"} 
+                                    ${limitSubmit === true && userChoice === answer && userChoice === props.correctAnswer ? "selectedRight" : ""} 
+                                    ${limitSubmit === true && userChoice === answer && userChoice !== props.correctAnswer ? "selectedWrong" : ""}
+                                    ${limitSubmit === true && answer === props.correctAnswer ? "idealSelect" : ""}`} 
+                                    // id={``}
+                                    >
                                     <input
                                         // chose radio button as I want the user to only check one input that gets submitted
                                         type="radio"
@@ -322,6 +337,7 @@ const DisplayForm = ( props ) => {
                                         // also prevents the input value from constantly changing even after submission
                                         disabled={limitSubmit}
                                         // checked={userChoice === 'firstAnswer'} 
+                                        // className={`${limitSubmit === true && userChoice === answer ? "submittedInput" : ""}`}
                                         /> 
                                         <label htmlFor={index}>{answer}</label>
                                         {
@@ -384,7 +400,7 @@ const DisplayForm = ( props ) => {
                             disabled={limitSubmit}
                             aria-label={`${limitSubmit === true ? "This button is currently disabled because you already submitted an answer" : ""}`}
                             className={`${limitSubmit === true ? "weaker" : "" }`}
-                        >Submit answer
+                        >{submit}
                         </button>
                         {/* conditional rendering of class for feedback field, if div active after submitting, className="message", else "noMessage", also for whether feedback is for right or wrong answer */}
                         {/* <div className={`${isActive ? "message" : "noMessage"} ${feedback === right && isActive ? "right": ""} ${feedback === wrong && isActive ? "wrong": "" } `}>

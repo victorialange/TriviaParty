@@ -194,7 +194,7 @@ function App() {
     </header>
       
     {/* Main with one quiz section*/}
-    <main id='mainContent'>
+    <main id='mainContent' className={`${initialIntro === next ? "mainWithQuiz" : ""}`}>
       <section id='quiz' className='instruction'>
         {/* Wrapper */}
         <div className="App wrapper">
