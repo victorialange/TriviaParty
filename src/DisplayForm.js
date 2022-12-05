@@ -5,9 +5,9 @@ import { useState } from "react";
 import { Fragment } from "react";
 import './App.css';
 // import { ArrowUp } from "./index.js";
-// importing ArrowUp and ArrowDown from Arrows component
-import ArrowUp from "./Arrows.js";
-import ArrowDown from "./Arrows.js";
+// importing ArrowUp and ArrowDown from ArrowDown and ArrowUp components
+import ArrowUp from "./ArrowUp.js";
+import ArrowDown from "./ArrowDown.js";
 
 const DisplayForm = ( props ) => {
 
@@ -184,6 +184,10 @@ const DisplayForm = ( props ) => {
         // if (props.questionId.some(value => value.id === props.currentQuestionId) === false) {
         
         props.clickHandler();
+        // if it's showing same question skip over it
+        // if (props.currentQuestionId === props.questionId ) {
+        //     props.clickHandler();
+        // }
         // }
         // clearing of feedback
         // setUserChoice("");
@@ -253,7 +257,7 @@ const DisplayForm = ( props ) => {
                     color="violet"
                     aria-hidden="true"
                     />
-                    {/* <p aria-hidden="true">⬆</p> */}
+                    {/* <p aria-hidden="true">⬆</p>  */}
                     <div className="limitSubmitMessage"
                     // {`${limitSubmitMessage ? "limitSubmitMessage" : ""}`
                     // }
@@ -311,55 +315,62 @@ const DisplayForm = ( props ) => {
                             {/* mapping through the allAnswers array that I created inside async getQuiz function that holds incorrectAnswers array and correctAnswer string, all inside one array */}
                             {/* also good for later in case I decide to randomize/shuffle through the order of the array so that user can't predict where the correct answer is positioned */}
                             {props.allAnswers.map((answer, index) => {
-                                return(
-                                    <div className={`
-                                    ${limitSubmit === true ? "weaker answer" : "answer" } 
-                                    ${limitSubmit === true && userChoice === answer ? "selectedFinal" : ""} 
-                                    ${userChoice !== answer ? "" : "selected"} 
-                                    ${limitSubmit === true && userChoice === answer && userChoice === props.correctAnswer ? "selectedRight" : ""} 
-                                    ${limitSubmit === true && userChoice === answer && userChoice !== props.correctAnswer ? "selectedWrong" : ""}
-                                    ${limitSubmit === true && answer === props.correctAnswer ? "idealSelect" : ""}`} 
-                                    // id={``}
-                                    >
-                                    <input
-                                        // chose radio button as I want the user to only check one input that gets submitted
-                                        type="radio"
-                                        // id of each answer input set to index position (keeps incrementing, so unique for each input) 
-                                        id={index}
-                                        // index="0"
-
-                                        // all inputs have the same name, so that they are being grouped together
-                                        name="quiz"
-
-                                        // giving it the required attribute so that user can't submit without having selected one option
-                                        required 
-                                        // onChange={handleFirstChange}
-
-                                        // value set to string value of each answer
-                                        value={answer}
-                                        // always make sure to have the right properties defined/set because otherwise one little mistake and the input stays checked, which is not ideal for a quiz
+                                // add an if statement checking if answer parameter (represents each item of allAnswers array) is truthy, so that no empty answer div gets returned, most times there is 4 answers (3 incorrect ones, and 1 correct one), but I just came across one question, where there was only 3 answers (2 incorrect and 1 correct one)
+                                if (answer) {
+                                    return(
+                                        <div className={`
+                                        ${limitSubmit === true ? "weaker answer" : "answer" } 
+                                        ${limitSubmit === true && userChoice === answer ? "selectedFinal" : ""} 
+                                        ${userChoice !== answer ? "" : "selected"} 
+                                        ${limitSubmit === true && userChoice === answer && userChoice === props.correctAnswer ? "selectedRight" : ""} 
+                                        ${limitSubmit === true && userChoice === answer && userChoice !== props.correctAnswer ? "selectedWrong" : ""}
+                                        ${limitSubmit === true && answer === props.correctAnswer ? "idealSelect" : ""}`} 
+                                        // id={``}
+                                        // make sure to give the key to the parent element inside the return, so the div containing the input and label, and not the children of that container (the input and label themselves)
+                                        // also make sure to use a value for the key that's different from the id of the input element, otherwise the whole conditional rendering/ternary operators won't work properly (solution: modifying index, like adding other value) 
                                         key={props.currentQuestionId + index}
-
-                                        // pass the onClick the handleRadioClick function in order to control the value of the userChoice each time an input gets clicked
-                                        onClick={handleRadioClick}
-                                        // set disabled attribute equal to stateful variable limitSubmit (so to true after form submission and to false before form submission)
-                                        // this will prevent the user from being able to change the answer/resubmitting numerous times, which would make the whole trivia game a bit pointless
-                                        // also prevents the input value from constantly changing even after submission
-                                        disabled={limitSubmit}
-                                        // checked={userChoice === 'firstAnswer'} 
-                                        // className={`${limitSubmit === true && userChoice === answer ? "submittedInput" : ""}`}
-                                        /> 
-                                        <label htmlFor={index}>{answer}</label>
-                                        {
-                                            limitSubmit === true ?
-                                            <label htmlFor={index} className="sr-only">
-                                                "This option is disabled because you already submitted your answer"
-                                            </label>
-                                            : "" 
-                                        }
-                                    </div>
-                                );
-                            })}
+                                        >
+                                        <input
+                                            // chose radio button as I want the user to only check one input that gets submitted
+                                            type="radio"
+                                            // id of each answer input set to index position (keeps incrementing, so unique for each input) 
+                                            id={index}
+                                            // index="0"
+    
+                                            // all inputs have the same name, so that they are being grouped together
+                                            name="quiz"
+    
+                                            // giving it the required attribute so that user can't submit without having selected one option
+                                            required 
+                                            // onChange={handleFirstChange}
+    
+                                            // value set to string value of each answer
+                                            value={answer}
+                                            // always make sure to have the right properties defined/set because otherwise one little mistake and the input stays checked, which is not ideal for a quiz
+                                            
+    
+                                            // pass the onClick the handleRadioClick function in order to control the value of the userChoice each time an input gets clicked
+                                            onClick={handleRadioClick}
+                                            // set disabled attribute equal to stateful variable limitSubmit (so to true after form submission and to false before form submission)
+                                            // this will prevent the user from being able to change the answer/resubmitting numerous times, which would make the whole trivia game a bit pointless
+                                            // also prevents the input value from constantly changing even after submission
+                                            disabled={limitSubmit}
+                                            // checked={userChoice === 'firstAnswer'} 
+                                            // className={`${limitSubmit === true && userChoice === answer ? "submittedInput" : ""}`}
+                                            /> 
+                                            <label htmlFor={index}>{answer}</label>
+                                            {
+                                                limitSubmit === true ?
+                                                <label htmlFor={index} className="sr-only">
+                                                    "This option is disabled because you already submitted your answer"
+                                                </label>
+                                                : "" 
+                                            }
+                                        </div>
+                                    );}
+                                })}
+                                
+                                
                             
                             {/* second answer choice (incorrect) */}
                                 {/* <input 

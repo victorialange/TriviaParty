@@ -4,9 +4,9 @@ import DisplayForm from './DisplayForm.js';
 import { Fragment } from 'react';
 import './App.css';
 
-// importing ArrowDown from Arrows component
-import ArrowDown from './Arrows.js';
-
+// importing ArrowDown from ArrowDown component
+import ArrowDown from './ArrowDown.js';
+// import ArrowUp from './ArrowUp.js';
 
 
 
