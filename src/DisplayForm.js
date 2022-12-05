@@ -4,8 +4,10 @@
 import { useState } from "react";
 import { Fragment } from "react";
 import './App.css';
-import { ArrowUp } from "./index.js";
-import ArrowDown from "./index.js";
+// import { ArrowUp } from "./index.js";
+// importing ArrowUp and ArrowDown from Arrows component
+import ArrowUp from "./Arrows.js";
+import ArrowDown from "./Arrows.js";
 
 const DisplayForm = ( props ) => {
 
@@ -350,7 +352,7 @@ const DisplayForm = ( props ) => {
                                         <label htmlFor={index}>{answer}</label>
                                         {
                                             limitSubmit === true ?
-                                            <label htmlFor={index} className="visually-hidden">
+                                            <label htmlFor={index} className="sr-only">
                                                 "This option is disabled because you already submitted your answer"
                                             </label>
                                             : "" 
@@ -466,7 +468,7 @@ const DisplayForm = ( props ) => {
                 aria-hidden = "true"
                 />
                 {/* <p aria-hidden="true">⬇</p> */}
-                <span className="visually-hidden">Click the button down below</span>
+                <span className="sr-only">Click the button down below</span>
                 <button 
                     className="end"
                     // pass in the function definition of leaveHandler, in which it calls the leaveClickHandler function from the App.js component with props, which also includes the initialIntro value set to intro (initial state). Thanks to the ternary operators that check whether the generator state value is start or next, string values and classNames get added or changed accordingly (and then styled fittingly) => if form's className=noContent, that invokes display:none of the whole quiz, which is what I want for when the user either hasn't hit the start button yet or when the user wants to quit the game and return to the initial start display

@@ -4,7 +4,8 @@ import DisplayForm from './DisplayForm.js';
 import { Fragment } from 'react';
 import './App.css';
 
-import ArrowDown from './index.js';
+// importing ArrowDown from Arrows component
+import ArrowDown from './Arrows.js';
 
 
 
@@ -232,13 +233,13 @@ function App() {
           <ArrowDown size={70}
               // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
               color={`${initialIntro === next ? "#2A28BA" : "#A741AC"} `}
-              aria-hidden = "true"
+              aria-label = "click on the button below to get a new question"
           />
           {/* <p aria-hidden="true"
           // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
           className={`${initialIntro === next ? "nextArrow" : "startArrow"} `}
           >⬇</p> */}
-          <span className="visually-hidden">Click the button down below</span>
+          <span className="sr-only">Click the button down below</span>
         </div>{/* END WRAPPER */}
 
       </section>{/* end instruction section */}
