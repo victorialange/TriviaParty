@@ -4,7 +4,8 @@
 import { useState } from "react";
 import { Fragment } from "react";
 import './App.css';
-
+import { ArrowUp } from "./index.js";
+import ArrowDown from "./index.js";
 
 const DisplayForm = ( props ) => {
 
@@ -246,7 +247,11 @@ const DisplayForm = ( props ) => {
             {
                 limitSubmit === true && generator !== start ?
                 <div className="alert">
-                    <p aria-hidden="true">⬆</p>
+                    <ArrowUp size={70}
+                    color="violet"
+                    aria-hidden="true"
+                    />
+                    {/* <p aria-hidden="true">⬆</p> */}
                     <div className="limitSubmitMessage"
                     // {`${limitSubmitMessage ? "limitSubmitMessage" : ""}`
                     // }
@@ -259,7 +264,7 @@ const DisplayForm = ( props ) => {
             
         </div> 
         {/* quiz form section */}
-        <section className="quizForm">
+        <section className="quizForm" id="quizGame">
             {/* WRAPPER */}
             <div className="App wrapper">
                 {/* FORM CONTAINER */}
@@ -267,8 +272,11 @@ const DisplayForm = ( props ) => {
         
         
                     {/* FORM WITH API CONTENT for quiz  */}
-                    <form onSubmit={submitHandler} aria-label="quiz" className={`${generator === next ? "content" : "noContent"}`}
-                    
+                    <form onSubmit={submitHandler} aria-label="quiz" 
+                    className={`
+                    ${generator === next ? "content" : "noContent"}
+                    ${limitSubmit === true && limitSubmitMessage !== "" ? "loweredForm" : ""}
+                    `}
                     >
                         {/* properties container */}
                         <div className="properties">
@@ -422,6 +430,20 @@ const DisplayForm = ( props ) => {
                         } */}
                     </form>{/* END FORM */}
                 </div>{/* END FORM CONTAINER */}
+                {/* back to top shortcut link */}
+                {/* conditional rendering, only visible when quiz is displayed */}
+                {
+                    generator === next ?
+                    <a href="#intro" className="start">
+                        <ArrowUp size={30}
+                        color="white"
+                        aria-hidden="true"
+                        />
+                        Go back to top
+                    </a>
+                    : ""
+                }
+                
             </div>{/* END WRAPPER */}
         </section>{/* END FORM SECTION */}
         
@@ -438,7 +460,12 @@ const DisplayForm = ( props ) => {
                 // }
                 >
                 <p>Feeling tired or just wanna leave the party early?</p>
-                <p aria-hidden="true">⬇</p>
+                <ArrowDown size={70}
+                // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
+                color="black"
+                aria-hidden = "true"
+                />
+                {/* <p aria-hidden="true">⬇</p> */}
                 <span className="visually-hidden">Click the button down below</span>
                 <button 
                     className="end"
