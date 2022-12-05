@@ -4,6 +4,9 @@ import DisplayForm from './DisplayForm.js';
 import { Fragment } from 'react';
 import './App.css';
 
+import ArrowDown from './index.js';
+
+
 
 
 function App() {
@@ -168,14 +171,14 @@ function App() {
 
   return (
     // Fragment in order to use multiple parent elements
-    <>
+    <Fragment>
     {/* skip link to main*/}
     <a href="#mainContent" className='skipLink'>
       Skip to main content
     </a>
 
     {/* HEADER */}
-    <header>
+    <header id='home'>
       {/* WRAPPER */}
       <div className="banner">
       {/* background banner goes here */}
@@ -184,10 +187,13 @@ function App() {
         <div className="App wrapper">
         
           <h1>Welcome To My Trivia Party!!!</h1>
-          <h2>Let's get nerdy 🤓</h2>
-          <p>For each question select only one answer from the four possible answer choices!</p>
-          <p>There is no timer to stress you out, this party is meant to be chill 🏖️ So take your sweet precious time to answer each question  ⏳ You could take a bath or go for a nap, we won't be able to tell  😜 </p>
-          
+          <div className={`${initialIntro !== intro ? "introContainer" : ""}`}
+          id="intro"
+          >
+            <h2>Let's get nerdy 🤓</h2>
+            <p>For each question select only one answer from the four possible answer choices!</p>
+            <p>There is no timer to stress you out, this party is meant to be chill 🏖️ So take your sweet precious time to answer each question  ⏳ You could take a bath or go for a nap, we won't be able to tell  😜 </p>
+          </div>
         </div>
         {/* END WRAPPER */}
       </div>
@@ -195,16 +201,46 @@ function App() {
       
     {/* Main with one quiz section*/}
     <main id='mainContent' className={`${initialIntro === next ? "mainWithQuiz" : ""}`}>
-      <section id='quiz' className='instruction'>
-        {/* Wrapper */}
+      {/* instructions section */}
+      <section id='quiz' className={`${initialIntro === intro ? "firstArrow instruction" : "instruction secondArrow"}`}>
+        {/* SKIP to quiz */}
+        {/* conditional rendering for skip to quiz */}
+        {
+          initialIntro !== intro ?
+          <div className="App wrapper">
+            <a href="#quizGame" className='start' aria-label='Click link to go down to the game'>
+              <ArrowDown size={30}
+              color="white"
+              aria-hidden="true"
+              />
+              <h3>Go down to quiz!</h3>
+            </a>
+          </div>
+          : ""
+        }
+        
+        {/* thinking container with background and Wrapper */}
+        <div className={`${initialIntro !== intro ? "thinking App wrapper" : "App wrapper"}`}>
+          {/* thinking text container */}
+          <div className="thinkingText">
+            <h3>{initialIntro}</h3>
+          </div>{/* END thinking text */}
+        </div>{/* end background container and wrapper */}
+        {/* WRAPPER */}
         <div className="App wrapper">
-          <h3>{initialIntro}</h3>
-          <p aria-hidden="true"
+          {/* svg arrow up */}
+          <ArrowDown size={70}
+              // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
+              color={`${initialIntro === next ? "#2A28BA" : "#A741AC"} `}
+              aria-hidden = "true"
+          />
+          {/* <p aria-hidden="true"
           // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
           className={`${initialIntro === next ? "nextArrow" : "startArrow"} `}
-          >⬇</p>
+          >⬇</p> */}
           <span className="visually-hidden">Click the button down below</span>
-        </div>{/* end wrapper */}
+        </div>{/* END WRAPPER */}
+
       </section>{/* end instruction section */}
       {/* DISPLAY FORM COMPONENT */}
       <DisplayForm
@@ -240,7 +276,7 @@ function App() {
       {/* end wrapper */}
     </footer>
    
-  </> 
+  </Fragment> 
   );
 }
 

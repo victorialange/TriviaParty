@@ -114,12 +114,72 @@ button {
   margin-top: 7px;
 }
 
-.startArrow {
-  color: #A741AC;
+/* container for intro message, styling only applied when quiz is displayed */
+.introContainer {
+  border: 3px solid black;
+  border-radius: 30px;
+  background-color: #fff;
+  padding: 10px 30px;
 }
 
-.nextArrow {
-  color: #2A28BA;
+/* thought bubble as a background img for h3 when it's about getting a different question */
+.instruction .wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.instruction .thinking {
+  background-image: url('./img/bubble_cropped.png');
+  height: 155px;
+  width: fit-content;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  /* background-attachment: scroll; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  padding: 50px;
+  flex-direction: column;
+  margin: 50px 0 30px 0;
+}
+
+
+.thinking h3 {
+  width: 100%;
+  margin-top: 0;
+}
+
+.firstArrow svg {
+  align-self: center;
+  margin: 35px 0 20px 0;
+}
+
+.secondArrow svg {
+  margin: 0px 0px 20px 0px;
+}
+
+.instruction a.start {
+  margin-top: 30px;
+  font-size: 1.2rem;
+  display: flex;
+  /* width: fit-content; */
+  align-items: center;
+  text-shadow: none;
+}
+.instruction .start svg {
+  align-self: center;
+  margin-bottom: 0;
+}
+
+.instruction a:hover,
+.instruction a:focus {
+  font-size: 1.3rem;
+}
+
+.start h3 {
+  margin: 0; 
 }
 
 /* centering the initial start button */
@@ -384,8 +444,6 @@ div.idealSelect:focus {
   color: black;
 }
 
-
-
 button.weaker {
   cursor: unset;
   border: none;
@@ -477,8 +535,39 @@ form button:focus {
   margin-bottom: 0;
 }
 
+/* anchor tag to go back to intruction */
+.quizForm .start {
+  align-self: center;
+  margin-top: 70px;
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+}
+
+.quizForm .start:hover,
+.quizForm .start:focus {
+  text-shadow: none;
+  font-size: 1.4rem;
+}
+
+.quizForm a svg {
+  align-self: center;
+}
+
 /* leave field */
-.leaveField p:first-of-type {
+.leaveField svg {
+  height: 50px;
+  align-self: center;
+  margin: 20px 0 10px 0;
+}
+
+/* .leaveField p:first-of-type {
+  font-size: 1.1rem;
+  
+} */
+
+.leaveField p:nth-of-type(2) {
+  margin-top: 20px;
   font-size: 1.1rem;
 }
 
@@ -553,6 +642,16 @@ footer p {
   section.instruction p:first-of-type {
     margin-top: 0;
   }
+  /* link to go directly to quiz */
+  .instruction a.start {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+  .instruction a:hover,
+  .instruction a:focus {
+    font-size: 1.1rem;
+  }
+
   /* limitSubmitMessage div */
   .limitSubmitMessage {
     margin-top: 0px;
@@ -609,6 +708,19 @@ footer p {
     margin-left: 18px;
     margin-bottom: 10px;
   }
+  /* go back to top link */
+  .quizForm .start {
+    font-size: 1.1rem;
+    width: fit-content;
+    padding: 10px 30px;
+  }
+  .start svg {
+    height: 25px;
+  }
+  .quizForm .start:hover,
+  .quizForm .start:focus {
+    font-size: 1.2rem;
+  }
   /* leaveField */
   .leaveField {
     margin-top: 70px;
@@ -625,9 +737,18 @@ footer p {
     font-size: 4rem;
     color: #2A28BA;
   }
+  .alert svg {
+    fill: #322fd6;
+    margin-top: 15px;
+  }
+  
   .alert .limitSubmitMessage p:first-child {
     font-size: 1.1rem;
     color: black;
+  }
+
+  .introContainer {
+    padding: 10px 10px;
   }
   
 }
@@ -668,7 +789,10 @@ footer p {
   }
   form {
     margin-left: 60px;
-    margin-top: 100px;
+    /* margin-top: 100px; */
+  }
+  .loweredForm {
+    margin-top: 200px;
   }
   /* styling limit submit message, so that it gets shown inside form container, easier for user to see the important instruction on how to keep playing */
   /* div container for limit submit message */
@@ -704,9 +828,18 @@ footer p {
     margin-bottom: 80px;
     font-weight: bold;
   }
+
+  .alert svg {
+    height: min-content;
+    margin-bottom: 200px;
+    font-weight: bold;
+  }
+
+
    /* when limit submit message present at wider screen sizes, give margin-top from form container back*/
    .submitAlert {
     margin-top: 20px;
+    height: fit-content;
   }
   /* last img
   .partingImg {
@@ -722,9 +855,24 @@ footer p {
   .alert p:first-child {
     font-size: 3.5rem;
   }
+  .alert svg {
+    height: 90px;
+  }
+
   .alert .limitSubmitMessage p:first-child {
     font-size: 1.1rem;
     margin-bottom: 0;
+  }
+
+  .introContainer {
+    padding: 10px 20px;
+  }
+}
+
+@media (min-width: 567px) {
+  /* text container with think bubble */
+  .thinkingText {
+    width: 80%;
   }
 }
 
@@ -794,6 +942,15 @@ footer p {
   .alert .limitSubmitMessage p:first-child {
     margin-bottom: 0;
   }
+  /* think bubble container */
+  .instruction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .thinking {
+    align-self: center;
+  }
 }
 
 @media (min-width: 650px) {
@@ -848,6 +1005,13 @@ footer p {
   }
 }
 
+@media (min-width: 800px) {
+  /* intro container */
+  .introContainer {
+    padding: 10px 30px 25px 30px;
+  }
+}
+
 /* tablet */
 @media (min-width: 890px) {
   /* HEADER */
@@ -894,6 +1058,13 @@ footer p {
     /* background-position-x: center; */
     height: 400px;
   }
+  /* intro container */
+  .introContainer {
+    padding: 10px 50px 30px 50px;
+  }
+
+  
+  
 }
 
 @media (min-width: 1000px) {
