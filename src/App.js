@@ -4,8 +4,9 @@ import DisplayForm from './DisplayForm.js';
 import { Fragment } from 'react';
 import './App.css';
 
-import ArrowDown from './index.js';
-
+// importing ArrowDown from ArrowDown component
+import ArrowDown from './ArrowDown.js';
+// import ArrowUp from './ArrowUp.js';
 
 
 
@@ -13,7 +14,7 @@ function App() {
   // let answerObjects = [
   //   '', '','', '' 
   // ];
-
+  
   // state that holds the questions, answer choices and ids from my API
   const [question, setQuestion] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
@@ -92,7 +93,7 @@ function App() {
       // id string values
       setCurrentQuestionId(data[0].id);
       console.log(currentQuestionId);
-      
+
 
       // console.log(questionId);
       // const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
@@ -110,6 +111,12 @@ function App() {
       setAllAnswers(randomAnswers);
       console.log(allAnswers);
 
+      
+
+      // if (allAnswers.length === 3) {
+      //   console.log(allAnswers.length);
+      // }
+      
       // console logging state can be misleading, value is stored in stateful variable even if not visible in the console right away
 
       // const newAnswers = answers.map( (answer) => {
@@ -159,6 +166,17 @@ function App() {
       // console.log(correctAnswer);
 
       // setId(id);
+
+      // cloning allAnswers array to do filter
+      
+
+      
+      
+
+      // const filteredAnswers = cloneAnswers.filter((answerObj) => {
+      //   return answerObj.length === 3;
+      // })
+
   }
 
   // defining the leaveClickHandler function to pass intro as a prop into another leaveHandler function in DisplayForm component in order to set the initial intro back to intro value
@@ -232,13 +250,13 @@ function App() {
           <ArrowDown size={70}
               // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
               color={`${initialIntro === next ? "#2A28BA" : "#A741AC"} `}
-              aria-hidden = "true"
+              aria-label = "click on the button below to get a new question"
           />
           {/* <p aria-hidden="true"
           // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
           className={`${initialIntro === next ? "nextArrow" : "startArrow"} `}
           >⬇</p> */}
-          <span className="visually-hidden">Click the button down below</span>
+          <span className="sr-only">Click the button down below</span>
         </div>{/* END WRAPPER */}
 
       </section>{/* end instruction section */}
