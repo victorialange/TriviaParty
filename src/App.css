@@ -681,8 +681,9 @@ footer p {
   }
 
   .inputs {
-    width: 80%;
+    width: 100%;
   }
+  
   .answer:hover,
   .answer:focus,
   .answer:visited,
@@ -1006,6 +1007,9 @@ footer p {
     margin-bottom: 0;
     font-size: 1.1rem;
   }
+  .inputs {
+    width: 90%;
+  }
 }
 
 @media (min-width: 738px) {
@@ -1024,6 +1028,9 @@ footer p {
   /* intro container */
   .introContainer {
     padding: 10px 30px 25px 30px;
+  }
+  .inputs {
+    width: 85%;
   }
 }
 
@@ -1078,6 +1085,9 @@ footer p {
     padding: 10px 50px 30px 50px;
   }
 
+  .inputs {
+    width: 75%;
+  }
   
   
 }
@@ -1131,12 +1141,24 @@ footer p {
     max-width: 100%;
     width: fit-content;
   } */
+  .inputs {
+    width: 70%;
+  }
 }
 
 @media (min-width:1275px) {
   /* HEADER */
   .banner {
     height: 600px;
+  }
+  .inputs {
+    width: 65%;
+  }
+}
+
+@media (min-width: 1400px) {
+  .inputs {
+    width: 55%;
   }
 }
 

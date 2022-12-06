@@ -71,21 +71,23 @@ const DisplayForm = ( props ) => {
     const rightTwo = "Wowwww!!! You're like a genius or something 🤯";
     const rightThree = "Yayyyy, you got it right! Happy dance 🕺";
     const rightFour = "Are you sure you're not cheating 👀 I guess you're a trivia pro after all!";
+    const rightFive = "Well look at you. So smart!! 🧠"
 
     // defining my own custom array that holds feedback for when user has selected correct answer (randomizing it with num as index number later on, along with passing it to message state)
-    const customRight = [rightOne, rightTwo, rightThree, rightFour];
+    const customRight = [rightOne, rightTwo, rightThree, rightFour, rightFive];
 
     // defining variable as consistent attached message to items for customWrong array (tells the user what would have been the right answer)
     const shouldHave = `The correct answer would have been: ${props.correctAnswer}`
 
     // variables to pass into customWrong array as items with shouldHave variable
-    const wrongOne = `Oh no! You got it wrong 😞${shouldHave}. Not ${userChoice}`;
-    const wrongTwo = `It's ok, it's ok, just take a few deep breaths, come back later and try again. I know you can do it 😉${shouldHave}. Not ${userChoice}`;
-    const wrongThree = `Hmmm, maybe you like submitted the wrong answer by accident 🤔${shouldHave}. Not ${userChoice}`;
-    const wrongFour = `Wrong! And you're out. Nah, just kidding, you can try as many times as you like, we're nice after all 😃${shouldHave}. Not ${userChoice}`;
+    const wrongOne = `Oh no! You got it wrong 😞😢 ${shouldHave}. Not ${userChoice}`;
+    const wrongTwo = `It's ok, it's ok, just take a few deep breaths, real nice and slow, come back later and try again ☺️ I know you can do it 😉${shouldHave}. Not ${userChoice}`;
+    const wrongThree = `Hmmm, maybe you like submitted the wrong answer by accident 🤔🙃 ${shouldHave}. Not ${userChoice}`;
+    const wrongFour = `Wrong! And you're out. Nah, just kidding, you can try as many times as you like, we're nice after all 😃😁 ${shouldHave}. Not ${userChoice}`;
+    const wrongFive = `Are you ok? Do you need a break? Or a hug 🫂 Anyway, trivia isn't always for everyone, but keep practicing and you'll get better 😉 ${shouldHave}. Not ${userChoice}`;
 
     // defining my own custom array that holds feedback for when user has selected incorrect answer (randomizing it with num as index number later on, along with passing it to message state)
-    const customWrong = [wrongOne, wrongTwo, wrongThree, wrongFour];
+    const customWrong = [wrongOne, wrongTwo, wrongThree, wrongFour, wrongFive];
 
     // message as stateful variable that will hold the customRight and the customWrong array with randomized index number num, default value set to empty string, as message will only get displayed when user submits the form
     const [message, setMessage] = useState("");
@@ -153,7 +155,7 @@ const DisplayForm = ( props ) => {
         setActive(true);
 
         // update index num of both arrays by calling the randomizer function in between the ranges of 0 and 3 (passing them as arguments)
-        setNum(randomNumberInRange(0, 3));
+        setNum(randomNumberInRange(0, 4));
 
         // conditional rendering to check if userChoice is equal to correct answer (based on value, which is equal to the string value of the API), allows me to destructure/shuffle/randomize order between incorrect and correct answer, as I don't have to rely on index anymore to know whether it's the correct answer or not
         if (userChoice !== props.correctAnswer) {
