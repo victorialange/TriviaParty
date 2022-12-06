@@ -369,12 +369,16 @@ legend {
 /* making the radio buttons bigger, so that user doesn't have to always hit the dedicated button 100%, especially since the whole div looks like a clickable input */
 .answer input[type='radio'] { 
   transform: scale(1.3);
-  margin-right: 6px;
+  margin-right: 10px;
   /* add same margin at the top as at the bottom (doesn't let me remove margin-bottom for some reason), so that input is centered and aligned well with label */
   margin-top: 3px;
   align-self: center;
   margin-bottom: 3px; 
   accent-color:rgb(105, 1, 107);
+}
+
+.answer label {
+  margin-bottom: 2px;
 }
 
 /* input[type="radio"]:checked {
