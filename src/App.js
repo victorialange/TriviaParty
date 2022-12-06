@@ -7,7 +7,7 @@ import './App.css';
 // importing ArrowDown from ArrowDown component
 import ArrowDown from './ArrowDown.js';
 // import ArrowUp from './ArrowUp.js';
-import Dropdown from './Dropdown.js';
+// import Dropdown from './Dropdown.js';
 
 
 function App() {
@@ -45,8 +45,9 @@ function App() {
   const [allCategories, setAllCategories] = useState([]);
   const [allLevels, setAllLevels] = useState([]);
 
+  // const [allData, setAllData] = useState([]);
   const [everyStuff, setEveryStuff] = useState([]);
-  const [filteredQuestions, setFilteredQuestions] = useState([]);
+  // const [filteredQuestions, setFilteredQuestions] = useState([]);
   // const [questionId, setQuestionId] = useState(''); 
 
   // useEffect( () => { 
@@ -55,7 +56,9 @@ function App() {
       const url = new URL('https://the-trivia-api.com/api/questions')
 
       url.search = new URLSearchParams({
-        limit: 1
+        categories: userSelect,
+        limit: 1,
+        difficulty: otherUserSelect
       })
       
       const response = await fetch(url);
@@ -132,6 +135,8 @@ function App() {
 
 
       // mapping through whole array of objects
+      console.log(data[0]);
+
       const withOrientation = data.map((questionObject) => {
         const property = `${questionObject.category} ${questionObject.difficulty}`
 
@@ -215,53 +220,47 @@ function App() {
 
   
   // clickHandler function to refresh page and show new question
-  const clickHandler = () => {
-    // call async function getQuiz() with API data everytime user clicks the get different question button
-    getQuiz();
-
-    setInitialIntro(next);
-      // setQuestion(question);
-      // console.log(question);
-
-      // setIncorrectAnswers(incorrectAnswers);
-      // console.log(incorrectAnswers);
-
-      // setCorrectAnswer(correctAnswer);
-      // console.log(correctAnswer);
-
-      // setId(id);
-
-      // cloning allAnswers array to do filter
-
-      // const filteredAnswers = cloneAnswers.filter((answerObj) => {
-      //   return answerObj.length === 3;
-      // })
-
-  }
+  
 
   const [submitted, setSubmitted] = useState(false);
 
-  const firstSubmitHandler = (e, questionCategory) => {
+  const [userSelect, setUserSelect] = useState("");
+  const [otherUserSelect, setOtherUserSelect] = useState("");
+
+    const handleUserSelectOne = (e) => {
+        setUserSelect(e.target.value);
+        console.log(e.target.value);
+        console.log(userSelect);
+    }
+
+    const handleUserSelectTwo = (e) => {
+      setOtherUserSelect(e.target.value);
+      console.log(e.target.value);
+      console.log(otherUserSelect);
+  }
+
+
+  
+  
+
+  const firstSubmitHandler = (e, questionCategory, questionLevel) => {
     // call async function getQuiz() with API data everytime user clicks the get different question button
     e.preventDefault();
     getQuiz();
-
+    // setUserSelect(e.target.value);
+    // setOtherUserSelect(e.target.value);
     setInitialIntro(next);
     
     console.log(questionCategory);
     // console.log(questionLevel);
+    console.log(questionLevel);
+    
 
-    const copyOfQuestions = [...everyStuff];
-
-    const filteringQuestions = copyOfQuestions.filter((questionItem) => {
-      return questionItem.category === questionCategory; 
-      // && questionItem.difficulty === questionLevel;
-    });
-
-    setFilteredQuestions(filteringQuestions);
+    // setFilteredQuestions(filteringQuestions);
+    // setEveryStuff(withOrientation);
     console.log(questionCategory);
-    console.log(filteredQuestions);
-    console.log(filteringQuestions);
+    // console.log(filteredQuestions);
+    // console.log(filteringQuestions);
 
     setSubmitted(true);
       // setQuestion(question);
@@ -291,12 +290,54 @@ function App() {
 
   // }
 
+  const clickHandler = (userSelect, otherUserSelect) => {
+    // call async function getQuiz() with API data everytime user clicks the get different question button
+    getQuiz(userSelect, otherUserSelect);
+
+    setInitialIntro(next);
+      // setQuestion(question);
+      // console.log(question);
+
+      // setIncorrectAnswers(incorrectAnswers);
+      // console.log(incorrectAnswers);
+
+      // setCorrectAnswer(correctAnswer);
+      // console.log(correctAnswer);
+
+      // setId(id);
+
+      // cloning allAnswers array to do filter
+
+      // const filteredAnswers = cloneAnswers.filter((answerObj) => {
+      //   return answerObj.length === 3;
+      // })
+
+  }
+
+
   // defining the leaveClickHandler function to pass intro as a prop into another leaveHandler function in DisplayForm component in order to set the initial intro back to intro value
   const leaveClickHandler = () => {
     // setQuestion("")
     // setAllAnswers([""]);
     setInitialIntro(intro);
+    setUserSelect("");
+    setOtherUserSelect("");
   }
+
+
+
+  
+
+    // const handleUserSelectTwo = (e) => {
+    //     setOtherUserSelect(e.target.value);
+    //     console.log(e.target.value);
+    //     console.log(otherUserSelect);
+    // }
+
+    // const dropDownSubmitHandler = (e) => {
+    //     firstSubmitHandler(e, userSelect);
+    // }
+
 
 
   return (
@@ -328,6 +369,9 @@ function App() {
         {/* END WRAPPER */}
       </div>
     </header>
+
+    
+
       
     {/* Main with one quiz section*/}
     <main id='mainContent' className={`${initialIntro === next ? "mainWithQuiz" : ""}`}>
@@ -357,21 +401,65 @@ function App() {
           </div>{/* END thinking text */}
         </div>{/* end background container and wrapper */}
         {/* WRAPPER */}
-        <Dropdown
-        next={next}
-        intro={intro}
-        initialIntro={initialIntro}
-        firstSubmitHandler={firstSubmitHandler}
-        clickHandler={clickHandler}
-        question={question}
-        allAnswers={allAnswers}
-        // incorrectAnswers={incorrectAnswers}
-        correctAnswer={correctAnswer}
-        currentQuestionId={currentQuestionId}
-        leaveClickHandler={leaveClickHandler}
-        category={category}
-        level={level}
-         />
+        <div className="App wrapper">
+          
+            
+            <div className={`${initialIntro !== next ?"content dropContainer" : "noContent"}`}>
+              <form onSubmit={firstSubmitHandler}>
+                <label htmlFor="category">Play this category:</label>
+                <select name="category" id="category" onChange={handleUserSelectOne} value={userSelect} required>
+                    <option value="" disabled>Pick one:</option>
+                    <option value="Arts & Literature">Arts & Literature</option>
+                    <option value="Film & TV">Film & TV</option>
+                    <option value="Food & Drink">Food & Drink</option>
+                    <option value="General Knowledge">General Knowledge</option>
+                    <option value="Geography">Geography</option>
+                    <option value="History">History</option>
+                    <option value="Music">Music</option>
+                    <option value="Science">Science</option>
+                    <option value="Society & Culture">Society & Culture</option>
+                    <option value="Sport & Leisure">Sport & Leisure</option>
+                </select>
+
+                <label htmlFor="level">Play at this level:</label>
+                <select name="level" id="level" onChange={handleUserSelectTwo} value={otherUserSelect} required>
+                    <option value="" disabled>Pick one:</option>
+                    <option value="easy">easy</option>
+                    <option value="medium">medium</option>
+                    <option value="hard">hard</option>
+                </select>
+                
+                {/* svg arrow up */}
+                <ArrowDown size={70}
+                    // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
+                    color={`${initialIntro === next ? "#2A28BA" : "#A741AC"} `}
+                    aria-label = "click on the button below to get a new question"
+                />
+
+                <button 
+                // type="button"
+                // change
+
+                // passing in the function definition of anotherClickHandler that calls the clickHandler from App.js for us (which includes making the API call everytime the user clicks that button)
+                // onSubmit={dropDownSubmitHandler}
+
+                // pass in the firstLabel stateful variable as the value of aria-label to alternate between labels based on whether it's the start or the new question button
+                // aria-label={firstLabel}
+
+                // conditional rendering of className based on whether button is start button or generates new question
+                className="start"
+                >Start
+                </button>
+            </form>
+          </div>{/* end form container div */}
+    
+          
+          {/* <p aria-hidden="true"
+          // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
+          className={`${initialIntro === next ? "nextArrow" : "startArrow"} `}
+          >⬇</p> */}
+          <span className="sr-only">Click the button down below</span>
+        </div>{/* END WRAPPER */}
         {/* <div className="App wrapper">
           <form onSubmit={}>
             <label htmlFor="category">Play this category:</label>
@@ -429,8 +517,11 @@ function App() {
         leaveClickHandler={leaveClickHandler}
         category={category}
         level={level}
-        filteredQuestions={filteredQuestions}
+        // filteredQuestions={filteredQuestions}
         firstSubmitHandler={firstSubmitHandler}
+        everyStuff={everyStuff}
+        userSelect={userSelect}
+        otherUserSelect={otherUserSelect}
         // answerTwo={answerTwo}
         // answerThree={answerThree}
         // correctAnswer={correctAnswer}

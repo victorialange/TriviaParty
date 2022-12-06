@@ -29,6 +29,11 @@ h1 {
   font-family: 'Rubik Distressed', cursive;
 }
 
+.formContainer .text{
+  background-color: white;
+  height: fit-content;
+}
+
 .wrapper {
   margin: 0 auto;
   width: 85%;
