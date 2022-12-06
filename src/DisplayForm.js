@@ -71,7 +71,7 @@ const DisplayForm = ( props ) => {
     const rightTwo = "Wowwww!!! You're like a genius or something 🤯";
     const rightThree = "Yayyyy, you got it right! Happy dance 🕺";
     const rightFour = "Are you sure you're not cheating 👀 I guess you're a trivia pro after all!";
-    const rightFive = "Well look at you. So smart!! 🧠 And so handsome! 🤩 (Not that we can actually see you, but it sounds kinda nice, doesn't it? 😜)"
+    const rightFive = "Well look at you. So smart!! 🧠 And so handsome! 😍 (Not that we can actually see you, but it sounds kinda nice, doesn't it? 😜)"
 
     // defining my own custom array that holds feedback for when user has selected correct answer (randomizing it with num as index number later on, along with passing it to message state)
     const customRight = [rightOne, rightTwo, rightThree, rightFour, rightFive];
