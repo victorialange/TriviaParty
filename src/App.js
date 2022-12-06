@@ -7,7 +7,7 @@ import './App.css';
 // importing ArrowDown from ArrowDown component
 import ArrowDown from './ArrowDown.js';
 // import ArrowUp from './ArrowUp.js';
-
+import Dropdown from './Dropdown.js';
 
 
 function App() {
@@ -23,6 +23,9 @@ function App() {
   const [allAnswers, setAllAnswers] = useState( [] );
   const [currentQuestionId, setCurrentQuestionId] = useState("");
   const [questionId, setQuestionId] = useState([]);
+
+  const [questions, setQuestions] = useState([]);
+  
   // const [answers, setAnswers] = useState( [] );
 
   // const [quiz, setQuiz] = useState( [] );
@@ -38,6 +41,12 @@ function App() {
   const [category, setCategory] = useState("");
   const [level, setLevel] = useState("");
 
+  
+  const [allCategories, setAllCategories] = useState([]);
+  const [allLevels, setAllLevels] = useState([]);
+
+  const [everyStuff, setEveryStuff] = useState([]);
+  const [filteredQuestions, setFilteredQuestions] = useState([]);
   // const [questionId, setQuestionId] = useState(''); 
 
   // useEffect( () => { 
@@ -94,10 +103,20 @@ function App() {
       setCurrentQuestionId(data[0].id);
       console.log(currentQuestionId);
 
+      // array of questions to later filter through
+      // make an array of all current questions
+      setQuestions(current => [...current, data[0].question, data[0].category, data[0].difficulty]
+        );
+      console.log(questions);
 
-      // console.log(questionId);
-      // const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
-      // console.log(answers);
+      setAllCategories(current => [...current, data[0].category, data[0].question])
+      console.log(allCategories);
+
+      setAllLevels(current => [...current, data[0].difficulty, data[0].question, data[0].category]);
+      console.log(allLevels);
+
+      const questionArray = [data[0].question, data[0].category, data[0].difficulty];
+      console.log(questionArray);
 
       // creating new array to add correct answer string value to already from API provided incorrect answers array
       const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
@@ -110,6 +129,45 @@ function App() {
 
       setAllAnswers(randomAnswers);
       console.log(allAnswers);
+
+
+      // mapping through whole array of objects
+      const withOrientation = data.map((questionObject) => {
+        const property = `${questionObject.category} ${questionObject.difficulty}`
+
+        const randomAnswers = answers.sort(() => 0.5 - Math.random());
+
+        return {...questionObject, property: property, allAnswers: randomAnswers};
+      })
+
+      console.log(withOrientation);
+
+      setEveryStuff(withOrientation);
+
+
+      const tryNewQuestion = questionArray.map((question, index, fullArray) => {
+        return fullArray;
+      })
+      console.log(tryNewQuestion);
+
+      const newQuestionsArray = questionArray.toString([]);
+      console.log(newQuestionsArray);
+
+
+      // const questionWithProps = questions.map((wholeArray) =>({
+      //   ...wholeArray, category: data[0].category, level: data[0].difficulty
+      // })
+        
+      // )
+
+      // console.log(questions);
+      // console.log(questionWithProps);
+
+      // console.log(questionId);
+      // const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
+      // console.log(answers);
+
+      
 
       
 
@@ -149,6 +207,12 @@ function App() {
   const next = "Not feeling this question or already answered this one?"
   const [initialIntro, setInitialIntro] = useState(intro);  
   
+  // // setting variables to pass into generator state for start/new question button later on in anotherClickHandler function
+  // const startButton = "Start";
+  // const nextButton = "New Question";
+  // // stateful variable for text inside start or new question button (setting default value to start variable, so that it gets displayed with that string before api call)
+  // const [generator, setGenerator] = useState(startButton);
+
   
   // clickHandler function to refresh page and show new question
   const clickHandler = () => {
@@ -156,6 +220,50 @@ function App() {
     getQuiz();
 
     setInitialIntro(next);
+      // setQuestion(question);
+      // console.log(question);
+
+      // setIncorrectAnswers(incorrectAnswers);
+      // console.log(incorrectAnswers);
+
+      // setCorrectAnswer(correctAnswer);
+      // console.log(correctAnswer);
+
+      // setId(id);
+
+      // cloning allAnswers array to do filter
+
+      // const filteredAnswers = cloneAnswers.filter((answerObj) => {
+      //   return answerObj.length === 3;
+      // })
+
+  }
+
+  const [submitted, setSubmitted] = useState(false);
+
+  const firstSubmitHandler = (e, questionCategory) => {
+    // call async function getQuiz() with API data everytime user clicks the get different question button
+    e.preventDefault();
+    getQuiz();
+
+    setInitialIntro(next);
+    
+    console.log(questionCategory);
+    // console.log(questionLevel);
+
+    const copyOfQuestions = [...everyStuff];
+
+    const filteringQuestions = copyOfQuestions.filter((questionItem) => {
+      return questionItem.category === questionCategory; 
+      // && questionItem.difficulty === questionLevel;
+    });
+
+    setFilteredQuestions(filteringQuestions);
+    console.log(questionCategory);
+    console.log(filteredQuestions);
+    console.log(filteringQuestions);
+
+    setSubmitted(true);
       // setQuestion(question);
       // console.log(question);
 
@@ -178,6 +286,10 @@ function App() {
       // })
 
   }
+
+  // const secondClickHandler = (questionCategory, questionLevel) => {
+
+  // }
 
   // defining the leaveClickHandler function to pass intro as a prop into another leaveHandler function in DisplayForm component in order to set the initial intro back to intro value
   const leaveClickHandler = () => {
@@ -245,9 +357,49 @@ function App() {
           </div>{/* END thinking text */}
         </div>{/* end background container and wrapper */}
         {/* WRAPPER */}
-        <div className="App wrapper">
+        <Dropdown
+        next={next}
+        intro={intro}
+        initialIntro={initialIntro}
+        firstSubmitHandler={firstSubmitHandler}
+        clickHandler={clickHandler}
+        question={question}
+        allAnswers={allAnswers}
+        // incorrectAnswers={incorrectAnswers}
+        correctAnswer={correctAnswer}
+        currentQuestionId={currentQuestionId}
+        leaveClickHandler={leaveClickHandler}
+        category={category}
+        level={level}
+         />
+        {/* <div className="App wrapper">
+          <form onSubmit={}>
+            <label htmlFor="category">Play this category:</label>
+            <select name="category" id="category">
+              <option value="" disabled>Pick one:</option>
+              <option value="Arts & Literature">Arts & Literature</option>
+              <option value="Film & TV">Film & TV</option>
+              <option value="Food & Drink">Food & Drink</option>
+              <option value="General Knowledge">General Knowledge</option>
+              <option value="Geography">Geography</option>
+              <option value="History">History</option>
+              <option value="Music">Music</option>
+              <option value="Science">Science</option>
+              <option value="Society & Culture">Society & Culture</option>
+              <option value="Sport & Leisure">Sport & Leisure</option>
+            </select>
+          </form>
+          <form>
+            <label htmlFor="level">Play at this level:</label>
+            <select name="level" id="level">
+              <option value="" disabled>Pick one:</option>
+              <option value="easy">easy</option>
+              <option value="medium">medium</option>
+              <option value="hard">hard</option>
+            </select>
+          </form>
           {/* svg arrow up */}
-          <ArrowDown size={70}
+          {/* <ArrowDown size={70}
               // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
               color={`${initialIntro === next ? "#2A28BA" : "#A741AC"} `}
               aria-label = "click on the button below to get a new question"
@@ -256,12 +408,14 @@ function App() {
           // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
           className={`${initialIntro === next ? "nextArrow" : "startArrow"} `}
           >⬇</p> */}
-          <span className="sr-only">Click the button down below</span>
+          {/* <span className="sr-only">Click the button down below</span>
         </div>{/* END WRAPPER */}
 
-      </section>{/* end instruction section */}
+      {/* </section>end instruction section  */}
       {/* DISPLAY FORM COMPONENT */}
-      <DisplayForm
+      {
+        submitted === true ?
+        <DisplayForm
             // handleSubmit={}
         next={next}
         intro={intro}
@@ -275,14 +429,19 @@ function App() {
         leaveClickHandler={leaveClickHandler}
         category={category}
         level={level}
+        filteredQuestions={filteredQuestions}
+        firstSubmitHandler={firstSubmitHandler}
         // answerTwo={answerTwo}
         // answerThree={answerThree}
         // correctAnswer={correctAnswer}
       />
+      : null
+      }
+      
         
      
       
-      
+      </section>
       
     </main>
     {/* Footer with copyright */}
