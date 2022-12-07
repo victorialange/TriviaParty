@@ -176,11 +176,36 @@ button {
 
 .dropContainer select {
   margin-bottom: 15px;
+  background: #E9DCFF;
+  border: 3px solid rgb(197, 165, 251);
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-family: inherit;
+  text-align: center;
+  /* color: white; */
+  font-weight: 600;
+  padding: 7.5px 10px;
 }
+
+.dropContainer select option:hover,
+.dropContainer select option:checked {
+  box-shadow: 0 0 10px 100px rgb(197, 165, 251) inset;
+  background: rgb(197, 165, 251) !important;
+}
+
+select:focus > option:checked { 
+  background: rgb(197, 165, 251) !important;
+}
+
+/* .dropContainer select:hover {
+  background-color: #E9DCFF;
+} */
 
 .dropContainer label {
   color: black;
   margin-bottom: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .thinking h3 {
@@ -228,6 +253,13 @@ button {
 }
 
 /* start button before quiz shows up */
+
+/* start button as submit button for dropdown */
+.dropContainer .start {
+  margin-left: 0;
+  align-self: center;
+}
+
 .start {
   padding: 10px 50px;
   font-size: 1.5rem;
@@ -384,9 +416,7 @@ legend {
 }
 
 .answer:hover,
-.answer:focus,
-.answer:visited,
-.answer:active {
+.answer:focus {
   background-color: rgb(105, 1, 107, 0.85);
   font-size: 1.05rem;
 }
@@ -529,6 +559,12 @@ form button:focus {
 /* noMessage class for when no feedback message yet (before form submission) */
 .noMessage {
   margin-bottom: 20px;
+  /* display: none; */
+}
+
+/* styling for feedback for when user has left page, no display, so that when he comes back it's cleared */
+.noField {
+  display: none;
 }
 
 /* message class for when feedback message exists upon form submission */
@@ -713,13 +749,14 @@ footer p {
     width: 100%;
   }
   .answer:hover,
-  .answer:focus,
-  .answer:visited,
-  .answer:active {
+  .answer:focus {
     font-size: 1.01rem;
   }
   .formContainer {
     height: fit-content;
+  }
+  .lowered {
+    margin-top: 0;
   }
   /* PROPERTIES */
   .properties {
@@ -777,15 +814,19 @@ footer p {
   .submitAlert {
     margin-top: 0;
   }
-  .alert p:first-child {
+  /* .alert p:first-child {
     font-size: 4rem;
     color: #2A28BA;
-  }
+  } */
   .alert svg {
     fill: #322fd6;
     margin-top: 15px;
+    margin-bottom: 0;
   }
-  
+  .limitSubmitMessage {
+    margin-top: 0;
+  }
+
   .alert .limitSubmitMessage p:first-child {
     font-size: 1.1rem;
     color: black;
@@ -811,9 +852,7 @@ footer p {
 @media (min-width: 438px) {
   /* hover for answer input and label */
   .answer:hover,
-  .answer:focus,
-  .answer:visited,
-  .answer:active {
+  .answer:focus {
     font-size: 1.05rem;
   }
   .weaker:hover,
@@ -830,6 +869,9 @@ footer p {
   /* FORM CONTAINER */
   .formContainer {
     height: 900px;
+  }
+  .lowered {
+    margin-top: 50px;
   }
   form {
     margin-left: 60px;
@@ -855,7 +897,7 @@ footer p {
   }
   .limitSubmitMessage {
     position: absolute;
-    top: 30%;
+    top: 100%;
     margin-top: 0;
   }
   .alert .limitSubmitMessage p:first-child {
@@ -865,17 +907,18 @@ footer p {
     margin-bottom: 0;
   }
   
-  .alert p:first-child {
+  /* .alert p:first-child {
     font-size: 2.7rem;
     color: violet;
     height: min-content;
     margin-bottom: 80px;
     font-weight: bold;
-  }
+  } */
 
   .alert svg {
-    height: min-content;
-    margin-bottom: 200px;
+    height: 90px;
+    margin-bottom: 0px;
+    margin-top: 25px;
     font-weight: bold;
   }
 
@@ -893,15 +936,15 @@ footer p {
 
 @media (min-width: 538px) {
   /* limit submit message */
-  .limitSubmitMessage {
+  /* .limitSubmitMessage {
     margin-top: 20px;
-  }
-  .alert p:first-child {
+  } */
+  /* .alert p:first-child {
     font-size: 3.5rem;
-  }
-  .alert svg {
+  } */
+  /* .alert svg {
     height: 90px;
-  }
+  } */
 
   .alert .limitSubmitMessage p:first-child {
     font-size: 1.1rem;
@@ -1031,22 +1074,31 @@ footer p {
 
 @media (min-width: 700px) {
    /* limit submit message */
-  .alert p:first-child {
+  /* .alert p:first-child {
     font-size: 4.5rem;
     margin-bottom: 155px;
-  }
+  } */
   .alert .limitSubmitMessage p:first-child {
     margin-bottom: 0;
     font-size: 1.1rem;
   }
+  .loweredForm {
+    margin-top: 30px;
+  }
+  /* .limitSubmitMessage {
+    top: 30%;
+  } */
+  /* .alert svg {
+    height: 100px;
+  } */
 }
 
 @media (min-width: 738px) {
   /* limit submit message */
-  .alert p:first-child {
+  /* .alert p:first-child {
     font-size: 5rem;
     margin-bottom: 200px;
-  }
+  } */
   .alert .limitSubmitMessage p:first-child {
     font-size: 1.1rem;
     margin-bottom: 0;
@@ -1122,7 +1174,10 @@ footer p {
   }
   /* limit submit message */
   .limitSubmitMessage {
-    margin-top: 30px;
+    margin-top: 10px;
+  }
+  .alert svg {
+    height: 110px;
   }
 }
 

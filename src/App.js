@@ -150,13 +150,13 @@ function App() {
       setEveryStuff(withOrientation);
 
 
-      const tryNewQuestion = questionArray.map((question, index, fullArray) => {
-        return fullArray;
-      })
-      console.log(tryNewQuestion);
+      // const tryNewQuestion = questionArray.map((question, index, fullArray) => {
+      //   return fullArray;
+      // })
+      // console.log(tryNewQuestion);
 
-      const newQuestionsArray = questionArray.toString([]);
-      console.log(newQuestionsArray);
+      // const newQuestionsArray = questionArray.toString([]);
+      // console.log(newQuestionsArray);
 
 
       // const questionWithProps = questions.map((wholeArray) =>({
@@ -522,6 +522,7 @@ function App() {
         everyStuff={everyStuff}
         userSelect={userSelect}
         otherUserSelect={otherUserSelect}
+        // id={currentQuestionId}
         // answerTwo={answerTwo}
         // answerThree={answerThree}
         // correctAnswer={correctAnswer}

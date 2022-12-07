@@ -266,7 +266,7 @@ const DisplayForm = ( props ) => {
 
                 // conditional rendering of className based on whether button is start button or generates new question
                 className="next"
-                >Next
+                >New Question
                 </button>
             </Fragment> : ""
            } 
@@ -317,114 +317,112 @@ const DisplayForm = ( props ) => {
             <div className="App wrapper">
                 {/* FORM CONTAINER */}
                 {
-                    props.initialIntro === props.next ?
-                    <div className="content formContainer">
-                        <form onSubmit={submitHandler} aria-label="quiz" 
-                        className={`
-                        ${limitSubmit === true && limitSubmitMessage !== "content" ? "loweredForm" : "content"}
-                        `}
-                        >
-                            {/* properties container */}
-                            <div className="properties">
-                                {/* category property */}
-                                {/* conditional rendering in order to avoid getting undefined property onto the page */}
-                                {
-                                props.userSelect ?  
-                                <div className="category">
-                                    <p>{`Category: ${props.userSelect}`}</p>
-                                </div>
-                                : null  
-                                }
-                                
-                                    
-                                {/* level property */}
-                                {/* conditional rendering in order to avoid getting undefined property onto the page */}
-                                {
-                                props.otherUserSelect ?
-                                <div className="level">
-                                    <p>{`Level: ${props.otherUserSelect}`}</p>
-                                </div>
-                                : null
-                                }
-                                
+                props.initialIntro === props.next ?
+                <div className={`${limitSubmitMessage !== "" ? "formContainer content lowered" : "formContainer content"}`}>
+                    <form onSubmit={submitHandler} aria-label="quiz" 
+                    className={`
+                    ${limitSubmit === true && limitSubmitMessage !== "" ? "loweredForm" : "content"}
+                    `}
+                    >
+                        {/* properties container */}
+                        <div className="properties">
+                        {/* category property */}
+                        {/* conditional rendering in order to avoid getting undefined property onto the page */}
+                            {
+                            props.userSelect ?  
+                            <div className="category">
+                                <p>{`Category: ${props.userSelect}`}</p>
                             </div>
-                            {/* FIELDSET with question from API as legend and inputs and labels as elements */}
-                            
-                                {/* mapping through array with specific endpoint */}
-                                {props.everyStuff.map((filteredQuestion) => {
+                            : null  
+                            }
+                                    
+                            {/* level property */}
+                            {/* conditional rendering in order to avoid getting undefined property onto the page */}
+                            {
+                            props.otherUserSelect ?
+                            <div className="level">
+                                <p>{`Level: ${props.otherUserSelect}`}</p>
+                            </div>
+                            : null
+                            }
+                                
+                        </div>{/* end of properties container */}
+                        
+                        {/* FIELDSET with question from API as legend and inputs and labels as elements */}    
+                        <fieldset 
+                        // key={filteredQuestion.}
+                        >
+                            <legend
+                            // className={`${generator === next ? "content" : "noContent"}`}
+                            >{props.question}</legend>
+                            <div className="inputs" 
+                            // onChange={handleChange}
+                            >
+                            {/* mapping through the allAnswers array that I created inside async getQuiz function that holds incorrectAnswers array and correctAnswer string, all inside one array */}
+                            {/* also good for later in case I decide to randomize/shuffle through the order of the array so that user can't predict where the correct answer is positioned */}
+                                {props.allAnswers.map((answer, index) => {
+                                // add an if statement checking if answer parameter (represents each item of allAnswers array) is truthy, so that no empty answer div gets returned, most times there is 4 answers (3 incorrect ones, and 1 correct one), but I just came across one question, where there was only 3 answers (2 incorrect and 1 correct one), maybe not best practice since return comes before anything else inside map
+                                // if (answer) {
+         
                                 return(
-                                <fieldset key={filteredQuestion.currentQuestionId}>
-                                     <legend
-                                     // className={`${generator === next ? "content" : "noContent"}`}
-                                     >{filteredQuestion.question}</legend>
-                                     <div className="inputs" 
-                                     // onChange={handleChange}
-                                     >
-                                     {/* mapping through the allAnswers array that I created inside async getQuiz function that holds incorrectAnswers array and correctAnswer string, all inside one array */}
-                                     {/* also good for later in case I decide to randomize/shuffle through the order of the array so that user can't predict where the correct answer is positioned */}
-                                     {filteredQuestion.allAnswers.map((answer, index) => {
-                                         // add an if statement checking if answer parameter (represents each item of allAnswers array) is truthy, so that no empty answer div gets returned, most times there is 4 answers (3 incorrect ones, and 1 correct one), but I just came across one question, where there was only 3 answers (2 incorrect and 1 correct one), maybe not best practice since return comes before anything else inside map
-                                         // if (answer) {
-         
-                                         return(
-                                             // remember to use ternary operator when defining a condition for rendering inside return, since map expects return right after arrow and not an if statement, have to use ternary since it returns JSX, also no curlies since it's straight JSX
-                                             answer ?
-                                             <div className={`
-                                             ${limitSubmit === true ? "weaker answer" : "answer" } 
-                                             ${limitSubmit === true && userChoice === answer ? "selectedFinal" : ""} 
-                                             ${userChoice !== answer ? "" : "selected"} 
-                                             ${limitSubmit === true && userChoice === answer && userChoice === filteredQuestion.correctAnswer ? "selectedRight" : ""} 
-                                             ${limitSubmit === true && userChoice === answer && userChoice !== filteredQuestion.correctAnswer ? "selectedWrong" : ""}
-                                             ${limitSubmit === true && answer === filteredQuestion.correctAnswer ? "idealSelect" : ""}`} 
-                                             // id={``}
+                                // remember to use ternary operator when defining a condition for rendering inside return, since map expects return right after arrow and not an if statement, have to use ternary since it returns JSX, also no curlies since it's straight JSX
+                                answer ?
+                                    <div className={`
+                                    ${limitSubmit === true ? "weaker answer" : "answer" } 
+                                    ${limitSubmit === true && userChoice === answer ? "selectedFinal" : ""} 
+                                    ${userChoice !== answer ? "" : "selected"} 
+                                    ${limitSubmit === true && userChoice === answer && userChoice === props.correctAnswer ? "selectedRight" : ""} 
+                                    ${limitSubmit === true && userChoice === answer && userChoice !== props.correctAnswer ? "selectedWrong" : ""}
+                                    ${limitSubmit === true && answer === props.correctAnswer ? "idealSelect" : ""}`} 
+                                    // id={``}
                                              
-                                             // make sure to give the key to the parent element inside the return, so the div containing the input and label, and not the children of that container (the input and label themselves)
-                                             // also make sure to use a value for the key that's different from the id of the input element, otherwise the whole conditional rendering/ternary operators won't work properly (solution: modifying index, like adding other value) 
-                                             key={filteredQuestion.allAnswers + index}
-                                             >
-                                                 <input
-                                                 // chose radio button as I want the user to only check one input that gets submitted
-                                                 type="radio"
-                                                 // id of each answer input set to index position (keeps incrementing, so unique for each input) 
-                                                 id={index}
-                                                 // index="0"
+                                    // make sure to give the key to the parent element inside the return, so the div containing the input and label, and not the children of that container (the input and label themselves)
+                                    // also make sure to use a value for the key that's different from the id of the input element, otherwise the whole conditional rendering/ternary operators won't work properly (solution: modifying index, like adding other value) 
+                                    key={props.currentQuestionId + index}
+                                    >
+                                        <input
+                                        // chose radio button as I want the user to only check one input that gets submitted
+                                        type="radio"
+                                        // id of each answer input set to index position (keeps incrementing, so unique for each input) 
+                                        id={index}
+                                        // index="0"
              
-                                                 // all inputs have the same name, so that they are being grouped together
-                                                 name="quiz"
+                                        // all inputs have the same name, so that they are being grouped together
+                                        name="quiz"
              
-                                                 // giving it the required attribute so that user can't submit without having selected one option
-                                                 required 
-                                                 // onChange={handleFirstChange}
+                                        // giving it the required attribute so that user can't submit without having selected one option
+                                        required 
+                                        // onChange={handleFirstChange}
              
-                                                 // value set to string value of each answer
-                                                 value={answer}
-                                                 // always make sure to have the right properties defined/set because otherwise one little mistake and the input stays checked, which is not ideal for a quiz   
+                                        // value set to string value of each answer
+                                        value={answer}
+                                        // always make sure to have the right properties defined/set because otherwise one little mistake and the input stays checked, which is not ideal for a quiz   
          
-                                                 // pass the onClick the handleRadioClick function in order to control the value of the userChoice each time an input gets clicked
-                                                 onClick={handleRadioClick}
-                                                 // set disabled attribute equal to stateful variable limitSubmit (so to true after form submission and to false before form submission)
-                                                 // this will prevent the user from being able to change the answer/resubmitting numerous times, which would make the whole trivia game a bit pointless
-                                                 // also prevents the input value from constantly changing even after submission
-                                                 disabled={limitSubmit}
-                                                 // checked={userChoice === 'firstAnswer'} 
-                                                 // className={`${limitSubmit === true && userChoice === answer ? "submittedInput" : ""}`}
-                                                 /> 
-                                                 <label htmlFor={index}>{answer}</label>
-                                                 {
-                                                 limitSubmit === true ?
-                                                 <label htmlFor={index} className="sr-only">
-                                                 "This option is disabled because you already submitted your answer"
-                                                 </label>
-                                                 : null 
-                                                 }
-                                             </div>// end of answer container for input and label
-                                             : null 
-                                             );// end of return
+                                        // pass the onClick the handleRadioClick function in order to control the value of the userChoice each time an input gets clicked
+                                        onClick={handleRadioClick}
+                                        // set disabled attribute equal to stateful variable limitSubmit (so to true after form submission and to false before form submission)
+                                        // this will prevent the user from being able to change the answer/resubmitting numerous times, which would make the whole trivia game a bit pointless
+                                        // also prevents the input value from constantly changing even after submission
+                                        disabled={limitSubmit}
+                                        // checked={userChoice === 'firstAnswer'} 
+                                        // className={`${limitSubmit === true && userChoice === answer ? "submittedInput" : ""}`}
+                                        /> 
+                                            <label htmlFor={index}>{answer}</label>
+                                            {
+                                            limitSubmit === true ?
+                                            <label htmlFor={index} className="sr-only">
+                                            "This option is disabled because you already submitted your answer"
+                                            </label>
+                                            : null 
+                                            }
+                                        </div>// end of answer container for input and label
+                                        : null 
+                                    );// end of return
          
-                                           // }// end of if statement outside return
+                                    // }// end of if statement outside return
          
-                                         })// end of anonymous callback function inside map
-                                     }  {/* end of map */}
+                                })// end of anonymous callback function inside map
+                            }  {/* end of map */}
                                          
                                          
                                          
@@ -463,13 +461,13 @@ const DisplayForm = ( props ) => {
                                              // checked={userChoice === 'lastAnswer'}  
                                              />{props.correctAnswer}
                                          </label> */}
-                                     </div>
-                                     </fieldset>
-                                    )
-                                })}
-                            {/* </fieldset> */}
-                            {/* Buttons */}
-                    
+                                </div>{/* end of input and label container  */}
+                                
+                                
+                            </fieldset>{/* </fieldset> */}
+                                 
+                            
+                        {/* Buttons */}
                         {/* submit button */}
                         <button 
                             type="submit"
@@ -485,13 +483,20 @@ const DisplayForm = ( props ) => {
                         {/* <div className={`${isActive ? "message" : "noMessage"} ${feedback === right && isActive ? "right": ""} ${feedback === wrong && isActive ? "wrong": "" } `}>
                             <p>{feedback}</p>
                         </div> */}
-                        <div className={`${isActive ? "message" : "noMessage"}`}>
-                            <div className={`${userChoice !== props.correctAnswer && isActive ? "wrong": "right"}`}>
-                                <p>{message}</p>
-                            </div>    
-                        </div>  
+                        {/* setting up another condition so that when user is leaving quiz and then gets back and starts again he won't see the feedback from the past submit */}
+                        {
+                            leaving === false ?
+                            <div className={`${isActive ? "message" : "noMessage"}`}>
+                                <div className={`${userChoice !== props.correctAnswer && isActive ? "wrong": "right"}`}>
+                                    <p>{message}</p>
+                                </div>    
+                            </div> //end of feedback container
+                            : 
+                            <div className="noMessage"></div>
+                        }
+                        
                         </form>
-                    </div>
+                    </div> // end of form container
                     : null
                 } 
                 
