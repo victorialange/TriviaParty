@@ -843,7 +843,7 @@ footer p {
     color: #2A28BA;
   } */
   .alert svg {
-    fill: #322fd6;
+    /* fill: #322fd6; */
     margin-top: 15px;
     margin-bottom: 0;
   }
