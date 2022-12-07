@@ -194,6 +194,8 @@ const DisplayForm = ( props ) => {
         // if (props.questionId.some(value => value.id === props.currentQuestionId) === false) {
         
         props.clickHandler();
+        
+        
         // if it's showing same question skip over it
         // if (props.currentQuestionId === props.questionId ) {
         //     props.clickHandler();
@@ -393,9 +395,11 @@ const DisplayForm = ( props ) => {
                             <div className="level">
                                 <p>{`Level: ${props.otherUserSelect}`}</p>
                             </div>
-                            : <div className="level">
+                            : 
+                            props.level !== undefined ?
+                            <div className="level">
                                 <p>{`Level: ${props.level}`}</p>
-                            </div>
+                            </div> : null
                             }
                                 
                         </div>{/* end of properties container */}

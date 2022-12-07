@@ -41,6 +41,7 @@ function App() {
   const [category, setCategory] = useState("");
   const [level, setLevel] = useState("");
 
+  const [limit, setLimit] = useState(0);
   
   const [allCategories, setAllCategories] = useState([]);
   const [allLevels, setAllLevels] = useState([]);
@@ -57,7 +58,7 @@ function App() {
 
       url.search = new URLSearchParams({
         categories: userSelect,
-        limit: 1,
+        limit: 20,
         difficulty: otherUserSelect
       })
       
@@ -65,7 +66,8 @@ function App() {
       const data = await response.json();
 
       console.log(data);
-
+      
+      setLimit(20);
       // console.log(response.data[0].question);
       
       // setIncorrectAnswers(response.data[0].incorrectAnswers);
@@ -214,14 +216,14 @@ function App() {
       const url = new URL('https://the-trivia-api.com/api/questions')
 
       url.search = new URLSearchParams({
-        limit: 1
+        limit: 20
       })
       
       const response = await fetch(url);
       const data = await response.json();
 
       console.log(data);
-
+      setLimit(20);
       // console.log(response.data[0].question);
       
       // setIncorrectAnswers(response.data[0].incorrectAnswers);
@@ -317,7 +319,7 @@ function App() {
       const url = new URL('https://the-trivia-api.com/api/questions')
 
       url.search = new URLSearchParams({
-        limit: 1,
+        limit: 20,
         difficulty: otherUserSelect
       })
       
@@ -325,7 +327,7 @@ function App() {
       const data = await response.json();
 
       console.log(data);
-
+      setLimit(20);
       // console.log(response.data[0].question);
       
       // setIncorrectAnswers(response.data[0].incorrectAnswers);
@@ -472,7 +474,7 @@ function App() {
 
       url.search = new URLSearchParams({
         categories: userSelect,
-        limit: 1
+        limit: 20
       })
       
       const response = await fetch(url);
@@ -480,6 +482,7 @@ function App() {
 
       console.log(data);
 
+      setLimit(20);
       // console.log(response.data[0].question);
       
       // setIncorrectAnswers(response.data[0].incorrectAnswers);
@@ -982,6 +985,7 @@ function App() {
         everyStuff={everyStuff}
         userSelect={userSelect}
         otherUserSelect={otherUserSelect}
+        limit={limit}
         // id={currentQuestionId}
         // answerTwo={answerTwo}
         // answerThree={answerThree}
