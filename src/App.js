@@ -265,7 +265,7 @@ function App() {
     setSubmitted(true);
       // setQuestion(question);
       // console.log(question);
-
+    alert(`Amazing!! You chose ${userSelect} as your category and ${otherUserSelect} as your level. Good luck!!! 🍀`)
       // setIncorrectAnswers(incorrectAnswers);
       // console.log(incorrectAnswers);
 

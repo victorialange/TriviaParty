@@ -252,6 +252,27 @@ button {
   font-size: 1.2rem;
 }
 
+.choiceIteration {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  align-items: center;
+  width: 100%;
+}
+
+.choiceIteration p {
+  margin: 0;
+  font-weight: 600;
+  background: white;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 5px 0;
+}
+
+/* .choiceIteration p:first-child {
+  margin-right: 100px;
+} */
+
 /* start button before quiz shows up */
 
 /* start button as submit button for dropdown */
@@ -731,7 +752,10 @@ footer p {
   .instruction a:focus {
     font-size: 1.1rem;
   }
-
+  /* repetition user selection */
+  .choiceIteration p {
+    width: calc(50% - 15%);
+  }
   /* limitSubmitMessage div */
   .limitSubmitMessage {
     margin-top: 0px;
@@ -869,6 +893,7 @@ footer p {
   /* FORM CONTAINER */
   .formContainer {
     height: 900px;
+    min-height: fit-content;
   }
   .lowered {
     margin-top: 50px;
