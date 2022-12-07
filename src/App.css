@@ -252,6 +252,7 @@ button {
   font-size: 1.2rem;
 }
 
+/* choice iteration, so repetition of user's selection */
 .choiceIteration {
   display: flex;
   justify-content: space-between;
@@ -268,6 +269,46 @@ button {
   border-radius: 10px;
   padding: 5px 0;
 }
+
+/* when chosen random */
+.random .scoreContainer p {
+  width: 100%;
+  padding: 5px;
+}
+
+.levelSelect,
+.categorySelect,
+.noRandom {
+  flex-wrap: wrap;
+  flex-direction: column;
+  /* justify-content: center; */
+}
+
+.levelSelect p:first-child,
+.categorySelect p:first-child,
+.noRandom p:first-child {
+  align-self: flex-start;
+}
+
+.levelSelect .scoreContainer,
+.categorySelect .scoreContainer,
+.noRandom .scoreContainer {
+  /* margin-top: 30px; */
+  align-self: flex-end;
+}
+
+.levelSelect p:nth-child(3),
+.categorySelect p:nth-child(3),
+.noRandom p:nth-child(3) {
+  align-self: flex-start;
+}
+
+.categorySelect .scoreContainer p,
+.levelSelect .scoreContainer p,
+.noRandom .scoreContainer p {
+  width: 100%;
+}
+
 
 /* .choiceIteration p:first-child {
   margin-right: 100px;
@@ -753,9 +794,11 @@ footer p {
     font-size: 1.1rem;
   }
   /* repetition user selection */
-  .choiceIteration p {
+  .choiceIteration p,
+  .choiceIteration .scoreContainer {
     width: calc(50% - 15%);
   }
+
   /* limitSubmitMessage div */
   .limitSubmitMessage {
     margin-top: 0px;
@@ -919,7 +962,7 @@ footer p {
     position: absolute;
     right: 0;
     left: 0;
-    top: 100%;
+    top: 70%;
   }
   .limitSubmitMessage {
     position: absolute;
@@ -942,10 +985,11 @@ footer p {
   } */
 
   .alert svg {
-    height: 90px;
+    height: 238px;
     margin-bottom: 0px;
-    margin-top: 25px;
+    /* margin-top: 25px; */
     font-weight: bold;
+    width: 105px;
   }
 
 
@@ -1075,6 +1119,9 @@ footer p {
   .quizForm h3 {
     margin-top: 30px;
   }
+  .alert {
+    top: 55%;
+  }
   /* category */
   .category {
     width: 50%;
@@ -1108,6 +1155,13 @@ footer p {
     margin-bottom: 0;
     font-size: 1.1rem;
   }
+  .alert svg {
+    height: 150px;
+    width: 83px;
+  }
+  .alert {
+    top: 70%;
+  }
 
   .loweredForm {
     margin-top: 30px;
@@ -1134,6 +1188,9 @@ footer p {
   .alert .limitSubmitMessage p:first-child {
     font-size: 1.1rem;
     margin-bottom: 0;
+  }
+  .alert {
+    top: 90%;
   }
 }
 
@@ -1214,8 +1271,11 @@ footer p {
   .limitSubmitMessage {
     margin-top: 10px;
   }
+  .alert {
+    top: 85%;
+  }
   .alert svg {
-    height: 110px;
+    height: 150px;
   }
 }
 

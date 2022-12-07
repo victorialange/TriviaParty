@@ -36,9 +36,6 @@ const DisplayForm = ( props ) => {
     const submitted = "Submitted :)";
     // stateful variable for string value of submit button, default value set to needSubmit (so before the user has submitted anything)
     const [submit, setSubmit] = useState(needSubmit);
-    
-
-    
 
     // variables for aria-label values of buttons (start and new question)
     const startLabel = "Click this button to start the quiz game!";
@@ -88,9 +85,14 @@ const DisplayForm = ( props ) => {
     // message as stateful variable that will hold the customRight and the customWrong array with randomized index number num, default value set to empty string, as message will only get displayed when user submits the form
     const [message, setMessage] = useState("");
 
-// setCustomRight(randomRight);
-// setCustomWrong(randomWrong);
+    // score state to count how many questions the user has gotten right when submitted
+    const [score, setScore] = useState(0);
+    // setCustomRight(randomRight);
+    // setCustomWrong(randomWrong);
     //   const rightArray = [rightOne, rightTwo, rightThree, rightFour];
+
+    // total questions state for when user has submitted an answer, counts how many times user has submitted
+    const [totalQuestionsAnswered, setTotalQuestionsAnswered] = useState(0);
       
       // setCustomRight([rightOne, rightTwo, rightThree, rightFour]);
       // console.log(customRight);
@@ -131,14 +133,7 @@ const DisplayForm = ( props ) => {
         
     };
 
-    // const resetRadioState = () => {
-        
-    // }
-
-
-    
-
-
+    // submitHandler for when user submits an answer
     const submitHandler = (e) => {
         e.preventDefault();
         // console.log(formData);
@@ -171,6 +166,18 @@ const DisplayForm = ( props ) => {
             console.log(num);
         }
 
+        setTotalQuestionsAnswered(totalQuestionsAnswered + 1);
+        console.log(totalQuestionsAnswered);
+
+        // setting score value of score state according to whether user has chosen correct answer and submitted (score stays the same when user hasn't submitted or answered correctly)
+        if (userChoice === props.correctAnswer) {
+            setScore(score + 1);
+        }
+        else {
+            setScore(score);
+        }
+
+        console.log(score);
         // update value of stateful variable limitSubmit to true, so that submit button and radio input are disabled when the user has already submitted the form once 
         setLimitSubmit(true);
         // update state variable submit to submitted variable when user has submitted an answer
@@ -241,6 +248,9 @@ const DisplayForm = ( props ) => {
         setLimitSubmit(false);
         // set submit button of quiz' string value back to needSubmit
         setSubmit(needSubmit);
+        // set score and total questions answered back to 0, so that user can start fresh again after leaving
+        setScore(0);
+        setTotalQuestionsAnswered(0);
     }
 
 
@@ -272,22 +282,40 @@ const DisplayForm = ( props ) => {
                 </button>
                 {
                     props.userSelect !== "Random" && props.otherUserSelect !== "Random" ?
-                    <div className="choiceIteration">
+                    <div className="choiceIteration noRandom">
                         <p>Chosen category: {props.userSelect}</p>
+                        <div className="scoreContainer">
+                            <p>Your score: {score}/{totalQuestionsAnswered}</p>
+                        </div>
                         <p>Chosen level: {props.otherUserSelect}</p>
-                    </div> :
+                    </div> 
+                    :
                     props.userSelect === "Random" && props.otherUserSelect !== "Random"?
-                    <div className="choiceIteration">
+                    <div className="choiceIteration levelSelect">
                         <p>Chosen category: {props.userSelect}!</p>
+                        <div className="scoreContainer">
+                            <p>Your score: {score}/{totalQuestionsAnswered}</p>
+                        </div>
                         <p>Chosen level: {props.otherUserSelect}</p>
-                    </div> :
+                    </div> 
+                    :
                     props.userSelect !== "Random" && props.otherUserSelect === "Random"?
-                    <div className="choiceIteration">
+                    <div className="choiceIteration categorySelect">
                         <p>Chosen category: {props.userSelect}</p>
+                        {/* score container */}
+                        <div className="scoreContainer">
+                            <p>Your score: {score}/{totalQuestionsAnswered}</p>
+                        </div>
                         <p>Chosen level: {props.otherUserSelect}!</p>
+                        
                     </div>
-                    : <div className="choiceIteration">
+                    : 
+                    <div className="choiceIteration random">
                         <p>You chose Random!</p>
+                        {/* score container */}
+                        <div className="scoreContainer">
+                            <p>Your score: {score}/{totalQuestionsAnswered}</p>
+                        </div>
                     </div>
                 }
                 
@@ -563,7 +591,7 @@ const DisplayForm = ( props ) => {
                 //     `${generator!== next || leaving === true ? "noContent showImg wrapper" : "leaveField"}`
                 // }
                 >
-                <p>Feeling tired or just wanna leave the party early?</p>
+                <p>Feeling tired or just wanna leave the party early? Or maybe you just got bored of the level or category (so smart! 🤓) and feel like choosing something else! Either way we've got you 😃</p>
                 <ArrowDown size={70}
                 // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
                 color="black"
@@ -576,7 +604,7 @@ const DisplayForm = ( props ) => {
                     // pass in the function definition of leaveHandler, in which it calls the leaveClickHandler function from the App.js component with props, which also includes the initialIntro value set to intro (initial state). Thanks to the ternary operators that check whether the generator state value is start or next, string values and classNames get added or changed accordingly (and then styled fittingly) => if form's className=noContent, that invokes display:none of the whole quiz, which is what I want for when the user either hasn't hit the start button yet or when the user wants to quit the game and return to the initial start display
                     onClick={leaveHandler}
                     aria-label="Click this button to exit the trivia and return to start"
-                >Leave Trivia Party</button> 
+                >Leave Trivia Party/ Restart game</button> 
                 <p>Sad to see you go 😥  But also, you deserve the break 😊</p>
                 <p>Hope you feel like rejoining the party soon 😘</p>
                 
