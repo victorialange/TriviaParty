@@ -50,7 +50,7 @@ const DisplayForm = ( props ) => {
     const [isActive, setActive] = useState(false);
 
     // leaving as stateful variable that represents whether leavingField is returned or not (here initial value set to false, because I only want to return it when the quiz is displayed, before quiz gets displayed, only have the start button and instructions there on the page)
-    const [leaving, setLeaving] = useState(false);
+    // const [leaving, setLeaving] = useState(false);
 
     // stateful variable that represents disabled state of radio input and submit button, set to false by default so that user can make a selection and submit, then later in handleSubmit set to true (so that user can no longer change value, or submit) and in anotherClickHandler set to the inital state again (disabled=false)
     const [limitSubmit, setLimitSubmit] = useState(false);
@@ -202,7 +202,7 @@ const DisplayForm = ( props ) => {
         // set value of stateful variable submit back to needSubmit, so everytime the user clicks on the new question button
         setSubmit(needSubmit);
         // setting leaving back to false, so that leavingField appears again, when generator's value is set back to next variable
-        setLeaving(false);
+        // setLeaving(false);
         
         setLimitSubmitMessage("");
         // if statement to check if message present, set the message's value back to start again, so that it doesn't stay there when user goes to next question, also sets active stateful variable back to false, so that appropriate class with styling based on that gets applied
@@ -228,7 +228,7 @@ const DisplayForm = ( props ) => {
         // setUserChoice("");
 
         // update stateful variable leaving to true, so that leavingField div is returned later on in JSX (set as condition)
-        setLeaving(true);
+        // setLeaving(true);
 
         // setting generator back to start, which invokes form/quiz disappearing, all I needed to make entire form disappear since it's the same value when user hits start button
         // props.initialIntro(props.start);
@@ -270,15 +270,29 @@ const DisplayForm = ( props ) => {
                 className="next"
                 >New Question
                 </button>
-                <div className="choiceIteration">
-                    <p>Chosen category: {props.userSelect}</p>
-                    <p>Chosen level: {props.otherUserSelect}</p>
-                </div>
+                {
+                    props.userSelect !== "Random" && props.otherUserSelect !== "Random" ?
+                    <div className="choiceIteration">
+                        <p>Chosen category: {props.userSelect}</p>
+                        <p>Chosen level: {props.otherUserSelect}</p>
+                    </div> :
+                    props.userSelect === "Random" && props.otherUserSelect !== "Random"?
+                    <div className="choiceIteration">
+                        <p>Chosen category: {props.userSelect}!</p>
+                        <p>Chosen level: {props.otherUserSelect}</p>
+                    </div> :
+                    props.userSelect !== "Random" && props.otherUserSelect === "Random"?
+                    <div className="choiceIteration">
+                        <p>Chosen category: {props.userSelect}</p>
+                        <p>Chosen level: {props.otherUserSelect}!</p>
+                    </div>
+                    : <div className="choiceIteration">
+                        <p>You chose Random!</p>
+                    </div>
+                }
+                
             </Fragment> : ""
            } 
-            
-
-
            
             {/* <button 
             // type="button"
@@ -302,7 +316,7 @@ const DisplayForm = ( props ) => {
                 ?
                 <div className="alert">
                     <ArrowUp size={70}
-                    color="violet"
+                    color="#322fd6"
                     aria-hidden="true"
                     />
                     {/* <p aria-hidden="true">⬆</p>  */}
@@ -335,21 +349,25 @@ const DisplayForm = ( props ) => {
                         {/* category property */}
                         {/* conditional rendering in order to avoid getting undefined property onto the page */}
                             {
-                            props.userSelect ?  
+                            props.userSelect !== "Random" ?  
                             <div className="category">
                                 <p>{`Category: ${props.userSelect}`}</p>
                             </div>
-                            : null  
+                            : <div className="category">
+                                <p>{`Category: ${props.category}`}</p>
+                            </div> 
                             }
                                     
                             {/* level property */}
                             {/* conditional rendering in order to avoid getting undefined property onto the page */}
                             {
-                            props.otherUserSelect ?
+                            props.otherUserSelect !== "Random" ?
                             <div className="level">
                                 <p>{`Level: ${props.otherUserSelect}`}</p>
                             </div>
-                            : null
+                            : <div className="level">
+                                <p>{`Level: ${props.level}`}</p>
+                            </div>
                             }
                                 
                         </div>{/* end of properties container */}
@@ -489,10 +507,10 @@ const DisplayForm = ( props ) => {
                         {/* <div className={`${isActive ? "message" : "noMessage"} ${feedback === right && isActive ? "right": ""} ${feedback === wrong && isActive ? "wrong": "" } `}>
                             <p>{feedback}</p>
                         </div> */}
-                        {/* setting up another condition so that when user is leaving quiz and then gets back and starts again he won't see the feedback from the past submit */}
+                        {/* setting up another condition so that when user is leaving quiz and then gets back and starts again he won't see the feedback from the past submit, is the input and button disabled, then show the message, if not then don't show a message */}
                         {
-                            leaving === false ?
-                            <div className={`${isActive ? "message" : "noMessage"}`}>
+                            limitSubmit ?
+                            <div className={`${submitted && limitSubmit ? "message" : "noMessage"}`}>
                                 <div className={`${userChoice !== props.correctAnswer && isActive ? "wrong": "right"}`}>
                                     <p>{message}</p>
                                 </div>    
