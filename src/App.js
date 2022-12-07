@@ -265,7 +265,13 @@ function App() {
     setSubmitted(true);
       // setQuestion(question);
       // console.log(question);
-    alert(`Amazing!! You chose ${userSelect} as your category and ${otherUserSelect} as your level. Good luck!!! 🍀`)
+    
+    // customizing alert for when user picks hard level
+    if (otherUserSelect === "hard") {
+      alert(`Amazing!! You chose ${userSelect} as your category and ${otherUserSelect} as your level. Good luck!!! 🍀 You're gonna need it!`);
+    } else {
+      alert(`Amazing!! You chose ${userSelect} as your category and ${otherUserSelect} as your level. Good luck!!! 🍀`);
+    }
       // setIncorrectAnswers(incorrectAnswers);
       // console.log(incorrectAnswers);
 

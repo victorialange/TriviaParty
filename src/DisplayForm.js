@@ -182,11 +182,11 @@ const DisplayForm = ( props ) => {
     // let index = 0;
 
     // creating another click handler function for the different question button to remove the feedback each time when that button is clicked
-    const anotherClickHandler = (userSelect, otherUserSelect) => {
+    const anotherClickHandler = () => {
         // calling clickHandler function created in App.js that calls the async getQuiz() function
         // if (props.questionId.some(value => value.id === props.currentQuestionId) === false) {
         
-        props.clickHandler(userSelect, otherUserSelect);
+        props.clickHandler();
         // if it's showing same question skip over it
         // if (props.currentQuestionId === props.questionId ) {
         //     props.clickHandler();
@@ -210,7 +210,7 @@ const DisplayForm = ( props ) => {
             setMessage("");
             setActive(false);
             setLimitSubmitMessage("");
-            setUserChoice("");
+            // setUserChoice("");
         } 
         
     } 
