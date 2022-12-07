@@ -563,7 +563,7 @@ const DisplayForm = ( props ) => {
                 //     `${generator!== next || leaving === true ? "noContent showImg wrapper" : "leaveField"}`
                 // }
                 >
-                <p>Feeling tired or just wanna leave the party early?</p>
+                <p>Feeling tired or just wanna leave the party early? Or maybe you just got bored of the level or category (so smart! 🤓) and feel like choosing something else! Either way we've got you 😃</p>
                 <ArrowDown size={70}
                 // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
                 color="black"
@@ -576,7 +576,7 @@ const DisplayForm = ( props ) => {
                     // pass in the function definition of leaveHandler, in which it calls the leaveClickHandler function from the App.js component with props, which also includes the initialIntro value set to intro (initial state). Thanks to the ternary operators that check whether the generator state value is start or next, string values and classNames get added or changed accordingly (and then styled fittingly) => if form's className=noContent, that invokes display:none of the whole quiz, which is what I want for when the user either hasn't hit the start button yet or when the user wants to quit the game and return to the initial start display
                     onClick={leaveHandler}
                     aria-label="Click this button to exit the trivia and return to start"
-                >Leave Trivia Party</button> 
+                >Leave Trivia Party/ Restart game</button> 
                 <p>Sad to see you go 😥  But also, you deserve the break 😊</p>
                 <p>Hope you feel like rejoining the party soon 😘</p>
                 
