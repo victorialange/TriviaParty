@@ -796,7 +796,7 @@ footer p {
   /* repetition user selection */
   .choiceIteration p,
   .choiceIteration .scoreContainer {
-    width: calc(50% - 15%);
+    width: calc(50% - 10px);
   }
 
   /* limitSubmitMessage div */
@@ -888,7 +888,7 @@ footer p {
   } */
   .alert svg {
     /* fill: #322fd6; */
-    margin-top: 15px;
+    /* margin-top: 15px; */
     margin-bottom: 0;
   }
   .limitSubmitMessage {
@@ -946,6 +946,12 @@ footer p {
     margin-left: 60px;
     /* margin-top: 100px; */
   }
+  /* repetition user selection */
+  .choiceIteration p,
+  .choiceIteration .scoreContainer {
+    width: calc(50% - 10%);
+  }
+
   .loweredForm {
     margin-top: 200px;
   }

@@ -393,9 +393,11 @@ const DisplayForm = ( props ) => {
                             <div className="level">
                                 <p>{`Level: ${props.otherUserSelect}`}</p>
                             </div>
-                            : <div className="level">
+                            : 
+                            props.level !== undefined ?
+                            <div className="level">
                                 <p>{`Level: ${props.level}`}</p>
-                            </div>
+                            </div> : null
                             }
                                 
                         </div>{/* end of properties container */}
