@@ -7,7 +7,9 @@ import './App.css';
 // importing ArrowDown (arrow as svg file) from ArrowDown component
 import ArrowDown from './ArrowDown.js';
 
+// defining asked as a let variable, an empty array to hold question ids
 let asked = [];
+
 function App() {
   
   // state that holds the questions, answer choices and ids from my API
@@ -23,38 +25,38 @@ function App() {
   const [category, setCategory] = useState("");
   const [level, setLevel] = useState("");
     
-  // async await function calling API at endpoint where category and difficulty gets selected (not random), gets called down below inside getQuiz function (also async), where then the conditions get defined (while loop added to keep searching for a new question until it breaks when the current question id is not included in the question ids array)
-
-  // getNewQuestion asyn function at endpoint where category and level is not random
-  const getNewQuestion = async () => {
-    const url = new URL('https://the-trivia-api.com/api/questions')
-    // setting categories and difficulty params of API data object equal to user selection of the dropdown (not random)
-    url.search = new URLSearchParams({
-      categories: userCategory,
-      limit: 1,
-      difficulty: userLevel
-    })
-      
-    // defining response and data as let variables since need to change value later on with another API call if the current question id is inside the question ids array
-    let response = await fetch(url);
-    let data = await response.json();
-    return data;
-    
-  }
-
-  // getQuiz async function that calls the newQuestion() async function
+  // async await function calling API at endpoint where category and difficulty gets selected (not random), conditions get defined (while loop added to keep searching for a new question until it breaks when the current question id is not included in the question ids array)
+  
+  // getQuiz async function
   const getQuiz = async () => {
     // set default value of newQuestion to empty string
     let newQuestion = "";
     // while loop to keep searching for new question until the current question id is not inside the question ids array 
     while (true) {
-      // assign newQuestion value of data object
-      newQuestion = await getNewQuestion();
+
+      const url = new URL('https://the-trivia-api.com/api/questions')
+      // setting categories and difficulty params of API data object equal to user selection of the dropdown (not random)
+      url.search = new URLSearchParams({
+        categories: userCategory,
+        limit: 1,
+        difficulty: userLevel
+      })
+       // defining response and data as let variables since need to change value later on with another API call if the current question id is inside the question ids array
+      let response = await fetch(url);
+      let data = await response.json();
+   
       // if statement to check whether current question id is not included in question ids array
-      if (!asked.includes(newQuestion[0].id)) {
+      if (!asked.includes(data[0].id)) {
+        newQuestion = data;
         asked.push(newQuestion[0].id);
         break;
       } 
+    }
+
+    // stop displaying the form when questions id array is equal to 21
+    // show 20 questions in total (applies to all other async functions with different endpoints)
+    if (asked.length === 21) {
+      setErrorMessage(true);
     }
     
     // updating state of current question id
@@ -80,8 +82,7 @@ function App() {
     // setting category and level states
     setCategory(newQuestion[0].category);
     setLevel(newQuestion[0].difficulty);
-  }
-
+}
 
   // ANOTHER API CALL for random questions with async and await at different endpoint (only limit specified)
   const getRandomQuiz = async () => {
@@ -106,7 +107,10 @@ function App() {
         break;
       }
     }
-    
+
+    if (asked.length === 21) {
+      setErrorMessage(true);
+    }
 
     // store question of data object into state
     setQuestion(newQuestion[0].question);
@@ -145,12 +149,16 @@ function App() {
         
       let response = await fetch(url);
       let data = await response.json();
+
       if (!asked.includes(data[0].id)) {
         newQuestion = data;
         asked.push(newQuestion[0].id);
         break;
       }
+    }
 
+    if (asked.length === 21) {
+      setErrorMessage(true);
     }
       
     setQuestion(newQuestion[0].question);
@@ -196,7 +204,10 @@ function App() {
         break;
       }
     }
-    
+
+    if (asked.length === 21) {
+      setErrorMessage(true);
+    }
       
     setQuestion(newQuestion[0].question);
 
@@ -217,7 +228,7 @@ function App() {
 
     // setting category and level
     setCategory(newQuestion[0].category);
-    setLevel(newQuestion[0].difficulty);
+    setLevel(newQuestion[0].difficulty); 
   }
 
 
@@ -229,6 +240,7 @@ function App() {
   // state for user selection of dropdown menu, of both category and level
   const [userCategory, setUserCategory] = useState("");
   const [userLevel, setUserLevel] = useState("");
+  const [errorMessage, setErrorMessage] = useState(false);
 
   // onChange handler for first select dropdown category
   const handleUserCategory = (e) => {
@@ -284,19 +296,23 @@ function App() {
   // clickHandler that's gonna be passed into anotherClickHandler in DisplayForm component for the new question button
   const clickHandler = () => {
     // call async function getQuiz() with API data everytime user clicks the get different question button
-
+  
     // conditions based on user selection like in submit handler
     if (userCategory === "Random" && userLevel === "Random") {
       getRandomQuiz();
+      
     }
     else if (userCategory !== "Random" && userLevel !== "Random") {
       getQuiz();
+      
     }
     else if (userCategory === "Random" && userLevel !== "Random") {
       getLevelQuiz();
+      
     }
     else if (userCategory !== "Random" && userLevel === "Random") {
       getCategoryQuiz();
+      
       
     }
     // keep showing next instruction
@@ -314,11 +330,10 @@ function App() {
     setAllAnswers([]);
     setCorrectAnswer("");
     setIncorrectAnswers([]);
-    // set question ids back to empty so that data is cleared every time user goes back to restart
-    // setQuestionId([]);
-    setCurrentQuestionId("");
-    setCategory("");
-    setLevel("");
+    // set asked.length back to 0 every time user leaves
+    asked.length = 0;
+    // therefore also the errorMessage back to false, so that if statement can run properly each time even after user goes back and plays again (to ensure that end message will show up in the end after 20 questions)
+    setErrorMessage(false);
   }
 
 
@@ -344,6 +359,7 @@ function App() {
           <div className={`${initialIntro !== intro ? "introContainer" : ""}`}
           id="intro">
             <h2>Let's get nerdy 🤓</h2>
+            <p>There are 20 questions in each round!</p>
             <p>For each question select only one answer from the four possible answer choices!</p>
             <p>There is no timer to stress you out, this party is meant to be chill 🏖️ So take your sweet precious time to answer each question  ⏳ You could take a bath or go for a nap, we won't be able to tell  😜 </p>
           </div> {/* END intro container */}
@@ -358,7 +374,7 @@ function App() {
         {/* SKIP to quiz */}
         {/* conditional rendering for skip to quiz */}
         {
-          initialIntro !== intro ?
+          initialIntro !== intro && errorMessage === false ?
           <div className="App wrapper">
             <a href="#quizGame" className='start' aria-label='Click link to go down to the game'>
               <ArrowDown size={30}
@@ -372,12 +388,17 @@ function App() {
         }
         
         {/* thinking container with background and Wrapper */}
+
+        { errorMessage === false ?
         <div className={`${initialIntro !== intro ? "thinking App wrapper" : "App wrapper"}`}>
           {/* thinking text container */}
           <div className="thinkingText">
             <h3>{initialIntro}</h3>
           </div>{/* END thinking text */}
-        </div>{/* end background container and wrapper */}
+        </div> // end background container and wrapper
+        : null
+        }
+        
         {/* WRAPPER */}
         <div className="App wrapper">
             {/* ternary operator checking if user hasn't clicked the start button yet/submitted the form, if user has submitted, make dropdown disappear */}
@@ -413,7 +434,8 @@ function App() {
                     // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
                     color={`${initialIntro === next ? "#2A28BA" : "#A741AC"} `}
                     aria-label = "click on the button below to get a new question"
-                />
+                /> 
+                
                 {/* submit/start button */}
                 <button
                 type="submit" 
@@ -422,14 +444,14 @@ function App() {
                 </button>
             </form>
           </div>{/* end form container div */}
-    
+          
           <span className="sr-only">Click the button down below</span>
         </div>{/* END WRAPPER */}
 
       {/* DISPLAY FORM COMPONENT */}
       {/* if the user has submitted show the quiz game and all the other elements that come with that */}
       {
-        submitted === true ?
+        submitted ?
         <DisplayForm
         next={next}
         intro={intro}
@@ -446,9 +468,12 @@ function App() {
         userCategory={userCategory}
         userLevel={userLevel}
         incorrectAnswers={incorrectAnswers}
+        errorMessage={errorMessage}
       />
-      : null
+       : null
+
       }
+      
       </section>
     </main>
 
@@ -473,7 +498,7 @@ export default App;
 // use async await function to call the async function that makes the API call only when the user submits the dropdown form/start button (inside submitHandler)
 // depending on the user's selection from the dropdown, create different async functions in order to make API calls at different endpoints (based on given URLSearch params, when category is specified in the endpoint, API only provides data for questions that match that filter, and vice versa for difficulty)
 // since for the dropdown menu, I have to control the input anyway with stateful variables that hold the values of the user inputs, I can just use those as the values for the categories and difficulty params inside the URLSearch params (when setting up the API call)
-// then in order to make sure that no question repeats itself after another, make another API call in order to get different data based on whether the current question id (string value) is included in the question id array. Add that new current id to the question id array (didn't work fully, but better than before)
+// then in order to make sure that no question repeats itself after another, use a while loop and an if statement in order to skip over the same question ids that are contained in the question ids array asked (let variable defined above App function, constantly changes) - break the while loop once the current question id is not included in the asked array, then push the current question id into the array, so that the new id gets stored in there too (prevents further repetition).
 // set other states that help define conditions whether certain elements get rendered onto the page or not and what classNames are assigned to those elements (if form was submitted, what kind of text/intro is being displayed, colour changes etc)
 // update those stateful variables inside the event listener functions, so submitHandler, clickHandler that gets passed into the otherClickHandler inside the DisplayForm button for the new question button, and the userCategory and userLevel states (inside the changeHandlers give those a value of e.target.value, for submitHandler set the submitted state to true, and the initialIntro to next), also define variables for the text and store those into state (for initialIntro the string value of the intro variable is the default value, gets updated accordingly when the user submits/starts the game)
 // define the otherClickHandler function in the DisplayForm component and pass in the clickHandler function from App.js as a prop. Also define other necessary states in that component and update the values of those accordingly inside the functions and under certain conditions (if statements) (submitHandler for quiz, then the leaveClick handler where the userInput and other states get cleared, set back to their default value, also defined the leave handler inside the App.js to then use as a prop in the displayForm component)
@@ -485,7 +510,7 @@ export default App;
 // then randomized the order of those arrays (with the index numbers), so that user would get a different custom message randomly
 // also added in counter for each question that gets submitted and answered correctly and then one for each time the user has submitted an answer regardless whether correct or incorrect, store those into state, update those in the submit handler and empty them out in the leave handler
 // for that it's important to clear the state's values, or set them back to their default values
-
+// also changed: chose to limit the amount of times a user can get different questions per round (if the array of question ids asked is greater than 20) , mostly to avoid 429 error of making too many API calls in a small timeframe, also reasonable to set it 20 questions per round since the user can always go back and play again
 
 
 
