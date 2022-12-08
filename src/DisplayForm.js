@@ -273,9 +273,18 @@ const DisplayForm = ( props ) => {
                 aria-hidden="true"
                 />
                 {/* limit submit message */}
+                {
+                limitSubmit === true && totalQuestionsAnswered < 10 ?
                 <div className="limitSubmitMessage">
                     <p>{limitSubmitMessage}</p>
-                </div>{/* END LIMIT SUBMIT MESSAGE */}
+                </div>// END LIMIT SUBMIT MESSAGE 
+                : limitSubmit === true && totalQuestionsAnswered === 10 ?
+                <div className="limitSubmitMessage">
+                    <p>Looks like we've reached the end! Click the button above that says "End Quiz" to end the game and get a nice little message from us!</p>
+                </div>// END LIMIT SUBMIT MESSAGE 
+                : null
+                }
+                
             </div>// end alert
             : null
             }
