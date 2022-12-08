@@ -61,11 +61,48 @@ function App() {
         difficulty: otherUserSelect
       })
       
-      const response = await fetch(url);
-      const data = await response.json();
+      let response = await fetch(url);
+      let data = await response.json();
 
       console.log(data);
 
+      setCurrentQuestionId(data[0].id);
+      console.log(currentQuestionId);
+
+      // trying to call api again if current question id repeats itself again
+      if (questionId.includes(data[0].id)) {
+        console.log("Calling API again");
+
+        url.search = new URLSearchParams({
+          categories: userSelect,
+          limit: 1,
+          difficulty: otherUserSelect
+        })
+        
+        response = await fetch(url);
+        data = await response.json();
+  
+        console.log(data);
+
+        console.log(data[0].id);
+
+        // const dataId = data[0].id;
+        // console.log(dataId);
+
+        // setQuestionId(current => [...current, data[0].id]);
+        console.log(questionId);   
+        console.log(data[0].question);
+
+        setCurrentQuestionId(data[0].id);
+        console.log(currentQuestionId);
+  
+      } 
+      // else {
+      //   setQuestionId(current => [...current, data[0].id]);
+      //   console.log(questionId);
+      // }
+      setQuestionId(current => [...current, data[0].id]);
+      console.log(questionId); 
       // console.log(response.data[0].question);
       
       // setIncorrectAnswers(response.data[0].incorrectAnswers);
@@ -96,30 +133,29 @@ function App() {
 
 
       // have an array of ids on every render
-      setQuestionId(current => [...current, data[0].id]);
+      // setQuestionId(current => [...current, data[0].id]);
       // setQuestionId(...data[0].id,
       //   nextId++);
       
-      console.log(questionId);
+      // console.log(questionId);
       
       // id string values
-      setCurrentQuestionId(data[0].id);
-      console.log(currentQuestionId);
+      
 
       // array of questions to later filter through
       // make an array of all current questions
-      setQuestions(current => [...current, data[0].question, data[0].category, data[0].difficulty]
-        );
-      console.log(questions);
+      // setQuestions(current => [...current, data[0].question, data[0].category, data[0].difficulty]
+      //   );
+      // console.log(questions);
 
-      setAllCategories(current => [...current, data[0].category, data[0].question])
-      console.log(allCategories);
+      // setAllCategories(current => [...current, data[0].category, data[0].question])
+      // console.log(allCategories);
 
-      setAllLevels(current => [...current, data[0].difficulty, data[0].question, data[0].category]);
-      console.log(allLevels);
+      // setAllLevels(current => [...current, data[0].difficulty, data[0].question, data[0].category]);
+      // console.log(allLevels);
 
-      const questionArray = [data[0].question, data[0].category, data[0].difficulty];
-      console.log(questionArray);
+      // const questionArray = [data[0].question, data[0].category, data[0].difficulty];
+      // console.log(questionArray);
 
       // creating new array to add correct answer string value to already from API provided incorrect answers array
       const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
@@ -172,10 +208,6 @@ function App() {
       // const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
       // console.log(answers);
 
-      
-
-      
-
       // if (allAnswers.length === 3) {
       //   console.log(allAnswers.length);
       // }
@@ -217,10 +249,44 @@ function App() {
         limit: 1
       })
       
-      const response = await fetch(url);
-      const data = await response.json();
+      let response = await fetch(url);
+      let data = await response.json();
 
       console.log(data);
+
+      // trying to call api again if current question id repeats itself again
+      if (questionId.includes(data[0].id)) {
+        console.log("Calling API Random endpoint again");
+
+        url.search = new URLSearchParams({
+          limit: 1
+        })
+        
+        response = await fetch(url);
+        data = await response.json();
+  
+        console.log(data);
+
+        console.log(data[0].id);
+
+        // const dataId = data[0].id;
+        // console.log(dataId);
+
+        // setQuestionId(current => [...current, data[0].id]);
+        console.log(questionId);   
+        console.log(data[0].question);
+
+        setCurrentQuestionId(data[0].id);
+        console.log(currentQuestionId);
+  
+      } 
+      // else {
+      //   setQuestionId(current => [...current, data[0].id]);
+      //   console.log(questionId);
+      // }
+      setQuestionId(current => [...current, data[0].id]);
+      console.log(questionId); 
+      // console.log(response.data[0].question);
 
       // console.log(response.data[0].question);
       
@@ -252,7 +318,7 @@ function App() {
 
 
       // have an array of ids on every render
-      setQuestionId(current => [...current, data[0].id]);
+      // setQuestionId(current => [...current, data[0].id]);
       // setQuestionId(...data[0].id,
       //   nextId++);
       
@@ -321,10 +387,45 @@ function App() {
         difficulty: otherUserSelect
       })
       
-      const response = await fetch(url);
-      const data = await response.json();
+      let response = await fetch(url);
+      let data = await response.json();
 
       console.log(data);
+
+      // trying to call api again if current question id repeats itself again
+      if (questionId.includes(data[0].id)) {
+        console.log("Calling API Level again");
+
+        url.search = new URLSearchParams({
+          limit: 1,
+          difficulty: otherUserSelect
+        })
+        
+        response = await fetch(url);
+        data = await response.json();
+  
+        console.log(data);
+
+        console.log(data[0].id);
+
+        // const dataId = data[0].id;
+        // console.log(dataId);
+
+        // setQuestionId(current => [...current, data[0].id]);
+        console.log(questionId);   
+        console.log(data[0].question);
+
+        setCurrentQuestionId(data[0].id);
+        console.log(currentQuestionId);
+  
+      } 
+      // else {
+      //   setQuestionId(current => [...current, data[0].id]);
+      //   console.log(questionId);
+      // }
+      setQuestionId(current => [...current, data[0].id]);
+      console.log(questionId); 
+      // console.log(response.data[0].question);
 
       // console.log(response.data[0].question);
       
@@ -356,11 +457,11 @@ function App() {
 
 
       // have an array of ids on every render
-      setQuestionId(current => [...current, data[0].id]);
+      // setQuestionId(current => [...current, data[0].id]);
       // setQuestionId(...data[0].id,
       //   nextId++);
       
-      console.log(questionId);
+      // console.log(questionId);
       
       // id string values
       setCurrentQuestionId(data[0].id);
@@ -432,10 +533,6 @@ function App() {
       // const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
       // console.log(answers);
 
-      
-
-      
-
       // if (allAnswers.length === 3) {
       //   console.log(allAnswers.length);
       // }
@@ -475,10 +572,45 @@ function App() {
         limit: 1
       })
       
-      const response = await fetch(url);
-      const data = await response.json();
+      let response = await fetch(url);
+      let data = await response.json();
 
       console.log(data);
+
+      // trying to call api again if current question id repeats itself again
+      if (questionId.includes(data[0].id)) {
+        console.log("Calling API Categories again");
+
+        url.search = new URLSearchParams({
+          categories: userSelect,
+          limit: 1
+        })
+        
+        response = await fetch(url);
+        data = await response.json();
+  
+        console.log(data);
+
+        console.log(data[0].id);
+
+        // const dataId = data[0].id;
+        // console.log(dataId);
+
+        // setQuestionId(current => [...current, data[0].id]);
+        console.log(questionId);   
+        console.log(data[0].question);
+
+        setCurrentQuestionId(data[0].id);
+        console.log(currentQuestionId);
+  
+      } 
+      // else {
+      //   setQuestionId(current => [...current, data[0].id]);
+      //   console.log(questionId);
+      // }
+      setQuestionId(current => [...current, data[0].id]);
+      console.log(questionId); 
+      // console.log(response.data[0].question);
 
       // console.log(response.data[0].question);
       
@@ -509,16 +641,11 @@ function App() {
       // try throw catch to skip over error (when data[0].id is contained in questionId array)
 
 
-      // have an array of ids on every render
-      setQuestionId(current => [...current, data[0].id]);
-      // setQuestionId(...data[0].id,
-      //   nextId++);
+    // id string values
       
-      console.log(questionId);
+    setCurrentQuestionId(data[0].id);
+    console.log(currentQuestionId);
       
-      // id string values
-      setCurrentQuestionId(data[0].id);
-      console.log(currentQuestionId);
 
       // array of questions to later filter through
       // make an array of all current questions
@@ -717,12 +844,7 @@ function App() {
       // setId(id);
 
       // cloning allAnswers array to do filter
-      
-      
-
-      
-      
-
+ 
       // const filteredAnswers = cloneAnswers.filter((answerObj) => {
       //   return answerObj.length === 3;
       // })
@@ -740,16 +862,21 @@ function App() {
     if (userSelect === "Random" && otherUserSelect === "Random") {
       getRandomQuiz();
     }
+
     else if (userSelect !== "Random" && otherUserSelect !== "Random") {
+      // console.log("Calling getQuiz zeile 749");
       getQuiz();
+      
     }
+
     else if (userSelect === "Random" && otherUserSelect !== "Random") {
       getLevelQuiz();
     }
+
     else if (userSelect !== "Random" && otherUserSelect === "Random") {
       getCategoryQuiz();
+      
     }
-
     
 
     setInitialIntro(next);
@@ -780,22 +907,12 @@ function App() {
     setInitialIntro(intro);
     setUserSelect("");
     setOtherUserSelect("");
+    // setQuestion("");
+    // setEveryStuff([]);
+    setQuestionId([]);
+    setCurrentQuestionId("");
+    // setAllAnswers([]);
   }
-
-
-
-  
-
-    // const handleUserSelectTwo = (e) => {
-    //     setOtherUserSelect(e.target.value);
-    //     console.log(e.target.value);
-    //     console.log(otherUserSelect);
-    // }
-
-    // const dropDownSubmitHandler = (e) => {
-    //     firstSubmitHandler(e, userSelect);
-    // }
-
 
 
   return (
@@ -828,9 +945,7 @@ function App() {
       </div>
     </header>
 
-    
 
-      
     {/* Main with one quiz section*/}
     <main id='mainContent' className={`${initialIntro === next ? "mainWithQuiz" : ""}`}>
       {/* instructions section */}
@@ -921,31 +1036,7 @@ function App() {
           <span className="sr-only">Click the button down below</span>
         </div>{/* END WRAPPER */}
         {/* <div className="App wrapper">
-          <form onSubmit={}>
-            <label htmlFor="category">Play this category:</label>
-            <select name="category" id="category">
-              <option value="" disabled>Pick one:</option>
-              <option value="Arts & Literature">Arts & Literature</option>
-              <option value="Film & TV">Film & TV</option>
-              <option value="Food & Drink">Food & Drink</option>
-              <option value="General Knowledge">General Knowledge</option>
-              <option value="Geography">Geography</option>
-              <option value="History">History</option>
-              <option value="Music">Music</option>
-              <option value="Science">Science</option>
-              <option value="Society & Culture">Society & Culture</option>
-              <option value="Sport & Leisure">Sport & Leisure</option>
-            </select>
-          </form>
-          <form>
-            <label htmlFor="level">Play at this level:</label>
-            <select name="level" id="level">
-              <option value="" disabled>Pick one:</option>
-              <option value="easy">easy</option>
-              <option value="medium">medium</option>
-              <option value="hard">hard</option>
-            </select>
-          </form>
+          
           {/* svg arrow up */}
           {/* <ArrowDown size={70}
               // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
@@ -989,9 +1080,6 @@ function App() {
       />
       : null
       }
-      
-        
-     
       
       </section>
       
