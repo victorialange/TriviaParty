@@ -62,12 +62,6 @@ function App() {
       } 
     }
 
-    // stop displaying the form when questions id array is equal to 21
-    // show 20 questions in total (applies to all other async functions with different endpoints)
-    if (asked.length === 21) {
-      setErrorMessage(true);
-    }
-    
     // updating state of current question id
     setCurrentQuestionId(newQuestion[0].id);
     
@@ -91,6 +85,12 @@ function App() {
     // setting category and level states
     setCategory(newQuestion[0].category);
     setLevel(newQuestion[0].difficulty);
+
+    // stop displaying the form when questions id array is equal to 21
+    // show 10 questions in total (applies to all other async functions with different endpoints)
+    if (asked.length === 11) {
+      setErrorMessage(true);
+    }
   }
 
 
@@ -192,7 +192,7 @@ function App() {
           <div className={`${initialIntro !== intro ? "introContainer" : ""}`}
           id="intro">
             <h2>Let's get nerdy 🤓</h2>
-            <p>There are 20 questions in each round!</p>
+            <p>There are 10 questions in each round!</p>
             <p>For each question select only one answer from the four possible answer choices!</p>
             <p>There is no timer to stress you out, this party is meant to be chill 🏖️ So take your sweet precious time to answer each question  ⏳ You could take a bath or go for a nap, we won't be able to tell  😜 </p>
           </div> {/* END intro container */}
@@ -303,7 +303,7 @@ function App() {
       incorrectAnswers={incorrectAnswers}
       errorMessage={errorMessage}
       />
-       : null
+      : null
       }  
       </section>{/* end quiz section */}
     </main>
@@ -341,7 +341,7 @@ export default App;
 // then randomized the order of those arrays (with the index numbers), so that user would get a different custom message randomly
 // also added in counter for each question that gets submitted and answered correctly and then one for each time the user has submitted an answer regardless whether correct or incorrect, store those into state, update those in the submit handler and empty them out in the leave handler
 // for that it's important to clear the state's values, or set them back to their default values
-// also changed: chose to limit the amount of times a user can get different questions per round (if the array of question ids asked is greater than 20) , mostly to avoid 429 error of making too many API calls in a small timeframe, also reasonable to set it 20 questions per round since the user can always go back and play again
+// also changed: chose to limit the amount of times a user can get different questions per round (if the array of question ids asked is greater than 20) , mostly to avoid 429 error of making too many API calls in a small timeframe, also reasonable to set it 10 questions per round since the user can always go back and play again
 
 
 
