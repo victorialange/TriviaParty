@@ -4,919 +4,426 @@ import DisplayForm from './DisplayForm.js';
 import { Fragment } from 'react';
 import './App.css';
 
-// importing ArrowDown from ArrowDown component
+// importing ArrowDown (arrow as svg file) from ArrowDown component
 import ArrowDown from './ArrowDown.js';
-// import ArrowUp from './ArrowUp.js';
-// import Dropdown from './Dropdown.js';
 
 
 function App() {
-  // let answerObjects = [
-  //   '', '','', '' 
-  // ];
   
   // state that holds the questions, answer choices and ids from my API
   const [question, setQuestion] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [incorrectAnswers, setIncorrectAnswers] = useState( [] );
   // combines incorrect answers array and correct answer string value, important for mapping through whole answers array as opposed to just through the incorrect answers => gonna create a new array inside async function called getQuiz()
+  // storing all data with all answers array
   const [allAnswers, setAllAnswers] = useState( [] );
   const [currentQuestionId, setCurrentQuestionId] = useState("");
   const [questionId, setQuestionId] = useState([]);
-
-  const [questions, setQuestions] = useState([]);
-  
-  // const [answers, setAnswers] = useState( [] );
-
-  // const [quiz, setQuiz] = useState( [] );
-  // used concatenation to combine incorrect answerw with correct answer
-  // const [answers, setAnswers] = useState( [] );
-  // first answer (incorrect answer)
-  // const [answerOne, setAnswerOne] = useState('');
-  // second answer (incorrect answer)
-  // const [answerTwo, setAnswerTwo] = useState('');
-  // third answer (incorrect answer)
-  // const [answerThree, setAnswerThree] = useState('');
-  
+  // states for category and level
   const [category, setCategory] = useState("");
   const [level, setLevel] = useState("");
-
-  
-  const [allCategories, setAllCategories] = useState([]);
-  const [allLevels, setAllLevels] = useState([]);
-
-  // const [allData, setAllData] = useState([]);
-  const [everyStuff, setEveryStuff] = useState([]);
-  // const [filteredQuestions, setFilteredQuestions] = useState([]);
-  // const [questionId, setQuestionId] = useState(''); 
-
-  // useEffect( () => { 
-  // axios
-    const getQuiz = async () => {
-      const url = new URL('https://the-trivia-api.com/api/questions')
-
-      url.search = new URLSearchParams({
-        categories: userSelect,
-        limit: 1,
-        difficulty: otherUserSelect
-      })
+    
+  // async await function calling API at endpoint where category and difficulty gets selected (not random)
+  const getQuiz = async () => {
+    const url = new URL('https://the-trivia-api.com/api/questions')
+    // setting categories and difficulty params of API data object equal to user selection of the dropdown (not random)
+    url.search = new URLSearchParams({
+      categories: userCategory,
+      limit: 1,
+      difficulty: userLevel
+    })
       
-      let response = await fetch(url);
-      let data = await response.json();
+    // defining response and data as let variables since need to change value later on with another API call if the current question id is inside the question ids array
+    let response = await fetch(url);
+    let data = await response.json();
 
-      console.log(data);
+    console.log(data);
 
-      setCurrentQuestionId(data[0].id);
-      console.log(currentQuestionId);
-
-      // trying to call api again if current question id repeats itself again
-      if (questionId.includes(data[0].id)) {
-        console.log("Calling API again");
-
-        url.search = new URLSearchParams({
-          categories: userSelect,
-          limit: 1,
-          difficulty: otherUserSelect
-        })
-        
-        response = await fetch(url);
-        data = await response.json();
-  
-        console.log(data);
-
-        console.log(data[0].id);
-
-        // const dataId = data[0].id;
-        // console.log(dataId);
-
-        // setQuestionId(current => [...current, data[0].id]);
-        console.log(questionId);   
-        console.log(data[0].question);
-
-        setCurrentQuestionId(data[0].id);
-        console.log(currentQuestionId);
-  
-      } 
-      // else {
-      //   setQuestionId(current => [...current, data[0].id]);
-      //   console.log(questionId);
-      // }
-      setQuestionId(current => [...current, data[0].id]);
-      console.log(questionId); 
-      // console.log(response.data[0].question);
-      
-      // setIncorrectAnswers(response.data[0].incorrectAnswers);
-      // setCorrectAnswer(response.data[0].correctAnswer);
-      // setIncorrectAnswers(response.data[0].incorrectAnswers);
-      // console.log(response.data[0].incorrectAnswers, response.data[0].correctAnswer);
-
-      // const answerChoices = response.data[0].incorrectAnswers.concat(response.data[0].correctAnswer);
-      // const quizSet = response.data[0].incorrectAnswers.concat(response.data[0].correctAnswer, response.data[0].question);
-      // console.log(quizSet);
-      // setQuiz(quizSet.reverse());
-      // console.log(quiz);
-
-      // find will grab first value of array
-      // setAnswerOne(response.data[0].incorrectAnswers[0]);
-      // console.log(answerOne);
-      
-      setQuestion(data[0].question);
-      console.log(question);
-
-      setIncorrectAnswers(data[0].incorrectAnswers);
-      console.log(incorrectAnswers);
-
-      setCorrectAnswer(data[0].correctAnswer);
-      console.log(correctAnswer);
-      // if questionId array contains data[0].id, then call getQuiz() again.
-      // try throw catch to skip over error (when data[0].id is contained in questionId array)
-
-
-      // have an array of ids on every render
-      // setQuestionId(current => [...current, data[0].id]);
-      // setQuestionId(...data[0].id,
-      //   nextId++);
-      
-      // console.log(questionId);
-      
-      // id string values
-      
-
-      // array of questions to later filter through
-      // make an array of all current questions
-      // setQuestions(current => [...current, data[0].question, data[0].category, data[0].difficulty]
-      //   );
-      // console.log(questions);
-
-      // setAllCategories(current => [...current, data[0].category, data[0].question])
-      // console.log(allCategories);
-
-      // setAllLevels(current => [...current, data[0].difficulty, data[0].question, data[0].category]);
-      // console.log(allLevels);
-
-      // const questionArray = [data[0].question, data[0].category, data[0].difficulty];
-      // console.log(questionArray);
-
-      // creating new array to add correct answer string value to already from API provided incorrect answers array
-      const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
-      console.log(answers);
-      // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
-
-      // shuffle to randomize order of answers array so that user won't be able to figure out position of correct answer
-      const randomAnswers = answers.sort(() => 0.5 - Math.random());
-      console.log(randomAnswers);
-
-      setAllAnswers(randomAnswers);
-      console.log(allAnswers);
-
-
-      // mapping through whole array of objects
-      console.log(data[0]);
-
-      const withOrientation = data.map((questionObject) => {
-        const property = `${questionObject.category} ${questionObject.difficulty}`
-
-        const randomAnswers = answers.sort(() => 0.5 - Math.random());
-
-        return {...questionObject, property: property, allAnswers: randomAnswers};
-      })
-
-      console.log(withOrientation);
-
-      setEveryStuff(withOrientation);
-
-
-      // const tryNewQuestion = questionArray.map((question, index, fullArray) => {
-      //   return fullArray;
-      // })
-      // console.log(tryNewQuestion);
-
-      // const newQuestionsArray = questionArray.toString([]);
-      // console.log(newQuestionsArray);
-
-
-      // const questionWithProps = questions.map((wholeArray) =>({
-      //   ...wholeArray, category: data[0].category, level: data[0].difficulty
-      // })
-        
-      // )
-
-      // console.log(questions);
-      // console.log(questionWithProps);
-
-      // console.log(questionId);
-      // const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
-      // console.log(answers);
-
-      // if (allAnswers.length === 3) {
-      //   console.log(allAnswers.length);
-      // }
-      
-      // console logging state can be misleading, value is stored in stateful variable even if not visible in the console right away
-
-      // const newAnswers = answers.map( (answer) => {
-      //    return answer.correctAnswer;
-      // } )
-      // console.log(newAnswers);
-      setCategory(data[0].category);
-      console.log(category);
-
-      setLevel(data[0].difficulty);
-      console.log(level);
-
-      // setAllAnswers(answers);
-      // console.log(allAnswers);
-
-      // const cloneAnswers = [...answers];
-      // console.log(cloneAnswers);
-
-      // const incorrectArray = data[0].incorrectAnswers;
-
-
-      // setAllAnswers();
-      // console.log(allAnswers);
-
-      
-
-    }
-
-
-    // ANOTHER API CALL for random questions
-    const getRandomQuiz = async () => {
-      const url = new URL('https://the-trivia-api.com/api/questions')
-
-      url.search = new URLSearchParams({
-        limit: 1
-      })
-      
-      let response = await fetch(url);
-      let data = await response.json();
-
-      console.log(data);
-
-      // trying to call api again if current question id repeats itself again
-      if (questionId.includes(data[0].id)) {
-        console.log("Calling API Random endpoint again");
-
-        url.search = new URLSearchParams({
-          limit: 1
-        })
-        
-        response = await fetch(url);
-        data = await response.json();
-  
-        console.log(data);
-
-        console.log(data[0].id);
-
-        // const dataId = data[0].id;
-        // console.log(dataId);
-
-        // setQuestionId(current => [...current, data[0].id]);
-        console.log(questionId);   
-        console.log(data[0].question);
-
-        setCurrentQuestionId(data[0].id);
-        console.log(currentQuestionId);
-  
-      } 
-      // else {
-      //   setQuestionId(current => [...current, data[0].id]);
-      //   console.log(questionId);
-      // }
-      setQuestionId(current => [...current, data[0].id]);
-      console.log(questionId); 
-      // console.log(response.data[0].question);
-
-      // console.log(response.data[0].question);
-      
-      // setIncorrectAnswers(response.data[0].incorrectAnswers);
-      // setCorrectAnswer(response.data[0].correctAnswer);
-      // setIncorrectAnswers(response.data[0].incorrectAnswers);
-      // console.log(response.data[0].incorrectAnswers, response.data[0].correctAnswer);
-
-      // const answerChoices = response.data[0].incorrectAnswers.concat(response.data[0].correctAnswer);
-      // const quizSet = response.data[0].incorrectAnswers.concat(response.data[0].correctAnswer, response.data[0].question);
-      // console.log(quizSet);
-      // setQuiz(quizSet.reverse());
-      // console.log(quiz);
-
-      // find will grab first value of array
-      // setAnswerOne(response.data[0].incorrectAnswers[0]);
-      // console.log(answerOne);
-      
-      setQuestion(data[0].question);
-      console.log(question);
-
-      setIncorrectAnswers(data[0].incorrectAnswers);
-      console.log(incorrectAnswers);
-
-      setCorrectAnswer(data[0].correctAnswer);
-      console.log(correctAnswer);
-      // if questionId array contains data[0].id, then call getQuiz() again.
-      // try throw catch to skip over error (when data[0].id is contained in questionId array)
-
-
-      // have an array of ids on every render
-      // setQuestionId(current => [...current, data[0].id]);
-      // setQuestionId(...data[0].id,
-      //   nextId++);
-      
-      console.log(questionId);
-      
-      // id string values
-      setCurrentQuestionId(data[0].id);
-      console.log(currentQuestionId);
-
-
-      // console.log(questionId);
-      // const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
-      // console.log(answers);
-
-      // creating new array to add correct answer string value to already from API provided incorrect answers array
-      const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
-      console.log(answers);
-      // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
-
-      // shuffle to randomize order of answers array so that user won't be able to figure out position of correct answer
-      const randomAnswers = answers.sort(() => 0.5 - Math.random());
-      console.log(randomAnswers);
-
-      setAllAnswers(randomAnswers);
-      console.log(allAnswers);
-
-      
-
-      // if (allAnswers.length === 3) {
-      //   console.log(allAnswers.length);
-      // }
-      
-      // console logging state can be misleading, value is stored in stateful variable even if not visible in the console right away
-
-      // const newAnswers = answers.map( (answer) => {
-      //    return answer.correctAnswer;
-      // } )
-      // console.log(newAnswers);
-      setCategory(data[0].category);
-      console.log(category);
-
-      setLevel(data[0].difficulty);
-      console.log(level);
-
-      // setAllAnswers(answers);
-      // console.log(allAnswers);
-
-      // const cloneAnswers = [...answers];
-      // console.log(cloneAnswers);
-
-      // const incorrectArray = data[0].incorrectAnswers;
-
-
-      // setAllAnswers();
-      // console.log(allAnswers);
-
-    }
-
-
-    // OTHER API CALL WHERE USER SELECTS ONLY LEVEL, BUT NO CATEGORY
-    const getLevelQuiz = async () => {
-      const url = new URL('https://the-trivia-api.com/api/questions')
-
-      url.search = new URLSearchParams({
-        limit: 1,
-        difficulty: otherUserSelect
-      })
-      
-      let response = await fetch(url);
-      let data = await response.json();
-
-      console.log(data);
-
-      // trying to call api again if current question id repeats itself again
-      if (questionId.includes(data[0].id)) {
-        console.log("Calling API Level again");
-
-        url.search = new URLSearchParams({
-          limit: 1,
-          difficulty: otherUserSelect
-        })
-        
-        response = await fetch(url);
-        data = await response.json();
-  
-        console.log(data);
-
-        console.log(data[0].id);
-
-        // const dataId = data[0].id;
-        // console.log(dataId);
-
-        // setQuestionId(current => [...current, data[0].id]);
-        console.log(questionId);   
-        console.log(data[0].question);
-
-        setCurrentQuestionId(data[0].id);
-        console.log(currentQuestionId);
-  
-      } 
-      // else {
-      //   setQuestionId(current => [...current, data[0].id]);
-      //   console.log(questionId);
-      // }
-      setQuestionId(current => [...current, data[0].id]);
-      console.log(questionId); 
-      // console.log(response.data[0].question);
-
-      // console.log(response.data[0].question);
-      
-      // setIncorrectAnswers(response.data[0].incorrectAnswers);
-      // setCorrectAnswer(response.data[0].correctAnswer);
-      // setIncorrectAnswers(response.data[0].incorrectAnswers);
-      // console.log(response.data[0].incorrectAnswers, response.data[0].correctAnswer);
-
-      // const answerChoices = response.data[0].incorrectAnswers.concat(response.data[0].correctAnswer);
-      // const quizSet = response.data[0].incorrectAnswers.concat(response.data[0].correctAnswer, response.data[0].question);
-      // console.log(quizSet);
-      // setQuiz(quizSet.reverse());
-      // console.log(quiz);
-
-      // find will grab first value of array
-      // setAnswerOne(response.data[0].incorrectAnswers[0]);
-      // console.log(answerOne);
-      
-      setQuestion(data[0].question);
-      console.log(question);
-
-      setIncorrectAnswers(data[0].incorrectAnswers);
-      console.log(incorrectAnswers);
-
-      setCorrectAnswer(data[0].correctAnswer);
-      console.log(correctAnswer);
-      // if questionId array contains data[0].id, then call getQuiz() again.
-      // try throw catch to skip over error (when data[0].id is contained in questionId array)
-
-
-      // have an array of ids on every render
-      // setQuestionId(current => [...current, data[0].id]);
-      // setQuestionId(...data[0].id,
-      //   nextId++);
-      
-      // console.log(questionId);
-      
-      // id string values
-      setCurrentQuestionId(data[0].id);
-      console.log(currentQuestionId);
-
-      // array of questions to later filter through
-      // make an array of all current questions
-      setQuestions(current => [...current, data[0].question, data[0].category, data[0].difficulty]
-        );
-      console.log(questions);
-
-      setAllCategories(current => [...current, data[0].category, data[0].question])
-      console.log(allCategories);
-
-      setAllLevels(current => [...current, data[0].difficulty, data[0].question, data[0].category]);
-      console.log(allLevels);
-
-      const questionArray = [data[0].question, data[0].category, data[0].difficulty];
-      console.log(questionArray);
-
-      // creating new array to add correct answer string value to already from API provided incorrect answers array
-      const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
-      console.log(answers);
-      // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
-
-      // shuffle to randomize order of answers array so that user won't be able to figure out position of correct answer
-      const randomAnswers = answers.sort(() => 0.5 - Math.random());
-      console.log(randomAnswers);
-
-      setAllAnswers(randomAnswers);
-      console.log(allAnswers);
-
-
-      // mapping through whole array of objects
-      console.log(data[0]);
-
-      const withOrientation = data.map((questionObject) => {
-        const property = `${questionObject.category} ${questionObject.difficulty}`
-
-        const randomAnswers = answers.sort(() => 0.5 - Math.random());
-
-        return {...questionObject, property: property, allAnswers: randomAnswers};
-      })
-
-      console.log(withOrientation);
-
-      setEveryStuff(withOrientation);
-
-
-      // const tryNewQuestion = questionArray.map((question, index, fullArray) => {
-      //   return fullArray;
-      // })
-      // console.log(tryNewQuestion);
-
-      // const newQuestionsArray = questionArray.toString([]);
-      // console.log(newQuestionsArray);
-
-
-      // const questionWithProps = questions.map((wholeArray) =>({
-      //   ...wholeArray, category: data[0].category, level: data[0].difficulty
-      // })
-        
-      // )
-
-      // console.log(questions);
-      // console.log(questionWithProps);
-
-      // console.log(questionId);
-      // const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
-      // console.log(answers);
-
-      // if (allAnswers.length === 3) {
-      //   console.log(allAnswers.length);
-      // }
-      
-      // console logging state can be misleading, value is stored in stateful variable even if not visible in the console right away
-
-      // const newAnswers = answers.map( (answer) => {
-      //    return answer.correctAnswer;
-      // } )
-      // console.log(newAnswers);
-      setCategory(data[0].category);
-      console.log(category);
-
-      setLevel(data[0].difficulty);
-      console.log(level);
-
-      // setAllAnswers(answers);
-      // console.log(allAnswers);
-
-      // const cloneAnswers = [...answers];
-      // console.log(cloneAnswers);
-
-      // const incorrectArray = data[0].incorrectAnswers;
-
-      // setAllAnswers();
-      // console.log(allAnswers);
-
-    }
-
-
-    // OTHER API CALL WHERE USER SELECTS ONLY CATEGORY, BUT NO LEVEL
-    const getCategoryQuiz = async () => {
-      const url = new URL('https://the-trivia-api.com/api/questions')
-
-      url.search = new URLSearchParams({
-        categories: userSelect,
-        limit: 1
-      })
-      
-      let response = await fetch(url);
-      let data = await response.json();
-
-      console.log(data);
-
-      // trying to call api again if current question id repeats itself again
-      if (questionId.includes(data[0].id)) {
-        console.log("Calling API Categories again");
-
-        url.search = new URLSearchParams({
-          categories: userSelect,
-          limit: 1
-        })
-        
-        response = await fetch(url);
-        data = await response.json();
-  
-        console.log(data);
-
-        console.log(data[0].id);
-
-        // const dataId = data[0].id;
-        // console.log(dataId);
-
-        // setQuestionId(current => [...current, data[0].id]);
-        console.log(questionId);   
-        console.log(data[0].question);
-
-        setCurrentQuestionId(data[0].id);
-        console.log(currentQuestionId);
-  
-      } 
-      // else {
-      //   setQuestionId(current => [...current, data[0].id]);
-      //   console.log(questionId);
-      // }
-      setQuestionId(current => [...current, data[0].id]);
-      console.log(questionId); 
-      // console.log(response.data[0].question);
-
-      // console.log(response.data[0].question);
-      
-      // setIncorrectAnswers(response.data[0].incorrectAnswers);
-      // setCorrectAnswer(response.data[0].correctAnswer);
-      // setIncorrectAnswers(response.data[0].incorrectAnswers);
-      // console.log(response.data[0].incorrectAnswers, response.data[0].correctAnswer);
-
-      // const answerChoices = response.data[0].incorrectAnswers.concat(response.data[0].correctAnswer);
-      // const quizSet = response.data[0].incorrectAnswers.concat(response.data[0].correctAnswer, response.data[0].question);
-      // console.log(quizSet);
-      // setQuiz(quizSet.reverse());
-      // console.log(quiz);
-
-      // find will grab first value of array
-      // setAnswerOne(response.data[0].incorrectAnswers[0]);
-      // console.log(answerOne);
-      
-      setQuestion(data[0].question);
-      console.log(question);
-
-      setIncorrectAnswers(data[0].incorrectAnswers);
-      console.log(incorrectAnswers);
-
-      setCorrectAnswer(data[0].correctAnswer);
-      console.log(correctAnswer);
-      // if questionId array contains data[0].id, then call getQuiz() again.
-      // try throw catch to skip over error (when data[0].id is contained in questionId array)
-
-
-    // id string values
-      
     setCurrentQuestionId(data[0].id);
     console.log(currentQuestionId);
-      
 
-      // array of questions to later filter through
-      // make an array of all current questions
-      setQuestions(current => [...current, data[0].question, data[0].category, data[0].difficulty]
-        );
-      console.log(questions);
+    // trying to call api again if current question id repeats itself again
+    if (questionId.includes(data[0].id)) {
+      console.log("Calling API again");
 
-      setAllCategories(current => [...current, data[0].category, data[0].question])
-      console.log(allCategories);
-
-      setAllLevels(current => [...current, data[0].difficulty, data[0].question, data[0].category]);
-      console.log(allLevels);
-
-      const questionArray = [data[0].question, data[0].category, data[0].difficulty];
-      console.log(questionArray);
-
-      // creating new array to add correct answer string value to already from API provided incorrect answers array
-      const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
-      console.log(answers);
-      // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
-
-      // shuffle to randomize order of answers array so that user won't be able to figure out position of correct answer
-      const randomAnswers = answers.sort(() => 0.5 - Math.random());
-      console.log(randomAnswers);
-
-      setAllAnswers(randomAnswers);
-      console.log(allAnswers);
-
-
-      // mapping through whole array of objects
-      console.log(data[0]);
-
-      const withOrientation = data.map((questionObject) => {
-        const property = `${questionObject.category} ${questionObject.difficulty}`
-
-        const randomAnswers = answers.sort(() => 0.5 - Math.random());
-
-        return {...questionObject, property: property, allAnswers: randomAnswers};
+      url.search = new URLSearchParams({
+        categories: userCategory,
+        limit: 1,
+        difficulty: userLevel
       })
-
-      console.log(withOrientation);
-
-      setEveryStuff(withOrientation);
-
-
-      // const tryNewQuestion = questionArray.map((question, index, fullArray) => {
-      //   return fullArray;
-      // })
-      // console.log(tryNewQuestion);
-
-      // const newQuestionsArray = questionArray.toString([]);
-      // console.log(newQuestionsArray);
-
-
-      // const questionWithProps = questions.map((wholeArray) =>({
-      //   ...wholeArray, category: data[0].category, level: data[0].difficulty
-      // })
         
-      // )
+      response = await fetch(url);
+      data = await response.json();
+  
+      console.log(data);
 
-      // console.log(questions);
-      // console.log(questionWithProps);
+      console.log(data[0].id);
 
-      // console.log(questionId);
-      // const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
-      // console.log(answers);
+      // const dataId = data[0].id;
+      // console.log(dataId);
 
-      // if (allAnswers.length === 3) {
-      //   console.log(allAnswers.length);
-      // }
+      // setQuestionId(current => [...current, data[0].id]);
+      console.log(questionId);   
+      console.log(data[0].question);
+
+      setCurrentQuestionId(data[0].id);
+      console.log(currentQuestionId);  
+  
+    } 
+    // else {
+    //   setQuestionId(current => [...current, data[0].id]);
+    //   console.log(questionId);
+    // }
+
+    // question ids array as state
+    setQuestionId(current => [...current, data[0].id]);
+    console.log(questionId); 
       
-      // console logging state can be misleading, value is stored in stateful variable even if not visible in the console right away
+    // question state
+    setQuestion(data[0].question);
+    console.log(question);
 
-      // const newAnswers = answers.map( (answer) => {
-      //    return answer.correctAnswer;
-      // } )
-      // console.log(newAnswers);
-      setCategory(data[0].category);
-      console.log(category);
+    // incorrect answers array stored into state
+    setIncorrectAnswers(data[0].incorrectAnswers);
+    // correct answer stored in state, need to do concat to add that to incorrect answers array, in order to be able to map through the allAnswers array in the return/JSX of the DisplayForm component, also for adding randomizer Math.random
+    setCorrectAnswer(data[0].correctAnswer);
 
-      setLevel(data[0].difficulty);
-      console.log(level);
+    // creating new array to add correct answer string value to already from API provided incorrect answers array
+    const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
+    // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
 
-      // setAllAnswers(answers);
-      // console.log(allAnswers);
+    // shuffle to randomize order of answers array so that user won't be able to figure out position of correct answer
+    const randomAnswers = answers.sort(() => 0.5 - Math.random());
+    // stored tha randomized array into the allAnswers state
+    setAllAnswers(randomAnswers);
 
-      // const cloneAnswers = [...answers];
-      // console.log(cloneAnswers);
-
-      // const incorrectArray = data[0].incorrectAnswers;
-
-      // setAllAnswers();
-      // console.log(allAnswers);
-
-    }
-
-
-
-
-
-    
-  const intro = "Feeling ready? Then let's get this trivia party started🎈🎉";
-  const next = "Not feeling this question or already answered this one?"
-  const [initialIntro, setInitialIntro] = useState(intro);  
-  
-  // // setting variables to pass into generator state for start/new question button later on in anotherClickHandler function
-  // const startButton = "Start";
-  // const nextButton = "New Question";
-  // // stateful variable for text inside start or new question button (setting default value to start variable, so that it gets displayed with that string before api call)
-  // const [generator, setGenerator] = useState(startButton);
-
-  
-  // clickHandler function to refresh page and show new question
-  
-
-  const [submitted, setSubmitted] = useState(false);
-
-  const [userSelect, setUserSelect] = useState("");
-  const [otherUserSelect, setOtherUserSelect] = useState("");
-
-    const handleUserSelectOne = (e) => {
-        setUserSelect(e.target.value);
-        console.log(e.target.value);
-        console.log(userSelect);
-    }
-
-    const handleUserSelectTwo = (e) => {
-      setOtherUserSelect(e.target.value);
-      console.log(e.target.value);
-      console.log(otherUserSelect);
+    // setting category and level states
+    setCategory(data[0].category);
+    setLevel(data[0].difficulty);
   }
 
 
-  
-  
+  // ANOTHER API CALL for random questions with async and await at different endpoint (only limit specified)
+  const getRandomQuiz = async () => {
+    const url = new URL('https://the-trivia-api.com/api/questions')
 
+    url.search = new URLSearchParams({
+      limit: 1
+    })
+      
+    let response = await fetch(url);
+    let data = await response.json();
+
+    console.log(data);
+
+    // trying to call api again if current question id repeats itself again
+    if (questionId.includes(data[0].id)) {
+      console.log("Calling API Random endpoint again");
+
+      url.search = new URLSearchParams({
+        limit: 1
+      })
+        
+      response = await fetch(url);
+      data = await response.json();
+  
+      console.log(data);
+
+      console.log(data[0].id);
+
+      // const dataId = data[0].id;
+      // console.log(dataId);
+
+      // setQuestionId(current => [...current, data[0].id]);
+      console.log(questionId);   
+      console.log(data[0].question);
+
+      setCurrentQuestionId(data[0].id);
+      console.log(currentQuestionId);
+  
+    } 
+    // else {
+    //   setQuestionId(current => [...current, data[0].id]);
+    //   console.log(questionId);
+    // }
+    setQuestionId(current => [...current, data[0].id]);
+    console.log(questionId); 
+      
+    // store question of data object into state
+    setQuestion(data[0].question);
+    console.log(question);
+
+    // like in first function store same values into state
+    setIncorrectAnswers(data[0].incorrectAnswers);
+    setCorrectAnswer(data[0].correctAnswer);
+    
+    // id string values
+    setCurrentQuestionId(data[0].id);
+    console.log(currentQuestionId);
+
+    // creating new array to add correct answer string value to already from API provided incorrect answers array
+    const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
+    // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
+
+    // shuffle to randomize order of answers array so that user won't be able to figure out position of correct answer
+    const randomAnswers = answers.sort(() => 0.5 - Math.random());
+    setAllAnswers(randomAnswers);
+
+    // updating category and level state values
+    setCategory(data[0].category);
+    setLevel(data[0].difficulty);
+  }
+
+
+  // OTHER API CALL WHERE USER SELECTS ONLY LEVEL, BUT NO CATEGORY endpoint
+  const getLevelQuiz = async () => {
+    const url = new URL('https://the-trivia-api.com/api/questions')
+
+    url.search = new URLSearchParams({
+      limit: 1,
+      difficulty: userLevel
+    })
+      
+    let response = await fetch(url);
+    let data = await response.json();
+
+    console.log(data);
+
+    // trying to call api again if current question id repeats itself again
+    if (questionId.includes(data[0].id)) {
+      console.log("Calling API Level again");
+
+      url.search = new URLSearchParams({
+        limit: 1,
+        difficulty: userLevel
+      })
+        
+      response = await fetch(url);
+      data = await response.json();
+  
+      console.log(data);
+
+      console.log(data[0].id);
+
+      // const dataId = data[0].id;
+      // console.log(dataId);
+
+      // setQuestionId(current => [...current, data[0].id]);
+      console.log(questionId);   
+      console.log(data[0].question);
+
+      setCurrentQuestionId(data[0].id);
+      console.log(currentQuestionId);
+  
+    } 
+    // else {
+    //   setQuestionId(current => [...current, data[0].id]);
+    //   console.log(questionId);
+    // }
+    setQuestionId(current => [...current, data[0].id]);
+    console.log(questionId); 
+      
+    setQuestion(data[0].question);
+    console.log(question);
+
+    setIncorrectAnswers(data[0].incorrectAnswers);
+
+    setCorrectAnswer(data[0].correctAnswer);
+    
+    // id string values
+    setCurrentQuestionId(data[0].id);
+    console.log(currentQuestionId);
+
+    // creating new array to add correct answer string value to already from API provided incorrect answers array
+    const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
+    // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
+
+    // shuffle to randomize order of answers array so that user won't be able to figure out position of correct answer
+    const randomAnswers = answers.sort(() => 0.5 - Math.random());
+    setAllAnswers(randomAnswers);
+
+    // setting category and level state
+    setCategory(data[0].category);
+    setLevel(data[0].difficulty);
+  }
+
+
+  // OTHER API CALL WHERE USER SELECTS ONLY CATEGORY, BUT NO LEVEL endpoint
+  const getCategoryQuiz = async () => {
+    const url = new URL('https://the-trivia-api.com/api/questions')
+
+    url.search = new URLSearchParams({
+      categories: userCategory,
+      limit: 1
+    })
+      
+    let response = await fetch(url);
+    let data = await response.json();
+
+    console.log(data);
+
+    // trying to call api again if current question id repeats itself again
+    if (questionId.includes(data[0].id)) {
+      console.log("Calling API Categories again");
+
+      url.search = new URLSearchParams({
+        categories: userCategory,
+        limit: 1
+      })
+        
+      response = await fetch(url);
+      data = await response.json();
+  
+      console.log(data);
+
+      console.log(data[0].id);
+
+      // const dataId = data[0].id;
+      // console.log(dataId);
+
+      // setQuestionId(current => [...current, data[0].id]);
+      console.log(questionId);   
+      console.log(data[0].question);
+
+      setCurrentQuestionId(data[0].id);
+      console.log(currentQuestionId);
+  
+    } 
+    // else {
+    //   setQuestionId(current => [...current, data[0].id]);
+    //   console.log(questionId);
+    // }
+    setQuestionId(current => [...current, data[0].id]);
+    console.log(questionId); 
+      
+    setQuestion(data[0].question);
+    console.log(question);
+
+    setIncorrectAnswers(data[0].incorrectAnswers);
+
+    setCorrectAnswer(data[0].correctAnswer);
+
+    // id string values
+    setCurrentQuestionId(data[0].id);
+    console.log(currentQuestionId);
+
+    // creating new array to add correct answer string value to already from API provided incorrect answers array
+    const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
+    // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
+
+    // shuffle to randomize order of answers array so that user won't be able to figure out position of correct answer
+    const randomAnswers = answers.sort(() => 0.5 - Math.random());
+    setAllAnswers(randomAnswers);
+
+    // setting category and level
+    setCategory(data[0].category);
+    setLevel(data[0].difficulty);
+  }
+
+
+  // states to use as conditions for whether start button/intro gets shown or next instruction (outside of API call)
+  const intro = "Feeling ready? Then let's get this trivia party started🎈🎉";
+  const next = "Not feeling this question or already answered this one?"
+  const [initialIntro, setInitialIntro] = useState(intro);  
+  const [submitted, setSubmitted] = useState(false);
+  // state for user selection of dropdown menu, of both category and level
+  const [userCategory, setUserCategory] = useState("");
+  const [userLevel, setUserLevel] = useState("");
+
+  // onChange handler for first select dropdown category
+  const handleUserCategory = (e) => {
+      setUserCategory(e.target.value);
+  }
+
+  // on change handler for second select dropdown
+  const handleUserLevel = (e) => {
+    setUserLevel(e.target.value);
+  }
+
+  // submit handler for when user has submitted dropdown form (and chosen sth for both categories, random included)
   const firstSubmitHandler = (e, questionCategory, questionLevel) => {
     // prevent default behaviour of form (refreshing page)
     e.preventDefault();
 
     // call async function getQuiz() with API data everytime user clicks the get different question button
     // set a few conditions, if no user selection on any properties, call get randomquiz async function with different endpoint than getQuiz (filtered with category and level)
-    if (userSelect === "Random" && otherUserSelect === "Random") {
+    if (userCategory === "Random" && userLevel === "Random") {
       getRandomQuiz();
     }
-    else if (userSelect !== "Random" && otherUserSelect !== "Random") {
+    else if (userCategory !== "Random" && userLevel !== "Random") {
       getQuiz();
     }
-    else if (userSelect === "Random" && otherUserSelect !== "Random") {
+    else if (userCategory === "Random" && userLevel !== "Random") {
       getLevelQuiz();
     }
-    else if (userSelect !== "Random" && otherUserSelect === "Random") {
+    else if (userCategory !== "Random" && userLevel === "Random") {
       getCategoryQuiz();
     }
-    
-    // setUserSelect(e.target.value);
-    // setOtherUserSelect(e.target.value);
+  
+    // when user has submitted next instructions get shown and the user has submitted, so set those states accordingly
     setInitialIntro(next);
-    
-    console.log(questionCategory);
-    // console.log(questionLevel);
-    console.log(questionLevel);
-    
-
-    // setFilteredQuestions(filteringQuestions);
-    // setEveryStuff(withOrientation);
-    console.log(questionCategory);
-    // console.log(filteredQuestions);
-    // console.log(filteringQuestions);
-
     setSubmitted(true);
-      // setQuestion(question);
-      // console.log(question);
     
     // customizing alert for when user picks hard level
-    if (otherUserSelect === "hard") {
-      alert(`Amazing!! You chose ${userSelect} as your category and ${otherUserSelect}. Good luck!!! 🍀 You're gonna need it!`);
-    } else if (userSelect !== "Random" && otherUserSelect !== "Random") {
-      alert(`Amazing!! You chose ${userSelect} as your category and ${otherUserSelect}. Good luck!!! 🍀`);
+    if (userLevel === "hard") {
+      alert(`Amazing!! You chose ${userCategory} as your category and ${userLevel}. Good luck!!! 🍀 You're gonna need it!`);
+    } else if (userCategory !== "Random" && userLevel !== "Random") {
+      alert(`Amazing!! You chose ${userCategory} as your category and ${userLevel}. Good luck!!! 🍀`);
     }
-    else if (userSelect === "Random" && otherUserSelect === "Random") {
+    else if (userCategory === "Random" && userLevel === "Random") {
       alert(`Huhh, so you're one of those people who can't decide 🙄 Or maybe you're just feeling Random! Either way have fun! 🥳`);
     }
-    else if (userSelect !== "Random" && otherUserSelect === "Random") {
-      alert(`Great, you decided to go with ${userSelect} as your category and felt like playing all levels. I hope you're up to the challenge! Good luck 🍀`);
+    else if (userCategory !== "Random" && userLevel === "Random") {
+      alert(`Great, you decided to go with ${userCategory} as your category and felt like playing all levels. I hope you're up to the challenge! Good luck 🍀`);
     }
-    else if (userSelect === "Random" && otherUserSelect !== "Random") {
-      alert(`Awesome, so you went with ${otherUserSelect} and just felt like surprising youself with the categories I guess! Hope you enjoy! 💖`);
+    else if (userCategory === "Random" && userLevel !== "Random") {
+      alert(`Awesome, so you went with ${userLevel} and just felt like surprising youself with the categories I guess! Hope you enjoy! 💖`);
     }
-      // setIncorrectAnswers(incorrectAnswers);
-      // console.log(incorrectAnswers);
-
-      // setCorrectAnswer(correctAnswer);
-      // console.log(correctAnswer);
-
-      // setId(id);
-
-      // cloning allAnswers array to do filter
- 
-      // const filteredAnswers = cloneAnswers.filter((answerObj) => {
-      //   return answerObj.length === 3;
-      // })
-
   }
 
-  // const secondClickHandler = (questionCategory, questionLevel) => {
-
-  // }
-
-  // clickHandler that's gonna be passed into anotherClickHandler in DisplayForm component
+  // clickHandler that's gonna be passed into anotherClickHandler in DisplayForm component for the new question button
   const clickHandler = () => {
     // call async function getQuiz() with API data everytime user clicks the get different question button
 
-    if (userSelect === "Random" && otherUserSelect === "Random") {
+    // conditions based on user selection like in submit handler
+    if (userCategory === "Random" && userLevel === "Random") {
       getRandomQuiz();
     }
-
-    else if (userSelect !== "Random" && otherUserSelect !== "Random") {
-      // console.log("Calling getQuiz zeile 749");
+    else if (userCategory !== "Random" && userLevel !== "Random") {
       getQuiz();
-      
     }
-
-    else if (userSelect === "Random" && otherUserSelect !== "Random") {
+    else if (userCategory === "Random" && userLevel !== "Random") {
       getLevelQuiz();
     }
-
-    else if (userSelect !== "Random" && otherUserSelect === "Random") {
+    else if (userCategory !== "Random" && userLevel === "Random") {
       getCategoryQuiz();
       
     }
-    
-
+    // keep showing next instruction
     setInitialIntro(next);
-      // setQuestion(question);
-      // console.log(question);
-
-      // setIncorrectAnswers(incorrectAnswers);
-      // console.log(incorrectAnswers);
-
-      // setCorrectAnswer(correctAnswer);
-      // console.log(correctAnswer);
-
-      // setId(id);
-
-      // cloning allAnswers array to do filter
-
-      // const filteredAnswers = cloneAnswers.filter((answerObj) => {
-      //   return answerObj.length === 3;
-      // })
-
   }
 
-
-  // defining the leaveClickHandler function to pass intro as a prop into another leaveHandler function in DisplayForm component in order to set the initial intro back to intro value
+  // defining the leaveClickHandler function to pass intro as a prop into another leaveHandler function in DisplayForm component in order to set the initial intro back to intro value and stop displaying the quiz
   const leaveClickHandler = () => {
-    // setQuestion("")
-    // setAllAnswers([""]);
     setInitialIntro(intro);
-    setUserSelect("");
-    setOtherUserSelect("");
-    // setQuestion("");
-    // setEveryStuff([]);
+    // clear user selection so that when user restarts the game dropdown values are empty and not like they were before when the user chose a property
+    setUserCategory("");
+    setUserLevel("");
+    // setting everything from API data back to empty, so that user has fresh start
+    setQuestion("");
+    setAllAnswers([]);
+    setCorrectAnswer("");
+    setIncorrectAnswers([]);
+    // set question ids back to empty so that data is cleared every time user goes back to restart
     setQuestionId([]);
     setCurrentQuestionId("");
-    // setAllAnswers([]);
+    setCategory("");
+    setLevel("");
   }
 
 
   return (
-    // Fragment in order to use multiple parent elements
+    // Fragment in order to use multiple parent elements and not having to use another div
     <Fragment>
     {/* skip link to main*/}
     <a href="#mainContent" className='skipLink'>
@@ -929,22 +436,20 @@ function App() {
       <div className="banner">
       {/* background banner goes here */}
       </div>
+      {/* background image for whole page goes here outside of wrapper */}
       <div className="backgroundOne">
         <div className="App wrapper">
-        
           <h1>Welcome To My Trivia Party!!!</h1>
+          {/* intro container */}
           <div className={`${initialIntro !== intro ? "introContainer" : ""}`}
-          id="intro"
-          >
+          id="intro">
             <h2>Let's get nerdy 🤓</h2>
             <p>For each question select only one answer from the four possible answer choices!</p>
             <p>There is no timer to stress you out, this party is meant to be chill 🏖️ So take your sweet precious time to answer each question  ⏳ You could take a bath or go for a nap, we won't be able to tell  😜 </p>
-          </div>
-        </div>
-        {/* END WRAPPER */}
-      </div>
+          </div> {/* END intro container */}
+        </div>{/* END WRAPPER */}
+      </div>{/* end background image container */}
     </header>
-
 
     {/* Main with one quiz section*/}
     <main id='mainContent' className={`${initialIntro === next ? "mainWithQuiz" : ""}`}>
@@ -963,7 +468,7 @@ function App() {
               <h3>Go down to quiz!</h3>
             </a>
           </div>
-          : ""
+          : null
         }
         
         {/* thinking container with background and Wrapper */}
@@ -975,12 +480,11 @@ function App() {
         </div>{/* end background container and wrapper */}
         {/* WRAPPER */}
         <div className="App wrapper">
-          
-            
+            {/* ternary operator checking if user hasn't clicked the start button yet/submitted the form, if user has submitted, make dropdown disappear */}
             <div className={`${initialIntro !== next ?"content dropContainer" : "noContent"}`}>
               <form onSubmit={firstSubmitHandler}>
                 <label htmlFor="category">Play this category:</label>
-                <select name="category" id="category" onChange={handleUserSelectOne} value={userSelect} required>
+                <select name="category" id="category" onChange={handleUserCategory} value={userCategory} required>
                     <option value="" disabled>Pick one:</option>
                     <option value="Random">Random!</option>
                     <option value="Arts & Literature">Arts & Literature</option>
@@ -996,7 +500,7 @@ function App() {
                 </select>
 
                 <label htmlFor="level">Play at this level:</label>
-                <select name="level" id="level" onChange={handleUserSelectTwo} value={otherUserSelect} required>
+                <select name="level" id="level" onChange={handleUserLevel} value={userLevel} required>
                     <option value="" disabled>Pick one:</option>
                     <option value="Random">Random!</option>
                     <option value="easy">easy</option>
@@ -1010,87 +514,50 @@ function App() {
                     color={`${initialIntro === next ? "#2A28BA" : "#A741AC"} `}
                     aria-label = "click on the button below to get a new question"
                 />
-
-                <button 
-                // type="button"
-                // change
-
-                // passing in the function definition of anotherClickHandler that calls the clickHandler from App.js for us (which includes making the API call everytime the user clicks that button)
-                // onSubmit={dropDownSubmitHandler}
-
-                // pass in the firstLabel stateful variable as the value of aria-label to alternate between labels based on whether it's the start or the new question button
-                // aria-label={firstLabel}
-
-                // conditional rendering of className based on whether button is start button or generates new question
+                {/* submit/start button */}
+                <button
+                type="submit" 
                 className="start"
                 >Start
                 </button>
             </form>
           </div>{/* end form container div */}
     
-          
-          {/* <p aria-hidden="true"
-          // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
-          className={`${initialIntro === next ? "nextArrow" : "startArrow"} `}
-          >⬇</p> */}
           <span className="sr-only">Click the button down below</span>
         </div>{/* END WRAPPER */}
-        {/* <div className="App wrapper">
-          
-          {/* svg arrow up */}
-          {/* <ArrowDown size={70}
-              // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
-              color={`${initialIntro === next ? "#2A28BA" : "#A741AC"} `}
-              aria-label = "click on the button below to get a new question"
-          />
-          {/* <p aria-hidden="true"
-          // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
-          className={`${initialIntro === next ? "nextArrow" : "startArrow"} `}
-          >⬇</p> */}
-          {/* <span className="sr-only">Click the button down below</span>
-        </div>{/* END WRAPPER */}
 
-      {/* </section>end instruction section  */}
       {/* DISPLAY FORM COMPONENT */}
+      {/* if the user has submitted show the quiz game and all the other elements that come with that */}
       {
         submitted === true ?
         <DisplayForm
-            // handleSubmit={}
         next={next}
         intro={intro}
         initialIntro={initialIntro}
         clickHandler={clickHandler}
         question={question}
         allAnswers={allAnswers}
-        // incorrectAnswers={incorrectAnswers}
         correctAnswer={correctAnswer}
         currentQuestionId={currentQuestionId}
         leaveClickHandler={leaveClickHandler}
         category={category}
         level={level}
-        // filteredQuestions={filteredQuestions}
         firstSubmitHandler={firstSubmitHandler}
-        everyStuff={everyStuff}
-        userSelect={userSelect}
-        otherUserSelect={otherUserSelect}
-        // id={currentQuestionId}
-        // answerTwo={answerTwo}
-        // answerThree={answerThree}
-        // correctAnswer={correctAnswer}
+        userCategory={userCategory}
+        userLevel={userLevel}
+        incorrectAnswers={incorrectAnswers}
       />
       : null
       }
-      
       </section>
-      
     </main>
+
     {/* Footer with copyright */}
     <footer>
       {/* wrapper */}
       <div className="App wrapper">
         <p>Copyright ©️  Juno College 2022</p>
-      </div>
-      {/* end wrapper */}
+      </div>{/* end wrapper */}
     </footer>
    
   </Fragment> 
@@ -1100,7 +567,31 @@ function App() {
 export default App;
 
 
-// PSEUDO CODE
+
+// UPDATED PSEUDO CODE
+// Get data (questions, incorrectAnswers, correctAnswer, category, difficulty) from the Trivia API and put that data into stateful variables
+// use async await function to call the async function that makes the API call only when the user submits the dropdown form/start button (inside submitHandler)
+// depending on the user's selection from the dropdown, create different async functions in order to make API calls at different endpoints (based on given URLSearch params, when category is specified in the endpoint, API only provides data for questions that match that filter, and vice versa for difficulty)
+// since for the dropdown menu, I have to control the input anyway with stateful variables that hold the values of the user inputs, I can just use those as the values for the categories and difficulty params inside the URLSearch params (when setting up the API call)
+// then in order to make sure that no question repeats itself after another, make another API call in order to get different data based on whether the current question id (string value) is included in the question id array. Add that new current id to the question id array (didn't work fully, but better than before)
+// set other states that help define conditions whether certain elements get rendered onto the page or not and what classNames are assigned to those elements (if form was submitted, what kind of text/intro is being displayed, colour changes etc)
+// update those stateful variables inside the event listener functions, so submitHandler, clickHandler that gets passed into the otherClickHandler inside the DisplayForm button for the new question button, and the userCategory and userLevel states (inside the changeHandlers give those a value of e.target.value, for submitHandler set the submitted state to true, and the initialIntro to next), also define variables for the text and store those into state (for initialIntro the string value of the intro variable is the default value, gets updated accordingly when the user submits/starts the game)
+// define the otherClickHandler function in the DisplayForm component and pass in the clickHandler function from App.js as a prop. Also define other necessary states in that component and update the values of those accordingly inside the functions and under certain conditions (if statements) (submitHandler for quiz, then the leaveClick handler where the userInput and other states get cleared, set back to their default value, also defined the leave handler inside the App.js to then use as a prop in the displayForm component)
+// use the state values in the return of the displayForm (JSX) as props to display those values onto the page
+// map through the newly created randomized allAnswers array, so that user doesn't know where the correct answer is being displayed (created in the async function in App.js, used concat to inser correctAnswer into incorrectAnswers array, returned a new answers array, then used math.random to then store into another array. that array then gets stored into the allAnswers state). wrap the answers in a div that holds the input and the label, so that they're all aligned well (and also to apply styling to the whole container rather than just each individual item)
+// only display the displayForm component onto the page if the user submitted the dropdown form
+// then add additional elements to display onto the page when the quiz data is shown, so when the user is currently playing (an option to return back to the initial display and choose different categories and levels/restart the game, also further instructions based on whether the user submitted an answer or not, customize the messages based on whether the user submitted AND got the answer either right or wrong, also change background colour accordingly (green for right, red for wrong))
+// optional: added in custom messages as an array, one for when the user submitted correct answers, and the other one when he submitted incorrect answers
+// then randomized the order of those arrays (with the index numbers), so that user would get a different custom message randomly
+// also added in counter for each question that gets submitted and answered correctly and then one for each time the user has submitted an answer regardless whether correct or incorrect, store those into state, update those in the submit handler and empty them out in the leave handler
+// for that it's important to clear the state's values, or set them back to their default values
+
+
+
+
+
+
+// original PSEUDO CODE
 
 // Get data (questions, category, incorrectAnswers, correctAnswer) from the Trivia API when App.js mounts
 // Use (import) Axios to make the API call
@@ -1122,11 +613,9 @@ export default App;
 // buttons (return and submit answer)
 // submit answer button with type=submit
 
+// originally:
 // lose start button (stretch goal)
 // maybe no useEffect, put it in state to have it show up every time user submits/clicks (eventHandler func)
 // functionality to check with array ids in state to avoid showing same question
-// no new pages
 
 // inputs changed to type=radio to limit user to only one choice (checkbox better for more possible answers, here only one answer)
-
-// or maybe use ul with li items instead of form element

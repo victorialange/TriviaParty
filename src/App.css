@@ -38,7 +38,6 @@ h1 {
   margin: 0 auto;
   width: 85%;
   max-width: 1200px;
-  /* new styles .App as flex container for form and everything else on the page */
   display: flex;
   flex-direction: column;
 }
@@ -59,18 +58,12 @@ a {
   font-size: 1rem;
   padding: 10px 0;
 }
-
 .skipLink:focus {
   left: 0;
   right: 0;
   text-align: center;
   top: 30px;
 }
-
-/* header */
-/* header {
-  padding-top: 40px;
-} */
 
 /* initial display (h1, h2, p etc.) */
 .App p:first-of-type {
@@ -125,14 +118,6 @@ button {
   margin-bottom: 5px;
 }
 
-/* former arrow emojis */
-/* .instruction p:first-of-type,
-.leaveField p:nth-of-type(2) {
-  font-size: 4rem;
-  margin-bottom: 0px;
-  margin-top: 7px;
-} */
-
 /* container for intro message, styling only applied when quiz is displayed */
 .introContainer {
   border: 3px solid black;
@@ -154,7 +139,6 @@ button {
   background-size: cover;
   background-repeat: no-repeat;
   background-position-x: center;
-  /* background-attachment: scroll; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -182,7 +166,6 @@ button {
   font-size: 1.1rem;
   font-family: inherit;
   text-align: center;
-  /* color: white; */
   font-weight: 600;
   padding: 7.5px 10px;
 }
@@ -196,10 +179,6 @@ button {
 select:focus > option:checked { 
   background: rgb(197, 165, 251) !important;
 }
-
-/* .dropContainer select:hover {
-  background-color: #E9DCFF;
-} */
 
 .dropContainer label {
   color: black;
@@ -226,7 +205,6 @@ select:focus > option:checked {
   margin-top: 30px;
   font-size: 1.2rem;
   display: flex;
-  /* width: fit-content; */
   align-items: center;
   text-shadow: none;
 }
@@ -252,7 +230,7 @@ button {
   font-size: 1.2rem;
 }
 
-/* choice iteration, so repetition of user's selection */
+/* choice iteration, so repetition of user's selection through dropdown*/
 .choiceIteration {
   display: flex;
   justify-content: space-between;
@@ -276,29 +254,20 @@ button {
   padding: 5px;
 }
 
-.levelSelect,
-.categorySelect,
+/* styling based on whether user selection from dropdown is not random for either properties */
 .noRandom {
   flex-wrap: wrap;
   flex-direction: column;
-  /* justify-content: center; */
 }
 
-.levelSelect p:first-child,
-.categorySelect p:first-child,
 .noRandom p:first-child {
   align-self: flex-start;
 }
 
-.levelSelect .scoreContainer,
-.categorySelect .scoreContainer,
 .noRandom .scoreContainer {
-  /* margin-top: 30px; */
   align-self: flex-end;
 }
 
-.levelSelect p:nth-child(3),
-.categorySelect p:nth-child(3),
 .noRandom p:nth-child(3) {
   align-self: flex-start;
 }
@@ -308,11 +277,6 @@ button {
 .noRandom .scoreContainer p {
   width: 100%;
 }
-
-
-/* .choiceIteration p:first-child {
-  margin-right: 100px;
-} */
 
 /* start button before quiz shows up */
 
@@ -362,14 +326,6 @@ button {
   font-size: 1.2rem;
 }
 
-/* visually-hidden className to hide arrow description span and hidden labels from disabled input or button by default, but still visible/readable for screenreaders for  */
-/* .visually-hidden {
-  color: white;
-  font-size: smaller;
-  position: absolute;
-  left: -450px;
-} */
-
 /* form quiz */
 /* form without content before button turns from start into new question */
 .noContent {
@@ -378,7 +334,6 @@ button {
 
 /* center quiz items inside form element and add padding for space */
 form {
-  /* border: 3px solid white; */
   width: 70%;
   align-self: center;
   display: flex;
@@ -389,7 +344,6 @@ form {
   border-bottom-right-radius: 50px;
   background: rgb(0, 0, 0, 0.6);
   color: white;
-  /* color: white; */
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
 }
@@ -441,7 +395,6 @@ form {
 /* remove default fieldset styling */
 fieldset {
   border: none;
-  /* padding: 0; */
   padding: 5px 100px 12px 100px;
 }
 
@@ -452,10 +405,6 @@ legend {
   border: none;
   text-align: left;
 }
-
-/* legend.noContent {
-  border-color: white;
-} */
 
 /* container for all inputs and labels */
 .inputs {
@@ -468,7 +417,6 @@ legend {
 .answer {
   margin-bottom: 8px;
   /* make answer a flex container to align radio button with label better */
-  /* display: flex; */
   border: 3px solid black;
   background-color: rgb(13, 48, 101, 0.8);
   border-radius: 50px;
@@ -482,10 +430,6 @@ legend {
   background-color: rgb(105, 1, 107, 0.85);
   font-size: 1.05rem;
 }
-
-/* .answer input:checked label {
-  background-color: rgb(105, 1, 107, 0.85);
-} */
 
 /* making the radio buttons bigger, so that user doesn't have to always hit the dedicated button 100%, especially since the whole div looks like a clickable input */
 .answer input[type='radio'] { 
@@ -502,19 +446,10 @@ legend {
   margin-bottom: 2px;
 }
 
-/* input[type="radio"]:checked {
-  /* accent-color:green; */
-/* } */
-
 /* classNames for when user has selected  an answer without submitting */
 
 div.selected {
   background-color: rgb(105, 1, 107, 0.85);
-}
-
-div.selectedFinal {
-  color: white;
-  /* accent-color: rgb(105, 1, 107); */
 }
 
 div.selected:hover,
@@ -546,29 +481,16 @@ div.idealSelect:focus {
   background-color: rgb(0, 128, 0, 0.6);
 }
 
-/* input[type="radio"].submittedInput {
-  accent-color: red;
-} */
-
 /* if input is disabled class called weaker */
 .weaker {
-  /* border-color: rgb(0, 0, 0, 0.3);
-  background: rgb(0, 0, 0, 0.2);
-  color: rgb(189, 189, 189); */
   border: 3px solid black;
   background-color: rgb(13, 48, 101, 0.8);
-  /* background-color: rgb(255, 255, 255, 0.9); */
-  /* color: black; */
   color: white;
   border-radius: 50px;
   display: flex;
   width: 100%;
   padding: 5px 20px;
 }
-
-/* .weaker input:checked {
-  background-color: rgb(0, 128, 0, 0.6);
-} */
 
 .weaker:hover,
 .weaker:focus {
@@ -584,7 +506,6 @@ button.weaker {
   cursor: unset;
   border: none;
   border-radius: 5px;
-  /* background-color: rgb(13, 48, 101, 0.75); */
   background-color: rgba(77, 2, 78, 0.95);
   padding: 10px 15px;
   width: fit-content;
@@ -596,12 +517,9 @@ button.weaker:focus {
   font-size: 1rem;
 }
 
-
 /* align submit button with other elements inside form  */
 form button {
   align-self: flex-start;
-  /* margin-top: 12px; */
-  /* padding: 5px 10px; */
   margin-left: 100px;
   font-size: 1rem;
   font-weight: 600;
@@ -621,7 +539,6 @@ form button:focus {
 /* noMessage class for when no feedback message yet (before form submission) */
 .noMessage {
   margin-bottom: 20px;
-  /* display: none; */
 }
 
 /* styling for feedback for when user has left page, no display, so that when he comes back it's cleared */
@@ -633,7 +550,6 @@ form button:focus {
 .message {
   margin-top: 20px;
   width: 100%;
-  /* border-radius: 50px; */
 }
 
 .message p:first-child {
@@ -656,11 +572,6 @@ form button:focus {
 .wrong p {
   background-color: rgb(255, 0, 0, 0.6);
 }
-
-/* .right,
-.wrong {
-  border-radius: 50px;
-} */
 
 /* limitSubmitMessage for when user has submitted and gets instruction on how to keep playing */
 .limitSubmitMessage p:first-of-type {
@@ -702,11 +613,6 @@ form button:focus {
   align-self: center;
   margin: 20px 0 10px 0;
 }
-
-/* .leaveField p:first-of-type {
-  font-size: 1.1rem;
-  
-} */
 
 .leaveField p:nth-of-type(2) {
   margin-top: 20px;
@@ -763,8 +669,6 @@ footer p {
 }
 
 
-
-
 /* MEDIA QUERIES */
 /* MOBILE-FIRST APPROACH */
 @media (min-width: 315px) {
@@ -806,8 +710,6 @@ footer p {
   /* FORM */
   form {
     /* not fit-content anymore since, now form isn't respecting wrapper anymore */
-    /* width: 100%; */
-    /* margin-left: 0; */
     width: 100%;
     margin: 0;
   }
@@ -841,16 +743,11 @@ footer p {
   }
   .level {
     align-self: center;
-    /* width: 34%; */
   }
   /* FIELDSET */
   fieldset {
     padding: 10px;
   }
-  /* visually-hidden labels */
-  /* .visually-hidden {
-    left: -500px;
-  } */
 
   /* SUBMIT BUTTON */
   form button {
@@ -882,13 +779,8 @@ footer p {
   .submitAlert {
     margin-top: 0;
   }
-  /* .alert p:first-child {
-    font-size: 4rem;
-    color: #2A28BA;
-  } */
+ 
   .alert svg {
-    /* fill: #322fd6; */
-    /* margin-top: 15px; */
     margin-bottom: 0;
   }
   .limitSubmitMessage {
@@ -944,7 +836,6 @@ footer p {
   }
   form {
     margin-left: 60px;
-    /* margin-top: 100px; */
   }
   /* repetition user selection */
   .choiceIteration p,
@@ -956,7 +847,7 @@ footer p {
     margin-top: 200px;
   }
   /* styling limit submit message, so that it gets shown inside form container, easier for user to see the important instruction on how to keep playing */
-  /* div container for limit submit message */
+  
   /* when limit submit message is present, have arrow and submit message inside form container pointing to button */
   .inside {
     position: relative;
@@ -970,6 +861,7 @@ footer p {
     left: 0;
     top: 70%;
   }
+  /* div container for limit submit message */
   .limitSubmitMessage {
     position: absolute;
     top: 100%;
@@ -981,47 +873,23 @@ footer p {
     color: black;
     margin-bottom: 0;
   }
-  
-  /* .alert p:first-child {
-    font-size: 2.7rem;
-    color: violet;
-    height: min-content;
-    margin-bottom: 80px;
-    font-weight: bold;
-  } */
 
   .alert svg {
     height: 238px;
     margin-bottom: 0px;
-    /* margin-top: 25px; */
     font-weight: bold;
     width: 105px;
   }
-
 
    /* when limit submit message present at wider screen sizes, give margin-top from form container back*/
    .submitAlert {
     margin-top: 20px;
     height: fit-content;
   }
-  /* last img
-  .partingImg {
-    background-position-x: -70px;
-  } */
 }
 
 @media (min-width: 538px) {
-  /* limit submit message */
-  /* .limitSubmitMessage {
-    margin-top: 20px;
-  } */
-  /* .alert p:first-child {
-    font-size: 3.5rem;
-  } */
-  /* .alert svg {
-    height: 90px;
-  } */
-
+  /* alert container for limit submit message */
   .alert .limitSubmitMessage p:first-child {
     font-size: 1.1rem;
     margin-bottom: 0;
@@ -1039,21 +907,6 @@ footer p {
   }
 }
 
-/* @media (min-width: 574px) { */
-  /* limit submit message */
-  /* .alert p:first-child {
-    margin-bottom: 140px;
-    /* font-size: 2.7rem; */
-  /* } */
-  /* .alert .limitSubmitMessage p:first-child {
-    margin-bottom: 0;
-    font-size: 1.1rem;
-  } */
-  /* form {
-    margin-top: 0;
-  } */
-  
-/* } */
 
 @media (min-width: 579px) {
   /* limit submit message */
@@ -1067,10 +920,6 @@ footer p {
 
 
 @media (min-width: 600px) {
-  /* form */
-  /* form {
-    margin-top: 45px;
-  } */
   /* HEADER */
   .banner {
     height: 300px;
@@ -1087,14 +936,6 @@ footer p {
   .leaveField button {
     margin-bottom: 30px;
   }
-  /* limit submit message */
-  /* .limitSubmitMessage {
-    top: 250%;
-  } */
-  /* last img
-  .partingImg {
-    background-position-x: -30px;
-  } */
 }
 
 @media (min-width: 618px) {
@@ -1125,6 +966,10 @@ footer p {
   .quizForm h3 {
     margin-top: 30px;
   }
+  /* when user selection is random for both, lower the arrow a bit */
+  div.randomAlert {
+    top: 75%;
+  }
   .alert {
     top: 55%;
   }
@@ -1142,21 +987,11 @@ footer p {
   }
   /* last img */
   .partingImg {
-    /* background-position-x: -150px; */
     height: 300px;
   }
-   /* limit submit message */
-   /* .limitSubmitMessage {
-    top: 270%;
-  } */
 }
 
 @media (min-width: 700px) {
-   /* limit submit message */
-  /* .alert p:first-child {
-    font-size: 4.5rem;
-    margin-bottom: 155px;
-  } */
   .alert .limitSubmitMessage p:first-child {
     margin-bottom: 0;
     font-size: 1.1rem;
@@ -1172,12 +1007,6 @@ footer p {
   .loweredForm {
     margin-top: 30px;
   }
-  /* .limitSubmitMessage {
-    top: 30%;
-  } */
-  /* .alert svg {
-    height: 100px;
-  } */
 
   .inputs {
     width: 90%;
@@ -1186,11 +1015,6 @@ footer p {
 }
 
 @media (min-width: 738px) {
-  /* limit submit message */
-  /* .alert p:first-child {
-    font-size: 5rem;
-    margin-bottom: 200px;
-  } */
   .alert .limitSubmitMessage p:first-child {
     font-size: 1.1rem;
     margin-bottom: 0;
@@ -1213,10 +1037,6 @@ footer p {
 /* tablet */
 @media (min-width: 890px) {
   /* HEADER */
-  /* header {
-    padding-top: 70px;
-  } */
-  /* HEADER */
   .banner {
     height: 400px;
   }
@@ -1232,10 +1052,6 @@ footer p {
   .quizForm h3 {
     margin-top: 40px;
   }
-  /* form */
-  /* form {
-    margin-top: 60px;
-  } */
   /* fieldset */
   fieldset {
     padding: 10px 30px;
@@ -1253,19 +1069,16 @@ footer p {
   }
   /* last img */
   .partingImg {
-    /* background-position-x: center; */
     height: 400px;
   }
   /* intro container */
   .introContainer {
     padding: 10px 50px 30px 50px;
   }
-
+  /* reducing width of inputs container */
   .inputs {
     width: 75%;
   }
-  
-  
 }
 
 @media (min-width: 1000px) {
@@ -1287,11 +1100,6 @@ footer p {
 
 /* small desktop */
 @media (min-width: 1100px) {
-  /* HEADER */
-  /* header {
-    padding-top: 90px;
-  } */
-  /* h2 */
   /* HEADER */
   .banner {
     height: 500px;
@@ -1318,11 +1126,7 @@ footer p {
   form button {
     margin-left: 100px;
   }
-  /* form */
-  /* form {
-    max-width: 100%;
-    width: fit-content;
-  } */
+  /* reducing width of inputs container */
   .inputs {
     width: 70%;
   }
@@ -1366,37 +1170,3 @@ footer p {
   }
 }
 
-/* .App-logo {
-  height: 40vmin;
-  pointer-events: none;
-} */
-
-/* @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-} */
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-/* .App-link {
-  color: #61dafb;
-} */
-
-/* @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
