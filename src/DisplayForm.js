@@ -200,7 +200,7 @@ const DisplayForm = ( props ) => {
         // }
         // }
         // clearing of feedback
-        // setUserChoice("");
+        setUserChoice("");
         // update value of generator to next variable (so that it its text is displayed as new question instead of start)
         // {props.initialIntro(props.next)};
         setFirstLabel(newLabel);
@@ -423,7 +423,7 @@ const DisplayForm = ( props ) => {
                                 answer ?
                                     <div className={`
                                     ${limitSubmit === true ? "weaker answer" : "answer" } 
-                                    ${limitSubmit === true && userChoice === answer ? "selectedFinal" : ""} 
+                                    // // ${limitSubmit === true && userChoice === answer ? "selectedFinal" : ""} 
                                     ${userChoice !== answer ? "" : "selected"} 
                                     ${limitSubmit === true && userChoice === answer && userChoice === props.correctAnswer ? "selectedRight" : ""} 
                                     ${limitSubmit === true && userChoice === answer && userChoice !== props.correctAnswer ? "selectedWrong" : ""}
