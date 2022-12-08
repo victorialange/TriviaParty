@@ -1,3 +1,19 @@
+/* importing google fonts */
+/* distressed font for h1*/
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Distressed&display=swap');
+/* source sans pro font for rest */
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
+
+
+html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,footer,header,nav,section{display:block}h1{font-size:2em;margin:.67em 0}figcaption,figure,main{display:block}figure{margin:1em 40px}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent;-webkit-text-decoration-skip:objects}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:inherit}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}dfn{font-style:italic}mark{background-color:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}audio,video{display:inline-block}audio:not([controls]){display:none;height:0}img{border-style:none}svg:not(:root){overflow:hidden}button,input,optgroup,select,textarea{font-family:sans-serif;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}button,html [type=button],[type=reset],[type=submit]{-webkit-appearance:button}button::-moz-focus-inner,[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner{border-style:none;padding:0}button:-moz-focusring,[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring{outline:1px dotted ButtonText}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{display:inline-block;vertical-align:baseline}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-cancel-button,[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details,menu{display:block}summary{display:list-item}canvas{display:inline-block}template{display:none}[hidden]{display:none}
+
+html { box-sizing: border-box;}
+
+*, *:before, *:after {box-sizing: inherit}
+
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; border: 0; padding: 0; white-space: nowrap; clip-path: inset(100%); clip: rect(0 0 0 0); overflow: hidden;}
+
+
 .App {
   text-align: center;
 }
@@ -9,11 +25,19 @@ html {
   font-size: 125%;
 }
 
+h1 {
+  font-family: 'Rubik Distressed', cursive;
+}
+
+.formContainer .text{
+  background-color: white;
+  height: fit-content;
+}
+
 .wrapper {
   margin: 0 auto;
   width: 85%;
   max-width: 1200px;
-  /* new styles .App as flex container for form and everything else on the page */
   display: flex;
   flex-direction: column;
 }
@@ -34,17 +58,11 @@ a {
   font-size: 1rem;
   padding: 10px 0;
 }
-
 .skipLink:focus {
-left: 0;
-right: 0;
-text-align: center;
-top: 30px;
-}
-
-/* header */
-header {
-  padding-top: 40px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  top: 30px;
 }
 
 /* initial display (h1, h2, p etc.) */
@@ -52,6 +70,11 @@ header {
   margin: 0;
 }
 
+header p:first-of-type,
+header p:nth-of-type(2),
+header p:last-of-type {
+  font-weight: 600;
+}
 
 /* main */
 main {
@@ -59,15 +82,145 @@ main {
   margin-bottom: 300px;
 }
 
+/* background image banner */
+.banner {
+  background-image: url('./img/banner.jpeg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 320px;
+  margin-bottom: 30px;
+  z-index: 10;
+}
+
+/* background image header */
+
+body {
+  background-image: url('./img/transparent-bg-1.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-y: 65px;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+p {
+  font-size: 1.1rem;
+}
+
+button {
+  font-family: 'Source Sans Pro', sans-serif;
+  transition: all ease-in 0.3s;
+}
+
+.quizForm {
+  width: 100%;
+}
+
 .quizForm h3 {
   margin-bottom: 5px;
 }
 
-.quizForm p:first-of-type,
-.leaveField p:nth-of-type(2) {
-  font-size: 4rem;
-  margin-bottom: 0px;
-  margin-top: 7px;
+/* container for intro message, styling only applied when quiz is displayed */
+.introContainer {
+  border: 3px solid black;
+  border-radius: 30px;
+  background-color: #fff;
+  padding: 10px 30px;
+}
+
+/* thought bubble as a background img for h3 when it's about getting a different question */
+.instruction .wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.instruction .thinking {
+  background-image: url('./img/bubble_cropped.png');
+  height: 265px;
+  width: fit-content;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  padding: 50px;
+  flex-direction: column;
+  margin: 50px 0 30px 0;
+}
+
+/* dropdown menu for filtering */
+.dropContainer {
+  margin-top: 50px;
+}
+
+.dropContainer form {
+  background-color: white;
+  margin-left: 0;
+}
+
+.dropContainer select {
+  margin-bottom: 15px;
+  background: #E9DCFF;
+  border: 3px solid rgb(197, 165, 251);
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-family: inherit;
+  text-align: center;
+  font-weight: 600;
+  padding: 7.5px 10px;
+}
+
+.dropContainer select option:hover,
+.dropContainer select option:checked {
+  box-shadow: 0 0 10px 100px rgb(197, 165, 251) inset;
+  background: rgb(197, 165, 251) !important;
+}
+
+select:focus > option:checked { 
+  background: rgb(197, 165, 251) !important;
+}
+
+.dropContainer label {
+  color: black;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.thinking h3 {
+  width: 100%;
+  margin-top: 0;
+}
+
+.firstArrow svg {
+  align-self: center;
+  margin: 35px 0 20px 0;
+}
+
+.secondArrow svg {
+  margin: 0px 0px 20px 0px;
+}
+
+.instruction a.start {
+  margin-top: 30px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  text-shadow: none;
+}
+.instruction .start svg {
+  align-self: center;
+  margin-bottom: 0;
+}
+
+.instruction a:hover,
+.instruction a:focus {
+  font-size: 1.3rem;
+}
+
+.start h3 {
+  margin: 0; 
 }
 
 /* centering the initial start button */
@@ -78,24 +231,100 @@ button {
   font-size: 1.2rem;
 }
 
+/* choice iteration, so repetition of user's selection through dropdown*/
+.choiceIteration {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  align-items: center;
+  width: 100%;
+}
+
+.choiceIteration p {
+  margin: 0;
+  font-weight: 600;
+  background: white;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 5px 0;
+}
+
+/* when chosen random */
+.random .scoreContainer p {
+  width: 100%;
+  padding: 5px;
+}
+
+/* styling based on whether user selection from dropdown is not random for either properties */
+.noRandom {
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.noRandom p:first-child {
+  align-self: flex-start;
+}
+
+.noRandom .scoreContainer {
+  align-self: flex-end;
+}
+
+.noRandom p:nth-child(3) {
+  align-self: flex-start;
+}
+
+.categorySelect .scoreContainer p,
+.levelSelect .scoreContainer p,
+.noRandom .scoreContainer p {
+  width: 100%;
+}
+
 /* start button before quiz shows up */
+
+/* start button as submit button for dropdown */
+.dropContainer .start {
+  margin-left: 0;
+  align-self: center;
+}
+
 .start {
   padding: 10px 50px;
   font-size: 1.5rem;
+  background: #A741AC;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  transition: all ease-in 0.3s;
+}
+.start:hover,
+.start:focus {
+  background: rgb(163, 44, 169);
+  font-size: 1.6rem;
+  text-shadow:1px 1px 8px #fff, 1px 1px 8px #A741AC; 
 }
 
 /* next button when quiz is shown */
 .next {
   font-size: 1.2rem;
   padding: 8px 20px;
-}
-
-/* visually-hidden className to hide arrow description span and hidden labels from disabled input or button by default, but still visible/readable for screenreaders for  */
-.visually-hidden {
+  background: #2A28BA;
   color: white;
-  font-size: smaller;
-  position: absolute;
-  left: -450px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+}
+.next:hover,
+.next:focus {
+  font-size: 1.3rem;
+  background: rgb(35, 32, 185, 0.9);
+  text-shadow:1px 1px 8px #fff, 1px 1px 8px #2A28BA;
+}
+.next:not(:hover),
+.next:visited,
+.next:active {
+  text-shadow: none;
+  font-size: 1.2rem;
 }
 
 /* form quiz */
@@ -106,13 +335,32 @@ button {
 
 /* center quiz items inside form element and add padding for space */
 form {
-  border: 3px solid black;
-  width: fit-content;
+  width: 70%;
   align-self: center;
   display: flex;
   flex-direction: column;
-  margin-top: 60px;
-  padding-top: 20px;
+  margin-top: 40px;
+  margin-left: 60px;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  background: rgb(0, 0, 0, 0.6);
+  color: white;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+}
+
+.formContainer {
+  margin-top: 20px;
+  background-image: url('./img/glowy-quiz.jpeg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 50px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  height: 650px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 /* properties div container inside form before fieldset */
@@ -120,11 +368,17 @@ form {
 .properties p:nth-of-type(2) {
   font-size: 1rem;
   width: fit-content;
+  font-weight: 600;
 }
 
 .properties {
   display: flex;
   justify-content: space-between;
+  background-color: rgb(105, 1, 107, 0.8);
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 /* level container */
@@ -136,46 +390,161 @@ form {
 /* level and category container */
 .level,
 .category {
-  margin: 0 10px 20px 10px;
+  margin: 0 10px 0 10px;
 }
 
 /* remove default fieldset styling */
 fieldset {
   border: none;
-  /* padding: 0; */
-  padding: 5px 50px 12px 50px;
+  padding: 5px 100px 12px 100px;
 }
 
 /* align legend with submit button (more padding to keep in mind of) */
 legend {
-  padding: 5px 10px;
-  border: 3px solid red;
+  padding: 0;
+  font-weight: bold;
+  border: none;
+  text-align: left;
 }
 
 /* container for all inputs and labels */
 .inputs {
-  width: fit-content;
   text-align: left;
   margin-top: 8px;
 }
 
+
 /* individual input and label container */
 .answer {
   margin-bottom: 8px;
+  /* make answer a flex container to align radio button with label better */
+  border: 3px solid black;
+  background-color: rgb(13, 48, 101, 0.8);
+  border-radius: 50px;
+  display: flex;
+  width: 100%;
+  padding: 5px 20px;
+}
+
+.answer:hover,
+.answer:focus {
+  background-color: rgb(105, 1, 107, 0.85);
+  font-size: 1.05rem;
+}
+
+/* making the radio buttons bigger, so that user doesn't have to always hit the dedicated button 100%, especially since the whole div looks like a clickable input */
+.answer input[type='radio'] { 
+  transform: scale(1.3);
+  margin-right: 10px;
+  /* add same margin at the top as at the bottom (doesn't let me remove margin-bottom for some reason), so that input is centered and aligned well with label */
+  margin-top: 3px;
+  align-self: center;
+  margin-bottom: 3px; 
+  accent-color:rgb(105, 1, 107);
+}
+
+.answer label {
+  margin-bottom: 2px;
+}
+
+/* classNames for when user has selected  an answer without submitting */
+
+div.selected {
+  background-color: rgb(105, 1, 107, 0.85);
+}
+
+div.selected:hover,
+div.selected:focus {
+  background-color: rgb(105, 1, 107, 0.85);
+}
+
+/* classNames for when user has submitted either right or wrong answer */
+div.selectedRight {
+  background-color: rgb(0, 128, 0, 0.6);
+}
+
+div.selectedWrong {
+  background-color: rgb(255, 0, 0, 0.6);
+}
+
+div.selectedWrong:hover,
+div.selectedWrong:focus {
+  background-color: rgb(255, 0, 0, 0.6);
+}
+
+div.idealSelect {
+  background-color: rgb(0, 128, 0, 0.6);
+  color: white;
+}
+
+div.idealSelect:hover,
+div.idealSelect:focus {
+  background-color: rgb(0, 128, 0, 0.6);
+}
+
+/* if input is disabled class called weaker */
+.weaker {
+  border: 3px solid black;
+  background-color: rgb(13, 48, 101, 0.8);
+  color: white;
+  border-radius: 50px;
+  display: flex;
+  width: 100%;
+  padding: 5px 20px;
+}
+
+.weaker:hover,
+.weaker:focus {
+  background-color: rgb(13, 48, 101, 0.8);
+  font-size: 1rem;
+}
+
+.weaker input {
+  color: black;
+}
+
+button.weaker {
+  cursor: unset;
+  border: none;
+  border-radius: 5px;
+  background-color: rgba(77, 2, 78, 0.95);
+  padding: 10px 15px;
+  width: fit-content;
+}
+button.weaker:hover,
+button.weaker:focus {
+  background-color: rgba(77, 2, 78, 0.95);
+  text-shadow: none;
+  font-size: 1rem;
 }
 
 /* align submit button with other elements inside form  */
 form button {
   align-self: flex-start;
-  /* margin-top: 12px; */
-  /* padding: 5px 10px; */
-  margin-left: 55px;
+  margin-left: 100px;
   font-size: 1rem;
+  font-weight: 600;
+  background-color: rgb(105, 1, 107, 0.85);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+}
+form button:hover,
+form button:focus {
+  background-color: rgb(105, 1, 107, 0.95);
+  text-shadow:1px 1px 8px #fff, 1px 1px 8px #2A28BA;
+  font-size: 1.1rem;
 }
 
 /* noMessage class for when no feedback message yet (before form submission) */
 .noMessage {
   margin-bottom: 20px;
+}
+
+/* styling for feedback for when user has left page, no display, so that when he comes back it's cleared */
+.noField {
+  display: none;
 }
 
 /* message class for when feedback message exists upon form submission */
@@ -189,28 +558,101 @@ form button {
   font-size: 1.2rem;
 }
 
+.message p {
+  border-bottom-left-radius: 47px;
+  border-bottom-right-radius: 47px;
+  font-weight: bold;
+}
+
 /* class for feedback for right answer */
 .right p {
-  background-color: green;
+  background-color: rgb(0, 128, 0, 0.6);
 }
 
 /* class for feedback for wrong answer */
 .wrong p {
-  background-color: red;
+  background-color: rgb(255, 0, 0, 0.6);
 }
 
 /* limitSubmitMessage for when user has submitted and gets instruction on how to keep playing */
 .limitSubmitMessage p:first-of-type {
-  font-size: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .limitSubmitMessage {
   margin-top: 35px;
+  background-color: #fff;
+  border: 3px solid #2A28BA;
+  border-radius: 15px;
+  padding: 10px 15px;
+  margin-bottom: 0;
 }
 
+/* anchor tag to go back to intruction */
+.quizForm .start {
+  align-self: center;
+  margin-top: 70px;
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+}
+
+.quizForm .start:hover,
+.quizForm .start:focus {
+  text-shadow: none;
+  font-size: 1.4rem;
+}
+
+.quizForm a svg {
+  align-self: center;
+}
+
+/* end field as class for chosen level, category and score that show up at the end when the questions have all ended */
+.endField {
+  margin-bottom: 60px;
+}
+.endField .scoreContainer,
+.endField p:first-child,
+.endField p:nth-child(3) {
+  align-self: center;
+}
+.endField .scoreContainer {
+  margin-top: 20px;
+}
+.endField p:first-child,
+.endField p:nth-child(2) {
+  margin-bottom: 20px;
+  background-color: #FEDFB5;
+  border: 2.5px solid rgba(215, 119, 60, 0.8); 
+}
+
+.endField .scoreContainer p {
+  background-color: #FEDFB5;
+  border: 2.5px solid rgba(215, 119, 60, 0.8);
+}
+
+.randomField {
+  margin-bottom: 60px;
+}
+
+.randomField .scoreContainer p,
+.randomField p:first-child {
+  background-color: #FEDFB5;
+  border: 2.5px solid rgba(215, 119, 60, 0.8);
+}
+
+
 /* leave field */
-.leaveField p:first-of-type {
-  font-size: 1rem;
+.leaveField svg {
+  height: 50px;
+  align-self: center;
+  margin: 20px 0 10px 0;
+}
+
+.leaveField p:nth-of-type(2) {
+  margin-top: 20px;
+  font-size: 1.1rem;
 }
 
 .leaveField p:last-of-type {
@@ -222,10 +664,23 @@ form button {
   flex-direction: column;
   align-items: center;
   margin-top: 120px;
+  font-weight: 600;
 }
 
 .leaveField button {
-  font-size: 1rem;
+  background: #E9DCFF;
+  border: 3px solid rgb(197, 165, 251);
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 10px 20px;
+  transition: all ease-in 0.5s;
+}
+.leaveField button:hover,
+.leaveField button:focus {
+  background: rgb(13, 48, 101, 0.9);
+  border-color: #282c34;
+  color: white;
 }
 
 /* footer copyright */
@@ -239,37 +694,591 @@ footer p {
   margin: 0;
 }
 
-/* .App-logo {
-  height: 40vmin;
-  pointer-events: none;
-} */
-
-/* @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-} */
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+footer a:hover,
+footer a:focus {
+  font-weight: 700;
 }
 
-/* .App-link {
-  color: #61dafb;
-} */
+.partingImg {
+  background-image: url("./img/brain.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  height: 500px;
+  margin-top: 80px;
+  width: 100%;
+}
 
-/* @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+
+/* MEDIA QUERIES */
+/* MOBILE-FIRST APPROACH */
+@media (min-width: 315px) {
+  /* header */
+  .banner {
+    height: 150px;
+    margin-bottom: 0;
   }
-  to {
-    transform: rotate(360deg);
+  /* if quiz is present reduce margin-bottom in main */
+  .mainWithQuiz {
+    margin-bottom: 150px;
   }
-} */
+  /* quizForm section */
+  section.instruction h3 {
+    margin-bottom: 0;
+  }
+  section.instruction p:first-of-type {
+    margin-top: 0;
+  }
+  /* link to go directly to quiz */
+  .instruction a.start {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+  .instruction a:hover,
+  .instruction a:focus {
+    font-size: 1.1rem;
+  }
+  /* repetition user selection */
+  .choiceIteration p,
+  .choiceIteration .scoreContainer {
+    width: calc(50% - 10px);
+  }
+
+  .choiceIteration p {
+    background-color: #cfe2f3;
+    border: 2.5px solid rgb(57, 54, 187, 0.8);
+  }
+
+  /* limitSubmitMessage div */
+  .limitSubmitMessage {
+    margin-top: 0px;
+  }
+  /* FORM */
+  form {
+    /* not fit-content anymore since, now form isn't respecting wrapper anymore */
+    width: 100%;
+    margin: 0;
+  }
+
+  .inputs {
+    width: 100%;
+  }
+  
+  .answer:hover,
+  .answer:focus {
+    font-size: 1.01rem;
+  }
+  .formContainer {
+    height: fit-content;
+  }
+  .lowered {
+    margin-top: 0;
+  }
+  /* PROPERTIES */
+  .properties {
+    padding-top: 10px;
+  }
+  .category,
+  .level {
+    margin: 0 10px 0px 10px;
+  }
+  .category {
+    width: 40%;
+    margin-right: 25px;
+    text-align: left;
+  }
+  .level {
+    align-self: center;
+  }
+  /* FIELDSET */
+  fieldset {
+    padding: 10px;
+  }
+
+  /* SUBMIT BUTTON */
+  form button {
+    margin-left: 18px;
+    margin-bottom: 10px;
+  }
+  /* go back to top link */
+  .quizForm .start {
+    font-size: 1.1rem;
+    width: fit-content;
+    padding: 10px 30px;
+  }
+  .start svg {
+    height: 25px;
+  }
+  .quizForm .start:hover,
+  .quizForm .start:focus {
+    font-size: 1.2rem;
+  }
+  .endField .scoreContainer p,
+  .endField p:first-child,
+  .endField p:nth-child(2) {
+    width: 100%;
+  }
+  /* leaveField */
+  .leaveField {
+    margin-top: 70px;
+  }
+  /* last img */
+  .partingImg {
+    height: 200px;
+  }
+  /* when limit submit message present at smaller screen sizes, remove margin-top from form container*/
+  .submitAlert {
+    margin-top: 0;
+  }
+ 
+  .alert svg {
+    margin-bottom: 0;
+  }
+  .limitSubmitMessage {
+    margin-top: 0;
+  }
+
+  .alert .limitSubmitMessage p:first-child {
+    font-size: 1.1rem;
+    color: black;
+  }
+
+  .introContainer {
+    padding: 10px 10px;
+  }
+  
+}
+
+@media (min-width: 372px) {
+  /* HEADER */
+  .banner {
+    height: 200px;
+  }
+  /* properties div */
+  .category {
+    width: 28%;
+  }
+}
+
+@media (min-width: 438px) {
+  /* hover for answer input and label */
+  .answer:hover,
+  .answer:focus {
+    font-size: 1.05rem;
+  }
+  .weaker:hover,
+  .weaker:focus {
+    font-size: 1rem;
+  }
+  .endField p:first-child,
+  .endField p:nth-child(2) {
+    width: 80%;
+    align-self: center;
+  }
+  .endField .scoreContainer p {
+    width: 100%;
+  }
+} 
+
+@media (min-width: 515px) {
+  /* HEADER */
+  .banner {
+    height: 250px;
+  }
+  /* FORM CONTAINER */
+  .formContainer {
+    height: 900px;
+    min-height: fit-content;
+  }
+  .lowered {
+    margin-top: 50px;
+  }
+  form {
+    margin-left: 60px;
+  }
+  /* repetition user selection */
+  .choiceIteration p,
+  .choiceIteration .scoreContainer {
+    width: calc(50% - 10%);
+  }
+
+  .loweredForm {
+    margin-top: 200px;
+  }
+  /* styling limit submit message, so that it gets shown inside form container, easier for user to see the important instruction on how to keep playing */
+  
+  /* when limit submit message is present, have arrow and submit message inside form container pointing to button */
+  .inside {
+    position: relative;
+  }
+  .alert {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 70%;
+  }
+  /* div container for limit submit message */
+  .limitSubmitMessage {
+    position: absolute;
+    top: 100%;
+    margin-top: 0;
+  }
+  .alert .limitSubmitMessage p:first-child {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: black;
+    margin-bottom: 0;
+  }
+
+  .alert svg {
+    height: 238px;
+    margin-bottom: 0px;
+    font-weight: bold;
+    width: 105px;
+  }
+
+   /* when limit submit message present at wider screen sizes, give margin-top from form container back*/
+   .submitAlert {
+    margin-top: 20px;
+    height: fit-content;
+  }
+}
+
+@media (min-width: 538px) {
+  /* alert container for limit submit message */
+  .alert .limitSubmitMessage p:first-child {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+  }
+
+  .introContainer {
+    padding: 10px 20px;
+  }
+}
+
+@media (min-width: 567px) {
+  /* text container with think bubble */
+  .thinkingText {
+    width: 80%;
+  }
+}
+
+
+@media (min-width: 579px) {
+  /* limit submit message */
+  .alert p:first-child {
+    margin-bottom: 100px;
+  }
+  .alert .limitSubmitMessage p:first-child {
+    margin-bottom: 0;
+  }
+}
+
+
+@media (min-width: 600px) {
+  /* HEADER */
+  .banner {
+    height: 300px;
+  }
+  /* properties div */
+  .category {
+    width: 40%;
+  }
+  /* submit button */
+  form button {
+    margin-left: 20px;
+  }
+  /* leaveField */
+  .leaveField button {
+    margin-bottom: 30px;
+  }
+  .endField p:first-child,
+  .endField p:nth-child(2) {
+    width: 70%;
+    align-self: center;
+  }
+  .endField .scoreContainer p {
+    width: 100%;
+    padding: 5px 10px;
+  }
+  .endField .scoreContainer {
+    width: fit-content;
+  }
+}
+
+@media (min-width: 618px) {
+  /* limit submit message */
+  .alert p:first-child {
+    margin-bottom: 115px;
+  }
+  .alert .limitSubmitMessage p:first-child {
+    margin-bottom: 0;
+  }
+  /* think bubble container */
+  .instruction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .thinking {
+    align-self: center;
+  }
+}
+
+@media (min-width: 650px) {
+  /* HEADER */
+  .banner {
+    height: 350px;
+  }
+  /* .quizForm h3 */
+  .quizForm h3 {
+    margin-top: 30px;
+  }
+  /* when user selection is random for both, lower the arrow a bit */
+  div.randomAlert {
+    top: 75%;
+  }
+  .alert {
+    top: 55%;
+  }
+  /* category */
+  .category {
+    width: 50%;
+  }
+  /* fieldset */
+  fieldset {
+    padding: 20px;
+  }
+  /* inputs */
+  .inputs {
+    width: 80%;
+  }
+  /* last img */
+  .partingImg {
+    height: 300px;
+  }
+  .endField p:first-child,
+  .endField p:nth-child(2) {
+    width: 60%;
+    padding: 5px 10px;
+    align-self: center;
+  }
+  .endField .scoreContainer p {
+    width: 100%;
+  }
+}
+
+@media (min-width: 700px) {
+  .alert .limitSubmitMessage p:first-child {
+    margin-bottom: 0;
+    font-size: 1.1rem;
+  }
+  .alert svg {
+    height: 150px;
+    width: 83px;
+  }
+  .alert {
+    top: 70%;
+  }
+
+  .loweredForm {
+    margin-top: 30px;
+  }
+
+  .inputs {
+    width: 90%;
+  }
+
+}
+
+@media (min-width: 738px) {
+  .alert .limitSubmitMessage p:first-child {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+  }
+  .alert {
+    top: 90%;
+  }
+}
+
+@media (min-width: 800px) {
+  /* intro container */
+  .introContainer {
+    padding: 10px 30px 25px 30px;
+  }
+  .inputs {
+    width: 85%;
+  }
+}
+
+/* tablet */
+@media (min-width: 890px) {
+  /* HEADER */
+  .banner {
+    height: 400px;
+  }
+  /* h2 */
+  h2 {
+    margin-bottom: 45px;
+  }
+  /* 2nd p tag inside header */
+  header p:nth-of-type(2) {
+    margin-top: 30px;
+  }
+  /* quizForm h3 */
+  .quizForm h3 {
+    margin-top: 40px;
+  }
+  /* fieldset */
+  fieldset {
+    padding: 10px 30px;
+  }
+  /* submit button */
+  form button {
+    margin-left: 30px;
+  }
+  /* leaveField */
+  .leaveField {
+    margin-top: 90px;
+  }
+  .leaveField p:nth-of-type(2) {
+    margin-top: 0;
+  }
+  /* last img */
+  .partingImg {
+    height: 400px;
+  }
+  /* intro container */
+  .introContainer {
+    padding: 10px 50px 30px 50px;
+  }
+  /* reducing width of inputs container */
+  .inputs {
+    width: 75%;
+  }
+  .endField p:first-child,
+  .endField p:nth-child(2) {
+    width: 55%;
+    padding: 5px 10px;
+  }
+  .endField .scoreContainer p {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1000px) {
+  /* HEADER */
+  .banner {
+    height: 450px;
+  }
+  /* limit submit message */
+  .limitSubmitMessage {
+    margin-top: 10px;
+  }
+  .alert {
+    top: 85%;
+  }
+  .alert svg {
+    height: 150px;
+  }
+  .endField p:first-child,
+  .endField p:nth-child(2) {
+    width: 50%;
+    padding: 5px 10px;
+  }
+  .endField .scoreContainer p {
+    width: 100%;
+  }
+}
+
+/* small desktop */
+@media (min-width: 1100px) {
+  /* HEADER */
+  .banner {
+    height: 500px;
+  }
+  h2 {
+    margin-bottom: 55px;
+  }
+  /* 2nd p tag inside header */
+  header p:nth-of-type(2) {
+    margin-top: 40px;
+  }
+  /* properties */
+  .category {
+    margin-left: 50px;
+  }
+  .level {
+    margin-right: 50px;
+  }
+  /* fieldset */
+  fieldset {
+    padding: 10px 100px;
+  }
+  /* submit button */
+  form button {
+    margin-left: 100px;
+  }
+  /* reducing width of inputs container */
+  .inputs {
+    width: 70%;
+  }
+  .endField p:first-child,
+  .endField p:nth-child(2) {
+    width: 45%;
+    padding: 5px 10px;
+  }
+  .endField .scoreContainer p {
+    width: 100%;
+  }
+}
+
+@media (min-width:1275px) {
+  /* HEADER */
+  .banner {
+    height: 600px;
+  }
+  .inputs {
+    width: 65%;
+  }
+  .endField p:first-child,
+  .endField p:nth-child(2) {
+    width: 40%;
+    padding: 5px 10px;
+  }
+  .endField .scoreContainer p {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1400px) {
+  .inputs {
+    width: 55%;
+  }
+}
+
+/* for medium/big desktops */
+@media (min-width: 1550px) {
+  /* HEADER */
+  .banner {
+    height: 700px;
+  }
+}
+
+@media (min-width: 1750px) {
+  /* HEADER */
+  .banner {
+    height: 800px;
+  }
+}
+
+@media (min-width: 1900px) {
+  /* HEADER */
+  .banner {
+    height: 900px;
+  }
+}
+

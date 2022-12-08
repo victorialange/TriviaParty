@@ -4,193 +4,174 @@ import DisplayForm from './DisplayForm.js';
 import { Fragment } from 'react';
 import './App.css';
 
+// importing ArrowDown (arrow as svg file) from ArrowDown component
+import ArrowDown from './ArrowDown.js';
 
+// defining asked as a let variable, an empty array to hold question ids
+let asked = [];
 
 function App() {
-  // let answerObjects = [
-  //   '', '','', '' 
-  // ];
-
+  
   // state that holds the questions, answer choices and ids from my API
   const [question, setQuestion] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [incorrectAnswers, setIncorrectAnswers] = useState( [] );
   // combines incorrect answers array and correct answer string value, important for mapping through whole answers array as opposed to just through the incorrect answers => gonna create a new array inside async function called getQuiz()
+  // storing all data with all answers array
   const [allAnswers, setAllAnswers] = useState( [] );
   const [currentQuestionId, setCurrentQuestionId] = useState("");
-  const [questionId, setQuestionId] = useState([]);
-
-  // stateful variable for category property of API data
+  // const [questionId, setQuestionId] = useState([]);
+  // states for category and level
   const [category, setCategory] = useState("");
-
-  // stateful variable for difficulty level
-  const [level, setLevel] = useState(""); 
-
-  
-
-  // const [answers, setAnswers] = useState( [] );
-
-  // const [quiz, setQuiz] = useState( [] );
-  // used concatenation to combine incorrect answerw with correct answer
-  // const [answers, setAnswers] = useState( [] );
-  // first answer (incorrect answer)
-  // const [answerOne, setAnswerOne] = useState('');
-  // second answer (incorrect answer)
-  // const [answerTwo, setAnswerTwo] = useState('');
-  // third answer (incorrect answer)
-  // const [answerThree, setAnswerThree] = useState('');
-  
-  // const [questionId, setQuestionId] = useState(''); 
-
-  // useEffect( () => { 
-  // axios
-    const getQuiz = async () => {
-      const url = new URL('https://the-trivia-api.com/api/questions')
-
-      url.search = new URLSearchParams({
-        limit: 1
-      })
-      
-      const response = await fetch(url);
-      const data = await response.json();
-
-      console.log(data);
-
-      // console.log(response.data[0].question);
-      
-      // setIncorrectAnswers(response.data[0].incorrectAnswers);
-      // setCorrectAnswer(response.data[0].correctAnswer);
-      // setIncorrectAnswers(response.data[0].incorrectAnswers);
-      // console.log(response.data[0].incorrectAnswers, response.data[0].correctAnswer);
-
-      // const answerChoices = response.data[0].incorrectAnswers.concat(response.data[0].correctAnswer);
-      // const quizSet = response.data[0].incorrectAnswers.concat(response.data[0].correctAnswer, response.data[0].question);
-      // console.log(quizSet);
-      // setQuiz(quizSet.reverse());
-      // console.log(quiz);
-
-      // find will grab first value of array
-      // setAnswerOne(response.data[0].incorrectAnswers[0]);
-      // console.log(answerOne);
-      
-      setQuestion(data[0].question);
-      console.log(question);
-
-      setIncorrectAnswers(data[0].incorrectAnswers);
-      console.log(incorrectAnswers);
-
-      setCorrectAnswer(data[0].correctAnswer);
-      console.log(correctAnswer);
-      // if questionId array contains data[0].id, then call getQuiz() again.
-      // try throw catch to skip over error (when data[0].id is contained in questionId array)
-
-
-      // have an array of ids on every render
-      setQuestionId(current => [...current, data[0].id]);
-      // setQuestionId(...data[0].id,
-      //   nextId++);
-      
-      console.log(questionId);
-      
-      // id string values
-      setCurrentQuestionId(data[0].id);
-      console.log(currentQuestionId);
-
-      if (questionId.some(value => value.id === currentQuestionId) === true) {
-        console.log(questionId.some(value => value.id === currentQuestionId));
-      }
-      
-      // pass in data from API into stateful variable
-      setCategory(data[0].category);
-      console.log(category);
-      
-      setLevel(data[0].difficulty);
-      if (data[0].difficulty !== undefined) {
-        console.log(level);
-      }
-      
-
-      // console.log(questionId);
-      // const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
-      // console.log(answers);
-
-      // creating new array to add correct answer string value to already from API provided incorrect answers array
-      const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
-      console.log(answers);
-      // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
-
-      // shuffle to randomize order of answers array so that user won't be able to figure out position of correct answer
-      const randomAnswers = answers.sort(() => 0.5 - Math.random());
-      console.log(randomAnswers);
-
-      setAllAnswers(randomAnswers);
-      console.log(allAnswers);
-
-      // console logging state can be misleading, value is stored in stateful variable even if not visible in the console right away
-
-      // const newAnswers = answers.map( (answer) => {
-      //    return answer.correctAnswer;
-      // } )
-      // console.log(newAnswers);
-
-
-      // setAllAnswers(answers);
-      // console.log(allAnswers);
-
-      // const cloneAnswers = [...answers];
-      // console.log(cloneAnswers);
-
-      // const incorrectArray = data[0].incorrectAnswers;
-
-
-      // setAllAnswers();
-      // console.log(allAnswers);
-
-      
-
-
-      
-      
-      // setCustomWrong([wrongOne, wrongTwo, wrongThree, wrongFour]);
-      // console.log(customWrong);
-      
-
-    }
+  const [level, setLevel] = useState("");
     
-  const intro = "Feeling ready? Then let's get this trivia party started 🎈🎉";
-  const next = "Don't feel this question or already answered this one?"
-  const [initialIntro, setInitialIntro] = useState(intro);  
-  
-  
-  
-  // clickHandler function to refresh page and show new question
-  const clickHandler = () => {
-    // call async function getQuiz() with API data everytime user clicks the get different question button
-    getQuiz();
+  // async await function calling API at different endpoints (using append method for url search params) based on user selection in dropdown, conditions get defined (while loop added to keep searching for a new question until it breaks/stops when the current question id is not included in the question ids array)
 
-    setInitialIntro(next);
-      // setQuestion(question);
-      // console.log(question);
+  // getQuiz async function
+  const getQuiz = async () => {
+    // set default value of newQuestion to empty string
+    let newQuestion = "";
+    // while loop to keep searching for new question until the current question id is not inside the question ids array 
+    while (true) {
+      const url = new URL('https://the-trivia-api.com/api/questions')
+      // setting categories and difficulty params of API data object equal to user selection from dropdown (if chosen random, that means, it's not included in the search params)
+      // appending params to the new urlSearch Params constructor (stored inside a let variable since it changes based on user selection), makes it more readable (before did many separate functions for different enpoints, like this I can include the different endpoints in one function directly), less repetitions
 
-      // setIncorrectAnswers(incorrectAnswers);
-      // console.log(incorrectAnswers);
+      let myUrlSearchParam = new URLSearchParams();
+      myUrlSearchParam.append('limit', '1');
 
-      // setCorrectAnswer(correctAnswer);
-      // console.log(correctAnswer);
+      if (userCategory !== "Random") {
+        myUrlSearchParam.append('categories', userCategory);
+      }
 
-      // setId(id);
+      if (userLevel !== "Random") {
+        myUrlSearchParam.append('difficulty', userLevel);
+      }
+      
+      url.search = myUrlSearchParam;
+
+      // defining response and data as let variables since need to change value later on with another API call if the current question id is inside the question ids array
+      let response = await fetch(url);
+      let data = await response.json();
+   
+      // if statement to check whether current question id is not included in question ids array
+      if (!asked.includes(data[0].id)) {
+        newQuestion = data;
+        asked.push(newQuestion[0].id);
+        break;
+      } 
+    }
+
+    // updating state of current question id
+    setCurrentQuestionId(newQuestion[0].id);
+    
+    // question state
+    setQuestion(newQuestion[0].question);
+
+    // incorrect answers array stored into state
+    setIncorrectAnswers(newQuestion[0].incorrectAnswers);
+    // correct answer stored in state, need to do concat to add that to incorrect answers array, in order to be able to map through the allAnswers array in the return/JSX of the DisplayForm component, also for adding randomizer Math.random
+    setCorrectAnswer(newQuestion[0].correctAnswer);
+
+    // creating new array to add correct answer string value to already from API provided incorrect answers array
+    const answers = newQuestion[0].incorrectAnswers.concat(newQuestion[0].correctAnswer);
+    // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
+
+    // shuffle to randomize order of answers array so that user won't be able to figure out position of correct answer
+    const randomAnswers = answers.sort(() => 0.5 - Math.random());
+    // stored tha randomized array into the allAnswers state
+    setAllAnswers(randomAnswers);
+
+    // setting category and level states
+    setCategory(newQuestion[0].category);
+    setLevel(newQuestion[0].difficulty);
+
+    // stop displaying the form when questions id array is equal to 21
+    // show 10 questions in total (applies to all other async functions with different endpoints)
+    if (asked.length === 11) {
+      setErrorMessage(true);
+    }
   }
 
-  // defining the leaveClickHandler function to pass intro as a prop into another leaveHandler function in DisplayForm component in order to set the initial intro back to intro value
+
+  // states to use as conditions for whether start button/intro gets shown or next instruction (outside of API call)
+  const intro = "Feeling ready? Then let's get this trivia party started🎈🎉";
+  const next = "Not feeling this question or already answered this one?";
+  const [initialIntro, setInitialIntro] = useState(intro);  
+  const [submitted, setSubmitted] = useState(false);
+  // state for user selection of dropdown menu, of both category and level
+  const [userCategory, setUserCategory] = useState("");
+  const [userLevel, setUserLevel] = useState("");
+  const [errorMessage, setErrorMessage] = useState(false);
+
+  // onChange handler for first select dropdown category
+  const handleUserCategory = (e) => {
+      setUserCategory(e.target.value);
+  }
+
+  // on change handler for second select dropdown
+  const handleUserLevel = (e) => {
+    setUserLevel(e.target.value);
+  }
+
+  // submit handler for when user has submitted dropdown form (and chosen sth for both categories, random included)
+  const firstSubmitHandler = (e, questionCategory, questionLevel) => {
+    // prevent default behaviour of form (refreshing page)
+    e.preventDefault();
+
+    // call async function getQuiz() with API data everytime user clicks the get different question button (different endpoints included)
+    getQuiz();
+    
+    // when user has submitted next instructions get shown and the user has submitted, so set those states accordingly
+    setInitialIntro(next);
+    setSubmitted(true);
+    
+    // customizing alert for when user picks hard level
+    if (userLevel === "hard") {
+      alert(`Amazing!! You chose ${userCategory} as your category and ${userLevel}. Good luck!!! 🍀 You're gonna need it!`);
+    } else if (userCategory !== "Random" && userLevel !== "Random") {
+      alert(`Amazing!! You chose ${userCategory} as your category and ${userLevel}. Good luck!!! 🍀`);
+    }
+    else if (userCategory === "Random" && userLevel === "Random") {
+      alert(`Huhh, so you're one of those people who can't decide 🙄 Or maybe you're just feeling Random! Either way have fun! 🥳`);
+    }
+    else if (userCategory !== "Random" && userLevel === "Random") {
+      alert(`Great, you decided to go with ${userCategory} as your category and felt like playing all levels. I hope you're up to the challenge! Good luck 🍀`);
+    }
+    else if (userCategory === "Random" && userLevel !== "Random") {
+      alert(`Awesome, so you went with ${userLevel} and just felt like surprising youself with the categories I guess! Hope you enjoy! 💖`);
+    }
+  }
+
+  // clickHandler that's gonna be passed into anotherClickHandler in DisplayForm component for the new question button
+  const clickHandler = () => {
+    // call async function getQuiz() with API data everytime user clicks the get different question button, user selection included in params based on conditions defined in that async function
+    getQuiz();
+    
+    // keep showing next instruction
+    setInitialIntro(next);
+  }
+
+  // defining the leaveClickHandler function to pass intro as a prop into another leaveHandler function in DisplayForm component in order to set the initial intro back to intro value and stop displaying the quiz
   const leaveClickHandler = () => {
-    // setQuestion("")
-    // setAllAnswers([""]);
     setInitialIntro(intro);
+    // clear user selection so that when user restarts the game dropdown values are empty and not like they were before when the user chose a property
+    setUserCategory("");
+    setUserLevel("");
+    // setting everything from API data back to empty, so that user has fresh start
+    setQuestion("");
+    setAllAnswers([]);
+    setCorrectAnswer("");
+    setIncorrectAnswers([]);
+    // set asked.length back to 0 every time user leaves
+    asked.length = 0;
+    // therefore also the errorMessage back to false, so that if statement can run properly each time even after user goes back and plays again (to ensure that end message will show up in the end after 10 questions)
+    setErrorMessage(false);
   }
 
 
   return (
-    // Fragment in order to use multiple parent elements
+    // Fragment in order to use multiple parent elements and not having to use another div
     <Fragment>
     {/* skip link to main*/}
     <a href="#mainContent" className='skipLink'>
@@ -198,64 +179,141 @@ function App() {
     </a>
 
     {/* HEADER */}
-    <header>
+    <header id='home'>
       {/* WRAPPER */}
-      <div className="App wrapper">
-      
-        <h1>Trivia Party!!!</h1>
-        <h2>Let's get nerdy 🤓🧐</h2>
-        <p>For each question select only one answer from the four possible answer choices!</p>
-        <p>There is no timer to stress you out, this party is meant to be chill 🏖️ So take your sweet precious time to answer each question  ⏳ (You could take a bath or go for a nap, we won't be able to tell  😜 )</p>
-        
+      <div className="banner">
+      {/* background banner goes here */}
       </div>
-      {/* END WRAPPER */}
-    </header>
-      
-    {/* Main with one quiz section*/}
-    <main id='mainContent'>
-      <section id='quiz' className='quizForm'>
-        {/* Wrapper */}
+      {/* background image for whole page goes here outside of wrapper */}
+      <div className="backgroundOne">
         <div className="App wrapper">
-          <h3>{initialIntro}</h3>
-          <p aria-hidden="true">⬇</p>
-          <span className="visually-hidden">Click the button down below</span>
-          <DisplayForm
-            // customRight={customRight}
-            // customWrong={customWrong}
-            level={level}
-            category={category}
-            questionId={questionId}
-            currentQuestionId={currentQuestionId}
-            // handleSubmit={}
-            next={next}
-            intro={intro}
-            initialIntro={initialIntro}
-            clickHandler={clickHandler}
-            question={question}
-            allAnswers={allAnswers}
-            // incorrectAnswers={incorrectAnswers}
-            correctAnswer={correctAnswer}
-            id={questionId}
-            leaveClickHandler={leaveClickHandler}
-               
-            // answerTwo={answerTwo}
-            // answerThree={answerThree}
-            // correctAnswer={correctAnswer}
-          />
-        </div>
-        {/* end wrapper */}
-      </section>
-      <section className="ending">
-      
-      </section>
+          <h1>Welcome To My Trivia Party!!!</h1>
+          {/* intro container */}
+          <div className={`${initialIntro !== intro ? "introContainer" : ""}`}
+          id="intro">
+            <h2>Let's get nerdy 🤓</h2>
+            <p>There are 10 questions in each round!</p>
+            <p>For each question select only one answer from the four possible answer choices!</p>
+            <p>There is no timer to stress you out, this party is meant to be chill 🏖️ So take your sweet precious time to answer each question  ⏳ You could take a bath or go for a nap, we won't be able to tell  😜 </p>
+          </div> {/* END intro container */}
+        </div>{/* END WRAPPER */}
+      </div>{/* end background image container */}
+    </header>
+
+    {/* Main with one quiz section*/}
+    <main id='mainContent' className={`${initialIntro === next ? "mainWithQuiz" : ""}`}>
+      {/* instructions section */}
+      <section id='quiz' className={`${initialIntro === intro ? "firstArrow instruction" : "instruction secondArrow"}`}>
+        {/* SKIP to quiz */}
+        {/* conditional rendering for skip to quiz */}
+        {
+          initialIntro !== intro && errorMessage === false ?
+          <div className="App wrapper">
+            <a href="#quizGame" className='start' aria-label='Click link to go down to the game'>
+              <ArrowDown size={30}
+              color="white"
+              aria-hidden="true"
+              />
+              <h3>Go down to quiz!</h3>
+            </a>
+          </div>
+          : null
+        }
+        
+        {/* thinking container with background and Wrapper */}
+
+        { errorMessage === false ?
+        <div className={`${initialIntro !== intro ? "thinking App wrapper" : "App wrapper"}`}>
+          {/* thinking text container */}
+          <div className="thinkingText">
+            <h3>{initialIntro}</h3>
+          </div>{/* END thinking text */}
+        </div> // end background container and wrapper
+        : null
+        }
+        
+        {/* WRAPPER */}
+        <div className="App wrapper">
+            {/* ternary operator checking if user hasn't clicked the start button yet/submitted the form, if user has submitted, make dropdown disappear */}
+            <div className={`${initialIntro !== next ?"content dropContainer" : "noContent"}`}>
+              <form onSubmit={firstSubmitHandler}>
+                <label htmlFor="category">Play this category:</label>
+                <select name="category" id="category" onChange={handleUserCategory} value={userCategory} required>
+                    <option value="" disabled>Pick one:</option>
+                    <option value="Random">Random!</option>
+                    <option value="Arts & Literature">Arts & Literature</option>
+                    <option value="Film & TV">Film & TV</option>
+                    <option value="Food & Drink">Food & Drink</option>
+                    <option value="General Knowledge">General Knowledge</option>
+                    <option value="Geography">Geography</option>
+                    <option value="History">History</option>
+                    <option value="Music">Music</option>
+                    <option value="Science">Science</option>
+                    <option value="Society & Culture">Society & Culture</option>
+                    <option value="Sport & Leisure">Sport & Leisure</option>
+                </select>
+
+                <label htmlFor="level">Play at this level:</label>
+                <select name="level" id="level" onChange={handleUserLevel} value={userLevel} required>
+                    <option value="" disabled>Pick one:</option>
+                    <option value="Random">Random!</option>
+                    <option value="easy">easy</option>
+                    <option value="medium">medium</option>
+                    <option value="hard">hard</option>
+                </select>
+                
+                {/* svg arrow up */}
+                <ArrowDown size={70}
+                    // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
+                    color={`${initialIntro === next ? "#2A28BA" : "#A741AC"} `}
+                    aria-label = "click on the button below to get a new question"
+                /> 
+                
+                {/* submit/start button */}
+                <button
+                type="submit" 
+                className="start"
+                >Start
+                </button>
+            </form>
+          </div>{/* end form container div */}
+          
+          <span className="sr-only">Click the button down below</span>
+        </div>{/* END WRAPPER */}
+
+      {/* DISPLAY FORM COMPONENT */}
+      {/* if the user has submitted show the quiz game and all the other elements that come with that */}
+      {
+      submitted ?
+      <DisplayForm
+      next={next}
+      intro={intro}
+      initialIntro={initialIntro}
+      clickHandler={clickHandler}
+      question={question}
+      allAnswers={allAnswers}
+      correctAnswer={correctAnswer}
+      currentQuestionId={currentQuestionId}
+      leaveClickHandler={leaveClickHandler}
+      category={category}
+      level={level}
+      firstSubmitHandler={firstSubmitHandler}
+      userCategory={userCategory}
+      userLevel={userLevel}
+      incorrectAnswers={incorrectAnswers}
+      errorMessage={errorMessage}
+      />
+      : null
+      }  
+      </section>{/* end quiz section */}
     </main>
+
     {/* Footer with copyright */}
     <footer>
       {/* wrapper */}
       <div className="App wrapper">
-        <p>Copyright ©️  Juno College 2022</p>
-      </div>
-      {/* end wrapper */}
+        <p>Copyright ©️  Juno College 2022 - Made with <a href='https://the-trivia-api.com/' target='_newBlank'>The Trivia API</a></p>
+      </div>{/* end wrapper */}
     </footer>
    
   </Fragment> 
@@ -265,7 +323,31 @@ function App() {
 export default App;
 
 
-// PSEUDO CODE
+
+// UPDATED PSEUDO CODE
+// Get data (questions, incorrectAnswers, correctAnswer, category, difficulty) from the Trivia API and put that data into stateful variables
+// use async await function to call the async function that makes the API call only when the user submits the dropdown form/start button (inside submitHandler)
+// depending on the user's selection from the dropdown, create different async functions in order to make API calls at different endpoints (based on given URLSearch params, when category is specified in the endpoint, API only provides data for questions that match that filter, and vice versa for difficulty)
+// since for the dropdown menu, I have to control the input anyway with stateful variables that hold the values of the user inputs, I can just use those as the values for the categories and difficulty params inside the URLSearch params (when setting up the API call)
+// then in order to make sure that no question repeats itself after another, use a while loop and an if statement in order to skip over the same question ids that are contained in the question ids array asked (let variable defined above App function, constantly changes) - break the while loop once the current question id is not included in the asked array, then push the current question id into the array, so that the new id gets stored in there too (prevents further repetition).
+// set other states that help define conditions whether certain elements get rendered onto the page or not and what classNames are assigned to those elements (if form was submitted, what kind of text/intro is being displayed, colour changes etc)
+// update those stateful variables inside the event listener functions, so submitHandler, clickHandler that gets passed into the otherClickHandler inside the DisplayForm button for the new question button, and the userCategory and userLevel states (inside the changeHandlers give those a value of e.target.value, for submitHandler set the submitted state to true, and the initialIntro to next), also define variables for the text and store those into state (for initialIntro the string value of the intro variable is the default value, gets updated accordingly when the user submits/starts the game)
+// define the otherClickHandler function in the DisplayForm component and pass in the clickHandler function from App.js as a prop. Also define other necessary states in that component and update the values of those accordingly inside the functions and under certain conditions (if statements) (submitHandler for quiz, then the leaveClick handler where the userInput and other states get cleared, set back to their default value, also defined the leave handler inside the App.js to then use as a prop in the displayForm component)
+// use the state values in the return of the displayForm (JSX) as props to display those values onto the page
+// map through the newly created randomized allAnswers array, so that user doesn't know where the correct answer is being displayed (created in the async function in App.js, used concat to inser correctAnswer into incorrectAnswers array, returned a new answers array, then used math.random to then store into another array. that array then gets stored into the allAnswers state). wrap the answers in a div that holds the input and the label, so that they're all aligned well (and also to apply styling to the whole container rather than just each individual item)
+// only display the displayForm component onto the page if the user submitted the dropdown form
+// then add additional elements to display onto the page when the quiz data is shown, so when the user is currently playing (an option to return back to the initial display and choose different categories and levels/restart the game, also further instructions based on whether the user submitted an answer or not, customize the messages based on whether the user submitted AND got the answer either right or wrong, also change background colour accordingly (green for right, red for wrong))
+// optional: added in custom messages as an array, one for when the user submitted correct answers, and the other one when he submitted incorrect answers
+// then randomized the order of those arrays (with the index numbers), so that user would get a different custom message randomly
+// also added in counter for each question that gets submitted and answered correctly and then one for each time the user has submitted an answer regardless whether correct or incorrect, store those into state, update those in the submit handler and empty them out in the leave handler
+// for that it's important to clear the state's values, or set them back to their default values
+// also changed: chose to limit the amount of times a user can get different questions per round (if the array of question ids asked is greater than 10) , mostly to avoid 429 error of making too many API calls in a small timeframe, also reasonable to set it 10 questions per round since the user can always go back and play again
+
+
+
+
+
+// original PSEUDO CODE
 
 // Get data (questions, category, incorrectAnswers, correctAnswer) from the Trivia API when App.js mounts
 // Use (import) Axios to make the API call
@@ -287,11 +369,9 @@ export default App;
 // buttons (return and submit answer)
 // submit answer button with type=submit
 
+// originally:
 // lose start button (stretch goal)
 // maybe no useEffect, put it in state to have it show up every time user submits/clicks (eventHandler func)
 // functionality to check with array ids in state to avoid showing same question
-// no new pages
 
 // inputs changed to type=radio to limit user to only one choice (checkbox better for more possible answers, here only one answer)
-
-// or maybe use ul with li items instead of form element
