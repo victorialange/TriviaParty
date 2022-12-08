@@ -608,6 +608,7 @@ form button:focus {
   align-self: center;
 }
 
+/* end field as class for chosen level, category and score that show up at the end when the questions have all ended */
 .endField {
   margin-bottom: 60px;
 }
@@ -620,12 +621,25 @@ form button:focus {
   margin-top: 20px;
 }
 .endField p:first-child,
-.endField p:nth-child(3) {
-  margin-bottom: 20px; 
+.endField p:nth-child(2) {
+  margin-bottom: 20px;
+  background-color: #FEDFB5;
+  border: 2.5px solid rgba(215, 119, 60, 0.8); 
+}
+
+.endField .scoreContainer p {
+  background-color: #FEDFB5;
+  border: 2.5px solid rgba(215, 119, 60, 0.8);
 }
 
 .randomField {
   margin-bottom: 60px;
+}
+
+.randomField .scoreContainer p,
+.randomField p:first-child {
+  background-color: #FEDFB5;
+  border: 2.5px solid rgba(215, 119, 60, 0.8);
 }
 
 
@@ -728,6 +742,11 @@ footer a:focus {
   .choiceIteration p,
   .choiceIteration .scoreContainer {
     width: calc(50% - 10px);
+  }
+
+  .choiceIteration p {
+    background-color: #cfe2f3;
+    border: 2.5px solid rgb(57, 54, 187, 0.8);
   }
 
   /* limitSubmitMessage div */

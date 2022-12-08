@@ -165,7 +165,7 @@ function App() {
     setIncorrectAnswers([]);
     // set asked.length back to 0 every time user leaves
     asked.length = 0;
-    // therefore also the errorMessage back to false, so that if statement can run properly each time even after user goes back and plays again (to ensure that end message will show up in the end after 20 questions)
+    // therefore also the errorMessage back to false, so that if statement can run properly each time even after user goes back and plays again (to ensure that end message will show up in the end after 10 questions)
     setErrorMessage(false);
   }
 
@@ -341,7 +341,7 @@ export default App;
 // then randomized the order of those arrays (with the index numbers), so that user would get a different custom message randomly
 // also added in counter for each question that gets submitted and answered correctly and then one for each time the user has submitted an answer regardless whether correct or incorrect, store those into state, update those in the submit handler and empty them out in the leave handler
 // for that it's important to clear the state's values, or set them back to their default values
-// also changed: chose to limit the amount of times a user can get different questions per round (if the array of question ids asked is greater than 20) , mostly to avoid 429 error of making too many API calls in a small timeframe, also reasonable to set it 10 questions per round since the user can always go back and play again
+// also changed: chose to limit the amount of times a user can get different questions per round (if the array of question ids asked is greater than 10) , mostly to avoid 429 error of making too many API calls in a small timeframe, also reasonable to set it 10 questions per round since the user can always go back and play again
 
 
 

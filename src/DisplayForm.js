@@ -444,7 +444,7 @@ const DisplayForm = ( props ) => {
             </div>{/* END LEAVE CONTAINER */}
         </section>// END leave field SECTION *
         : 
-        // if the errorMessage is set to true and the quiz is present (user has already clicked start), stop showing the form, and show an ending message instead (recap of how well the user did at the end, end range 20 questions to prevent 429 error of making too many API calls, also to have a reasonable amount per round)
+        // if the errorMessage is set to true and the quiz is present (user has already clicked start), stop showing the form, and show an ending message instead (recap of how well the user did at the end, end range 10 questions to prevent 429 error of making too many API calls, also to have a reasonable amount per round)
         props.errorMessage !== false && props.initialIntro === props.next ?
         <div className="App wrapper leaveField">    
             {props.userCategory !== "Random" && props.userLevel !== "Random" && props.errorMessage !== false ?
