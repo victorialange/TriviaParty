@@ -187,7 +187,7 @@ const DisplayForm = ( props ) => {
                 }
                 
                 {/* BUTTON for new question */}
-                {props.errorMessage === false ?
+                {props.errorMessage === false && totalQuestionsAnswered < 10 ?
                 <button 
                 // passing in the function definition of anotherClickHandler that calls the clickHandler from App.js for us (which includes making the API call everytime the user clicks that button)
                 onClick={anotherClickHandler}
@@ -196,8 +196,17 @@ const DisplayForm = ( props ) => {
                 aria-label={firstLabel}
 
                 // conditional rendering of className based on whether button is start button or generates new question
-                className="next">New Question</button> 
-                : null
+                className="next">
+                    New Question
+                </button> 
+                : totalQuestionsAnswered === 10 && props.errorMessage === false ?
+                <button 
+                onClick={anotherClickHandler}
+                aria-label={firstLabel}
+                // conditional rendering of className based on whether button is start button or generates new question
+                className="next">
+                    End Quiz
+                </button> : null
                 }
 
                 {/* repetition of userInput from dropdown and ternary operators to control which properties get rendered onto the page and how based on className assignments */}

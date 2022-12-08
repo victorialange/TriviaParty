@@ -96,7 +96,7 @@ function App() {
 
   // states to use as conditions for whether start button/intro gets shown or next instruction (outside of API call)
   const intro = "Feeling ready? Then let's get this trivia party started🎈🎉";
-  const next = "Not feeling this question or already answered this one?"
+  const next = "Not feeling this question or already answered this one?";
   const [initialIntro, setInitialIntro] = useState(intro);  
   const [submitted, setSubmitted] = useState(false);
   // state for user selection of dropdown menu, of both category and level
