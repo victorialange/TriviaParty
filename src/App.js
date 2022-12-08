@@ -7,7 +7,7 @@ import './App.css';
 // importing ArrowDown (arrow as svg file) from ArrowDown component
 import ArrowDown from './ArrowDown.js';
 
-
+let asked = [];
 function App() {
   
   // state that holds the questions, answer choices and ids from my API
@@ -18,13 +18,15 @@ function App() {
   // storing all data with all answers array
   const [allAnswers, setAllAnswers] = useState( [] );
   const [currentQuestionId, setCurrentQuestionId] = useState("");
-  const [questionId, setQuestionId] = useState([]);
+  // const [questionId, setQuestionId] = useState([]);
   // states for category and level
   const [category, setCategory] = useState("");
   const [level, setLevel] = useState("");
     
-  // async await function calling API at endpoint where category and difficulty gets selected (not random)
-  const getQuiz = async () => {
+  // async await function calling API at endpoint where category and difficulty gets selected (not random), gets called down below inside getQuiz function (also async), where then the conditions get defined (while loop added to keep searching for a new question until it breaks when the current question id is not included in the question ids array)
+
+  // getNewQuestion asyn function at endpoint where category and level is not random
+  const getNewQuestion = async () => {
     const url = new URL('https://the-trivia-api.com/api/questions')
     // setting categories and difficulty params of API data object equal to user selection of the dropdown (not random)
     url.search = new URLSearchParams({
@@ -36,60 +38,38 @@ function App() {
     // defining response and data as let variables since need to change value later on with another API call if the current question id is inside the question ids array
     let response = await fetch(url);
     let data = await response.json();
+    return data;
+    
+  }
 
-    console.log(data);
-
-    setCurrentQuestionId(data[0].id);
-    console.log(currentQuestionId);
-
-    // trying to call api again if current question id repeats itself again
-    if (questionId.includes(data[0].id)) {
-      console.log("Calling API again");
-
-      url.search = new URLSearchParams({
-        categories: userCategory,
-        limit: 1,
-        difficulty: userLevel
-      })
-        
-      response = await fetch(url);
-      data = await response.json();
-  
-      console.log(data);
-
-      console.log(data[0].id);
-
-      // const dataId = data[0].id;
-      // console.log(dataId);
-
-      // setQuestionId(current => [...current, data[0].id]);
-      console.log(questionId);   
-      console.log(data[0].question);
-
-      setCurrentQuestionId(data[0].id);
-      console.log(currentQuestionId);  
-  
-    } 
-    // else {
-    //   setQuestionId(current => [...current, data[0].id]);
-    //   console.log(questionId);
-    // }
-
-    // question ids array as state
-    setQuestionId(current => [...current, data[0].id]);
-    console.log(questionId); 
-      
+  // getQuiz async function that calls the newQuestion() async function
+  const getQuiz = async () => {
+    // set default value of newQuestion to empty string
+    let newQuestion = "";
+    // while loop to keep searching for new question until the current question id is not inside the question ids array 
+    while (true) {
+      // assign newQuestion value of data object
+      newQuestion = await getNewQuestion();
+      // if statement to check whether current question id is not included in question ids array
+      if (!asked.includes(newQuestion[0].id)) {
+        asked.push(newQuestion[0].id);
+        break;
+      } 
+    }
+    
+    // updating state of current question id
+    setCurrentQuestionId(newQuestion[0].id);
+    
     // question state
-    setQuestion(data[0].question);
-    console.log(question);
+    setQuestion(newQuestion[0].question);
 
     // incorrect answers array stored into state
-    setIncorrectAnswers(data[0].incorrectAnswers);
+    setIncorrectAnswers(newQuestion[0].incorrectAnswers);
     // correct answer stored in state, need to do concat to add that to incorrect answers array, in order to be able to map through the allAnswers array in the return/JSX of the DisplayForm component, also for adding randomizer Math.random
-    setCorrectAnswer(data[0].correctAnswer);
+    setCorrectAnswer(newQuestion[0].correctAnswer);
 
     // creating new array to add correct answer string value to already from API provided incorrect answers array
-    const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
+    const answers = newQuestion[0].incorrectAnswers.concat(newQuestion[0].correctAnswer);
     // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
 
     // shuffle to randomize order of answers array so that user won't be able to figure out position of correct answer
@@ -98,71 +78,48 @@ function App() {
     setAllAnswers(randomAnswers);
 
     // setting category and level states
-    setCategory(data[0].category);
-    setLevel(data[0].difficulty);
+    setCategory(newQuestion[0].category);
+    setLevel(newQuestion[0].difficulty);
   }
 
 
   // ANOTHER API CALL for random questions with async and await at different endpoint (only limit specified)
   const getRandomQuiz = async () => {
-    const url = new URL('https://the-trivia-api.com/api/questions')
-
-    url.search = new URLSearchParams({
-      limit: 1
-    })
-      
-    let response = await fetch(url);
-    let data = await response.json();
-
-    console.log(data);
-
-    // trying to call api again if current question id repeats itself again
-    if (questionId.includes(data[0].id)) {
-      console.log("Calling API Random endpoint again");
+    // default value of newQuestion is empty string
+    let newQuestion = "";
+    // while loop; while keeps searching for a new question until it finds one that is not asked (not in the ids array), so it breaks inside the if statement that has the condition that the current question id is not include in the question ids array
+    while(true) {
+      // URL SEARCH PARAMS
+      const url = new URL('https://the-trivia-api.com/api/questions')
 
       url.search = new URLSearchParams({
         limit: 1
       })
         
-      response = await fetch(url);
-      data = await response.json();
-  
-      console.log(data);
+      let response = await fetch(url);
+      let data = await response.json();
 
-      console.log(data[0].id);
+      if (!asked.includes(data[0].id)) {
+        newQuestion = data;
+        // push the current question id into the question ids array as long as the current question id is not already included in the question ids array
+        asked.push(newQuestion[0].id);
+        break;
+      }
+    }
+    
 
-      // const dataId = data[0].id;
-      // console.log(dataId);
-
-      // setQuestionId(current => [...current, data[0].id]);
-      console.log(questionId);   
-      console.log(data[0].question);
-
-      setCurrentQuestionId(data[0].id);
-      console.log(currentQuestionId);
-  
-    } 
-    // else {
-    //   setQuestionId(current => [...current, data[0].id]);
-    //   console.log(questionId);
-    // }
-    setQuestionId(current => [...current, data[0].id]);
-    console.log(questionId); 
-      
     // store question of data object into state
-    setQuestion(data[0].question);
-    console.log(question);
+    setQuestion(newQuestion[0].question);
 
     // like in first function store same values into state
-    setIncorrectAnswers(data[0].incorrectAnswers);
-    setCorrectAnswer(data[0].correctAnswer);
+    setIncorrectAnswers(newQuestion[0].incorrectAnswers);
+    setCorrectAnswer(newQuestion[0].correctAnswer);
     
     // id string values
-    setCurrentQuestionId(data[0].id);
-    console.log(currentQuestionId);
+    setCurrentQuestionId(newQuestion[0].id);
 
     // creating new array to add correct answer string value to already from API provided incorrect answers array
-    const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
+    const answers = newQuestion[0].incorrectAnswers.concat(newQuestion[0].correctAnswer);
     // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
 
     // shuffle to randomize order of answers array so that user won't be able to figure out position of correct answer
@@ -170,72 +127,43 @@ function App() {
     setAllAnswers(randomAnswers);
 
     // updating category and level state values
-    setCategory(data[0].category);
-    setLevel(data[0].difficulty);
+    setCategory(newQuestion[0].category);
+    setLevel(newQuestion[0].difficulty);
   }
 
 
   // OTHER API CALL WHERE USER SELECTS ONLY LEVEL, BUT NO CATEGORY endpoint
   const getLevelQuiz = async () => {
-    const url = new URL('https://the-trivia-api.com/api/questions')
-
-    url.search = new URLSearchParams({
-      limit: 1,
-      difficulty: userLevel
-    })
-      
-    let response = await fetch(url);
-    let data = await response.json();
-
-    console.log(data);
-
-    // trying to call api again if current question id repeats itself again
-    if (questionId.includes(data[0].id)) {
-      console.log("Calling API Level again");
+    let newQuestion = "";
+    while(true) {
+      const url = new URL('https://the-trivia-api.com/api/questions')
 
       url.search = new URLSearchParams({
         limit: 1,
         difficulty: userLevel
       })
         
-      response = await fetch(url);
-      data = await response.json();
-  
-      console.log(data);
+      let response = await fetch(url);
+      let data = await response.json();
+      if (!asked.includes(data[0].id)) {
+        newQuestion = data;
+        asked.push(newQuestion[0].id);
+        break;
+      }
 
-      console.log(data[0].id);
-
-      // const dataId = data[0].id;
-      // console.log(dataId);
-
-      // setQuestionId(current => [...current, data[0].id]);
-      console.log(questionId);   
-      console.log(data[0].question);
-
-      setCurrentQuestionId(data[0].id);
-      console.log(currentQuestionId);
-  
-    } 
-    // else {
-    //   setQuestionId(current => [...current, data[0].id]);
-    //   console.log(questionId);
-    // }
-    setQuestionId(current => [...current, data[0].id]);
-    console.log(questionId); 
+    }
       
-    setQuestion(data[0].question);
-    console.log(question);
+    setQuestion(newQuestion[0].question);
 
-    setIncorrectAnswers(data[0].incorrectAnswers);
+    setIncorrectAnswers(newQuestion[0].incorrectAnswers);
 
-    setCorrectAnswer(data[0].correctAnswer);
+    setCorrectAnswer(newQuestion[0].correctAnswer);
     
     // id string values
-    setCurrentQuestionId(data[0].id);
-    console.log(currentQuestionId);
+    setCurrentQuestionId(newQuestion[0].id);
 
     // creating new array to add correct answer string value to already from API provided incorrect answers array
-    const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
+    const answers = newQuestion[0].incorrectAnswers.concat(newQuestion[0].correctAnswer);
     // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
 
     // shuffle to randomize order of answers array so that user won't be able to figure out position of correct answer
@@ -243,72 +171,44 @@ function App() {
     setAllAnswers(randomAnswers);
 
     // setting category and level state
-    setCategory(data[0].category);
-    setLevel(data[0].difficulty);
+    setCategory(newQuestion[0].category);
+    setLevel(newQuestion[0].difficulty);
   }
 
 
   // OTHER API CALL WHERE USER SELECTS ONLY CATEGORY, BUT NO LEVEL endpoint
   const getCategoryQuiz = async () => {
-    const url = new URL('https://the-trivia-api.com/api/questions')
-
-    url.search = new URLSearchParams({
-      categories: userCategory,
-      limit: 1
-    })
-      
-    let response = await fetch(url);
-    let data = await response.json();
-
-    console.log(data);
-
-    // trying to call api again if current question id repeats itself again
-    if (questionId.includes(data[0].id)) {
-      console.log("Calling API Categories again");
+    let newQuestion = "";
+    while(true) {
+      const url = new URL('https://the-trivia-api.com/api/questions')
 
       url.search = new URLSearchParams({
         categories: userCategory,
         limit: 1
       })
         
-      response = await fetch(url);
-      data = await response.json();
-  
-      console.log(data);
+      let response = await fetch(url);
+      let data = await response.json();
 
-      console.log(data[0].id);
-
-      // const dataId = data[0].id;
-      // console.log(dataId);
-
-      // setQuestionId(current => [...current, data[0].id]);
-      console.log(questionId);   
-      console.log(data[0].question);
-
-      setCurrentQuestionId(data[0].id);
-      console.log(currentQuestionId);
-  
-    } 
-    // else {
-    //   setQuestionId(current => [...current, data[0].id]);
-    //   console.log(questionId);
-    // }
-    setQuestionId(current => [...current, data[0].id]);
-    console.log(questionId); 
+      if (!asked.includes(data[0].id)) {
+        newQuestion = data;
+        asked.push(newQuestion[0].id);
+        break;
+      }
+    }
+    
       
-    setQuestion(data[0].question);
-    console.log(question);
+    setQuestion(newQuestion[0].question);
 
-    setIncorrectAnswers(data[0].incorrectAnswers);
+    setIncorrectAnswers(newQuestion[0].incorrectAnswers);
 
-    setCorrectAnswer(data[0].correctAnswer);
+    setCorrectAnswer(newQuestion[0].correctAnswer);
 
     // id string values
-    setCurrentQuestionId(data[0].id);
-    console.log(currentQuestionId);
+    setCurrentQuestionId(newQuestion[0].id);
 
     // creating new array to add correct answer string value to already from API provided incorrect answers array
-    const answers = data[0].incorrectAnswers.concat(data[0].correctAnswer);
+    const answers = newQuestion[0].incorrectAnswers.concat(newQuestion[0].correctAnswer);
     // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
 
     // shuffle to randomize order of answers array so that user won't be able to figure out position of correct answer
@@ -316,8 +216,8 @@ function App() {
     setAllAnswers(randomAnswers);
 
     // setting category and level
-    setCategory(data[0].category);
-    setLevel(data[0].difficulty);
+    setCategory(newQuestion[0].category);
+    setLevel(newQuestion[0].difficulty);
   }
 
 
@@ -415,7 +315,7 @@ function App() {
     setCorrectAnswer("");
     setIncorrectAnswers([]);
     // set question ids back to empty so that data is cleared every time user goes back to restart
-    setQuestionId([]);
+    // setQuestionId([]);
     setCurrentQuestionId("");
     setCategory("");
     setLevel("");
