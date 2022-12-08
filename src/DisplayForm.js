@@ -497,9 +497,9 @@ const DisplayForm = ( props ) => {
             }
             {/* setting up messages at the end for when user either has had a good score or not the best score */}
             {
-            score >= 14 ?
+            score >= 6 ?
             <p>Wow, you're a real pro 💪 But I mean, you probably already knew that 😉</p>
-            : score <= 13 ?
+            : score <= 6 ?
             <p>Well...looks like you've still got some work to do. But no worries, you'll get there eventually :)</p>
             : null
             }
