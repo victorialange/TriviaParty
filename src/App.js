@@ -25,23 +25,32 @@ function App() {
   const [category, setCategory] = useState("");
   const [level, setLevel] = useState("");
     
-  // async await function calling API at endpoint where category and difficulty gets selected (not random), conditions get defined (while loop added to keep searching for a new question until it breaks when the current question id is not included in the question ids array)
-  
+  // async await function calling API at different endpoints (using append method for url search params) based on user selection in dropdown, conditions get defined (while loop added to keep searching for a new question until it breaks/stops when the current question id is not included in the question ids array)
+
   // getQuiz async function
   const getQuiz = async () => {
     // set default value of newQuestion to empty string
     let newQuestion = "";
     // while loop to keep searching for new question until the current question id is not inside the question ids array 
     while (true) {
-
       const url = new URL('https://the-trivia-api.com/api/questions')
-      // setting categories and difficulty params of API data object equal to user selection of the dropdown (not random)
-      url.search = new URLSearchParams({
-        categories: userCategory,
-        limit: 1,
-        difficulty: userLevel
-      })
-       // defining response and data as let variables since need to change value later on with another API call if the current question id is inside the question ids array
+      // setting categories and difficulty params of API data object equal to user selection from dropdown (if chosen random, that means, it's not included in the search params)
+      // appending params to the new urlSearch Params constructor (stored inside a let variable since it changes based on user selection), makes it more readable (before did many separate functions for different enpoints, like this I can include the different endpoints in one function directly), less repetitions
+
+      let myUrlSearchParam = new URLSearchParams();
+      myUrlSearchParam.append('limit', '1');
+
+      if (userCategory !== "Random") {
+        myUrlSearchParam.append('categories', userCategory);
+      }
+
+      if (userLevel !== "Random") {
+        myUrlSearchParam.append('difficulty', userLevel);
+      }
+      
+      url.search = myUrlSearchParam;
+
+      // defining response and data as let variables since need to change value later on with another API call if the current question id is inside the question ids array
       let response = await fetch(url);
       let data = await response.json();
    
@@ -82,153 +91,6 @@ function App() {
     // setting category and level states
     setCategory(newQuestion[0].category);
     setLevel(newQuestion[0].difficulty);
-}
-
-  // ANOTHER API CALL for random questions with async and await at different endpoint (only limit specified)
-  const getRandomQuiz = async () => {
-    // default value of newQuestion is empty string
-    let newQuestion = "";
-    // while loop; while keeps searching for a new question until it finds one that is not asked (not in the ids array), so it breaks inside the if statement that has the condition that the current question id is not include in the question ids array
-    while(true) {
-      // URL SEARCH PARAMS
-      const url = new URL('https://the-trivia-api.com/api/questions')
-
-      url.search = new URLSearchParams({
-        limit: 1
-      })
-        
-      let response = await fetch(url);
-      let data = await response.json();
-
-      if (!asked.includes(data[0].id)) {
-        newQuestion = data;
-        // push the current question id into the question ids array as long as the current question id is not already included in the question ids array
-        asked.push(newQuestion[0].id);
-        break;
-      }
-    }
-
-    if (asked.length === 21) {
-      setErrorMessage(true);
-    }
-
-    // store question of data object into state
-    setQuestion(newQuestion[0].question);
-
-    // like in first function store same values into state
-    setIncorrectAnswers(newQuestion[0].incorrectAnswers);
-    setCorrectAnswer(newQuestion[0].correctAnswer);
-    
-    // id string values
-    setCurrentQuestionId(newQuestion[0].id);
-
-    // creating new array to add correct answer string value to already from API provided incorrect answers array
-    const answers = newQuestion[0].incorrectAnswers.concat(newQuestion[0].correctAnswer);
-    // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
-
-    // shuffle to randomize order of answers array so that user won't be able to figure out position of correct answer
-    const randomAnswers = answers.sort(() => 0.5 - Math.random());
-    setAllAnswers(randomAnswers);
-
-    // updating category and level state values
-    setCategory(newQuestion[0].category);
-    setLevel(newQuestion[0].difficulty);
-  }
-
-
-  // OTHER API CALL WHERE USER SELECTS ONLY LEVEL, BUT NO CATEGORY endpoint
-  const getLevelQuiz = async () => {
-    let newQuestion = "";
-    while(true) {
-      const url = new URL('https://the-trivia-api.com/api/questions')
-
-      url.search = new URLSearchParams({
-        limit: 1,
-        difficulty: userLevel
-      })
-        
-      let response = await fetch(url);
-      let data = await response.json();
-
-      if (!asked.includes(data[0].id)) {
-        newQuestion = data;
-        asked.push(newQuestion[0].id);
-        break;
-      }
-    }
-
-    if (asked.length === 21) {
-      setErrorMessage(true);
-    }
-      
-    setQuestion(newQuestion[0].question);
-
-    setIncorrectAnswers(newQuestion[0].incorrectAnswers);
-
-    setCorrectAnswer(newQuestion[0].correctAnswer);
-    
-    // id string values
-    setCurrentQuestionId(newQuestion[0].id);
-
-    // creating new array to add correct answer string value to already from API provided incorrect answers array
-    const answers = newQuestion[0].incorrectAnswers.concat(newQuestion[0].correctAnswer);
-    // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
-
-    // shuffle to randomize order of answers array so that user won't be able to figure out position of correct answer
-    const randomAnswers = answers.sort(() => 0.5 - Math.random());
-    setAllAnswers(randomAnswers);
-
-    // setting category and level state
-    setCategory(newQuestion[0].category);
-    setLevel(newQuestion[0].difficulty);
-  }
-
-
-  // OTHER API CALL WHERE USER SELECTS ONLY CATEGORY, BUT NO LEVEL endpoint
-  const getCategoryQuiz = async () => {
-    let newQuestion = "";
-    while(true) {
-      const url = new URL('https://the-trivia-api.com/api/questions')
-
-      url.search = new URLSearchParams({
-        categories: userCategory,
-        limit: 1
-      })
-        
-      let response = await fetch(url);
-      let data = await response.json();
-
-      if (!asked.includes(data[0].id)) {
-        newQuestion = data;
-        asked.push(newQuestion[0].id);
-        break;
-      }
-    }
-
-    if (asked.length === 21) {
-      setErrorMessage(true);
-    }
-      
-    setQuestion(newQuestion[0].question);
-
-    setIncorrectAnswers(newQuestion[0].incorrectAnswers);
-
-    setCorrectAnswer(newQuestion[0].correctAnswer);
-
-    // id string values
-    setCurrentQuestionId(newQuestion[0].id);
-
-    // creating new array to add correct answer string value to already from API provided incorrect answers array
-    const answers = newQuestion[0].incorrectAnswers.concat(newQuestion[0].correctAnswer);
-    // saving this newly created answers array to state variable allAnswers => allows me to map through whole answers array later on in the DisplayForm component
-
-    // shuffle to randomize order of answers array so that user won't be able to figure out position of correct answer
-    const randomAnswers = answers.sort(() => 0.5 - Math.random());
-    setAllAnswers(randomAnswers);
-
-    // setting category and level
-    setCategory(newQuestion[0].category);
-    setLevel(newQuestion[0].difficulty); 
   }
 
 
@@ -257,21 +119,9 @@ function App() {
     // prevent default behaviour of form (refreshing page)
     e.preventDefault();
 
-    // call async function getQuiz() with API data everytime user clicks the get different question button
-    // set a few conditions, if no user selection on any properties, call get randomquiz async function with different endpoint than getQuiz (filtered with category and level)
-    if (userCategory === "Random" && userLevel === "Random") {
-      getRandomQuiz();
-    }
-    else if (userCategory !== "Random" && userLevel !== "Random") {
-      getQuiz();
-    }
-    else if (userCategory === "Random" && userLevel !== "Random") {
-      getLevelQuiz();
-    }
-    else if (userCategory !== "Random" && userLevel === "Random") {
-      getCategoryQuiz();
-    }
-  
+    // call async function getQuiz() with API data everytime user clicks the get different question button (different endpoints included)
+    getQuiz();
+    
     // when user has submitted next instructions get shown and the user has submitted, so set those states accordingly
     setInitialIntro(next);
     setSubmitted(true);
@@ -295,26 +145,9 @@ function App() {
 
   // clickHandler that's gonna be passed into anotherClickHandler in DisplayForm component for the new question button
   const clickHandler = () => {
-    // call async function getQuiz() with API data everytime user clicks the get different question button
-  
-    // conditions based on user selection like in submit handler
-    if (userCategory === "Random" && userLevel === "Random") {
-      getRandomQuiz();
-      
-    }
-    else if (userCategory !== "Random" && userLevel !== "Random") {
-      getQuiz();
-      
-    }
-    else if (userCategory === "Random" && userLevel !== "Random") {
-      getLevelQuiz();
-      
-    }
-    else if (userCategory !== "Random" && userLevel === "Random") {
-      getCategoryQuiz();
-      
-      
-    }
+    // call async function getQuiz() with API data everytime user clicks the get different question button, user selection included in params based on conditions defined in that async function
+    getQuiz();
+    
     // keep showing next instruction
     setInitialIntro(next);
   }
@@ -451,37 +284,35 @@ function App() {
       {/* DISPLAY FORM COMPONENT */}
       {/* if the user has submitted show the quiz game and all the other elements that come with that */}
       {
-        submitted ?
-        <DisplayForm
-        next={next}
-        intro={intro}
-        initialIntro={initialIntro}
-        clickHandler={clickHandler}
-        question={question}
-        allAnswers={allAnswers}
-        correctAnswer={correctAnswer}
-        currentQuestionId={currentQuestionId}
-        leaveClickHandler={leaveClickHandler}
-        category={category}
-        level={level}
-        firstSubmitHandler={firstSubmitHandler}
-        userCategory={userCategory}
-        userLevel={userLevel}
-        incorrectAnswers={incorrectAnswers}
-        errorMessage={errorMessage}
+      submitted ?
+      <DisplayForm
+      next={next}
+      intro={intro}
+      initialIntro={initialIntro}
+      clickHandler={clickHandler}
+      question={question}
+      allAnswers={allAnswers}
+      correctAnswer={correctAnswer}
+      currentQuestionId={currentQuestionId}
+      leaveClickHandler={leaveClickHandler}
+      category={category}
+      level={level}
+      firstSubmitHandler={firstSubmitHandler}
+      userCategory={userCategory}
+      userLevel={userLevel}
+      incorrectAnswers={incorrectAnswers}
+      errorMessage={errorMessage}
       />
        : null
-
-      }
-      
-      </section>
+      }  
+      </section>{/* end quiz section */}
     </main>
 
     {/* Footer with copyright */}
     <footer>
       {/* wrapper */}
       <div className="App wrapper">
-        <p>Copyright ©️  Juno College 2022</p>
+        <p>Copyright ©️  Juno College 2022 - Made with <a href='https://the-trivia-api.com/' target='_newBlank'>The Trivia API</a></p>
       </div>{/* end wrapper */}
     </footer>
    

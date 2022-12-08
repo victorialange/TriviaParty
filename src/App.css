@@ -680,6 +680,11 @@ footer p {
   margin: 0;
 }
 
+footer a:hover,
+footer a:focus {
+  font-weight: 700;
+}
+
 .partingImg {
   background-image: url("./img/brain.jpeg");
   background-size: cover;
