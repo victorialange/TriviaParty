@@ -147,6 +147,7 @@ const DisplayForm = ( props ) => {
             setLimitSubmitMessage("");
         } 
         
+
     } 
 
     // different click handler function for when user clicks on the leave button, sets generator value of first button (start or new question) back to default state (start), which also encompasses the form with the noContent className, resulting in a display: none of the form (like before showing the quiz same as start/initial display)
@@ -178,12 +179,16 @@ const DisplayForm = ( props ) => {
             props.initialIntro === props.next ?
             <Fragment>
                 {/* svg arrow down imported from component */}
-                <ArrowDown size={70}
+                { props.errorMessage === false ?
+                  <ArrowDown size={70}
                     // conditional rendering of className in order to change the colour of the arrow according to given button state (either start or new question)
                     color={`${props.initialIntro === props.next ? "#2A28BA" : "#A741AC"} `}
                     aria-label = "click on the button below to get a new question"
-                />
+                />  : null
+                }
+                
                 {/* BUTTON for new question */}
+                { props.errorMessage === false ?
                 <button 
                 // passing in the function definition of anotherClickHandler that calls the clickHandler from App.js for us (which includes making the API call everytime the user clicks that button)
                 onClick={anotherClickHandler}
@@ -192,12 +197,13 @@ const DisplayForm = ( props ) => {
                 aria-label={firstLabel}
 
                 // conditional rendering of className based on whether button is start button or generates new question
-                className="next">New Question</button>
+                className="next">New Question</button> : null
+                }
 
                 {/* repetition of userInput from dropdown and ternary operators to control which properties get rendered onto the page and how based on className assignments */}
-                {
-                props.userCategory !== "Random" && props.userLevel !== "Random" ?
-                <div className="choiceIteration noRandom">
+                { 
+                props.userCategory !== "Random" && props.userLevel !== "Random" && props.errorMessage === false ?
+                <div className={`${props.errorMessage ? "choiceIteration noRandom endField" : "choiceIteration noRandom"}`}>
                     {/* category */}
                     <p>Chosen category: {props.userCategory}</p>
                     {/* score container */}
@@ -208,8 +214,8 @@ const DisplayForm = ( props ) => {
                     <p>Chosen level: {props.userLevel}</p>
                 </div> 
                 :
-                props.userCategory === "Random" && props.userLevel !== "Random"?
-                <div className="choiceIteration noRandom">
+                props.userCategory === "Random" && props.userLevel !== "Random" && props.errorMessage === false ?
+                <div className={`${props.errorMessage ? "choiceIteration noRandom endField" : "choiceIteration noRandom"}`}>
                     <p>Chosen category: {props.userCategory}!</p>
                     {/* score container */}
                     <div className="scoreContainer">
@@ -218,8 +224,8 @@ const DisplayForm = ( props ) => {
                     <p>Chosen level: {props.userLevel}</p>
                 </div> 
                 :
-                props.userCategory !== "Random" && props.userLevel === "Random"?
-                <div className="choiceIteration noRandom">
+                props.userCategory !== "Random" && props.userLevel === "Random" && props.errorMessage === false ?
+                <div className={`${props.errorMessage ? "choiceIteration noRandom endField" : "choiceIteration noRandom"}`}>
                     {/* category */}
                     <p>Chosen category: {props.userCategory}</p>
                     {/* score container */}
@@ -229,8 +235,8 @@ const DisplayForm = ( props ) => {
                     {/* level */}
                     <p>Chosen level: {props.userLevel}!</p>        
                 </div>
-                : 
-                <div className="choiceIteration random">
+                : props.errorMessage === false && props.userLevel === "Random" && props.userCategory === "Random" ? 
+                <div className={`${props.errorMessage ? "choiceIteration random endField" : "choiceIteration random"}`}>
                     {/* RANDOM!! */}
                     <p>You chose Random!</p>
                     {/* score container */}
@@ -238,7 +244,7 @@ const DisplayForm = ( props ) => {
                         <p>Your score: {score}/{totalQuestionsAnswered}</p>
                     </div>
                     {/* end score container */}
-                </div>
+                </div> : null
                 }
                 
             </Fragment> : null
@@ -270,7 +276,7 @@ const DisplayForm = ( props ) => {
                 {/* FORM CONTAINER */}
                 {/* checking with ternary operator if user has hit the start button, submitted the dropdown form from start display */}
                 {
-                props.initialIntro === props.next ?
+                props.initialIntro === props.next && props.errorMessage === false ?
                 // form container, if limit submit message comes/form disabled, give it a className so that form is lower
                 <div className={`${limitSubmitMessage !== "" ? "formContainer content lowered" : "formContainer content"}`}>
                     <form onSubmit={submitHandler} aria-label="quiz" 
@@ -390,13 +396,13 @@ const DisplayForm = ( props ) => {
                         
                     </form>
                 </div> // end of form container
-                : null
+                 : null
                 } 
                             
                 {/* back to top shortcut link */}
                 {/* conditional rendering, link only visible when quiz is displayed */}
                 {
-                props.initialIntro === props.next ?
+                props.initialIntro === props.next && props.errorMessage === false ?
                 <a href="#intro" className="start">
                     <ArrowUp size={30}
                     color="white"
@@ -411,28 +417,101 @@ const DisplayForm = ( props ) => {
         </section>{/* END quiz FORM SECTION */}
         
         {/* leave field section if user has started quiz game */}
-        <section className={`${props.initialIntro === props.next ?
-        "leaveField" : "noContent"}`}>
-            {/* leaveField container for when user wants to get back to initial display without questions or wants to switch categories/restart game */}
-            <div className="App wrapper">
-                <p>Feeling tired or just wanna leave the party early? Or maybe you just got bored of the level or category (so smart! 🤓) and feel like choosing something else! Either way we've got you 😃</p>
-                <ArrowDown size={70}
-                color="black"
-                aria-hidden = "true"
-                />
-                <span className="sr-only">Click the button down below</span>
-                {/* leave/restart button */}
-                <button 
-                className="end"
-                // pass in the function definition of leaveHandler, in which it calls the leaveClickHandler function from the App.js component with props, which also includes the initialIntro value set to intro (initial state). Thanks to the ternary operators that check whether the generator state value is start or next, string values and classNames get added or changed accordingly (and then styled fittingly) => if form's className=noContent, that invokes display:none of the whole quiz, which is what I want for when the user either hasn't hit the start button yet or when the user wants to quit the game and return to the initial start display
-                onClick={leaveHandler}
-                aria-label="Click this button to exit the trivia and return to start">
-                Leave Trivia Party/ Restart game
-                </button> 
-                <p>Sad to see you go 😥  But also, you deserve the break 😊</p>
-                <p>Hope you feel like rejoining the party soon 😘</p>
-            </div>{/* END LEAVE CONTAINER */}
-        </section>{/* END leave field SECTION */}
+        {
+            props.errorMessage === false ?
+            <section className={`${props.initialIntro === props.next ?
+                "leaveField" : "noContent"}`}>
+                    {/* leaveField container for when user wants to get back to initial display without questions or wants to switch categories/restart game */}
+                    <div className="App wrapper">
+                        <p>Feeling tired or just wanna leave the party early? Or maybe you just got bored of the level or category (so smart! 🤓) and feel like choosing something else! Either way we've got you 😃</p>
+                        <ArrowDown size={70}
+                        color="black"
+                        aria-hidden = "true"
+                        />
+                        <span className="sr-only">Click the button down below</span>
+                        {/* leave/restart button */}
+                        <button 
+                        className="end"
+                        // pass in the function definition of leaveHandler, in which it calls the leaveClickHandler function from the App.js component with props, which also includes the initialIntro value set to intro (initial state). Thanks to the ternary operators that check whether the generator state value is start or next, string values and classNames get added or changed accordingly (and then styled fittingly) => if form's className=noContent, that invokes display:none of the whole quiz, which is what I want for when the user either hasn't hit the start button yet or when the user wants to quit the game and return to the initial start display
+                        onClick={leaveHandler}
+                        aria-label="Click this button to exit the trivia and return to start">
+                        Leave Trivia Party/ Restart game
+                        </button> 
+                        <p>Sad to see you go 😥  But also, you deserve the break 😊</p>
+                        <p>Hope you feel like rejoining the party soon 😘</p>
+                    </div>{/* END LEAVE CONTAINER */}
+                </section>// END leave field SECTION *
+                : 
+                // if the errorMessage is set to true and the quiz is present (user has already clicked start), stop showing the form, and show an ending message instead (recap of how well the user did at the end, end range 20 questions to prevent 429 error of making too many API calls, also to have a reasonable amount per round)
+                props.errorMessage !== false && props.initialIntro === props.next ?
+                <div className="App wrapper leaveField">
+                     
+                {props.userCategory !== "Random" && props.userLevel !== "Random" && props.errorMessage !== false ?
+                <div className={`${props.errorMessage ? "choiceIteration noRandom endField" : "choiceIteration noRandom"}`}>
+                    {/* category */}
+                    <p>Chosen category: {props.userCategory}</p>
+                    {/* level */}
+                    <p>Chosen level: {props.userLevel}</p>
+                    {/* score container */}
+                    <div className="scoreContainer">
+                        <p>Your score: {score}/{totalQuestionsAnswered}</p>
+                    </div>{/* end score container */}
+                </div> :
+                props.userCategory === "Random" && props.userLevel !== "Random" && props.errorMessage !== false ?
+                <div className={`${props.errorMessage ? "choiceIteration noRandom endField" : "choiceIteration noRandom"}`}>
+                    <p>Chosen category: {props.userCategory}!</p>
+                    <p>Chosen level: {props.userLevel}</p>
+                    {/* score container */}
+                    <div className="scoreContainer">
+                        <p>Your score: {score}/{totalQuestionsAnswered}</p>
+                    </div>{/* end of score container */}
+                </div> 
+                :
+                props.userCategory !== "Random" && props.userLevel === "Random" && props.errorMessage !== false ?
+                <div className={`${props.errorMessage ? "choiceIteration noRandom endField" : "choiceIteration noRandom"}`}>
+                    {/* category */}
+                    <p>Chosen category: {props.userCategory}</p>
+                    {/* level */}
+                    <p>Chosen level: {props.userLevel}!</p>    
+                    {/* score container */}
+                    <div className="scoreContainer">
+                        <p>Your score: {score}/{totalQuestionsAnswered}</p>
+                    </div>{/* end score container */}    
+                </div>
+                : props.userLevel === "Random" && props.userCategory === "Random" && props.errorMessage !== false ? 
+                <div className={`${props.errorMessage ? "choiceIteration random randomField" :"choiceIteration random" }`}>
+                    {/* RANDOM!! */}
+                    <p>You chose Random!</p>
+                    {/* score container */}
+                    <div className="scoreContainer">
+                        <p>Your score: {score}/{totalQuestionsAnswered}</p>
+                    </div>
+                    {/* end score container */}
+                </div> : null
+                }
+                    {
+                        score >= 15 ?
+                        <p>Wow, you're a real pro 💪 But I mean, you probably already knew that 😉</p>
+                        : score <= 14 ?
+                        <p>Well...looks like you've still got some work to do. But no worries, you'll get there eventually :)</p> : null
+                    }
+                    <p>No more questions left for this round. Hope you enjoyed it!</p>
+                    <p>If you want to restart the game or just leave - either way you are still a champ 🏆 click the button down below!</p>
+                    <ArrowDown size={70}
+                        color="black"
+                        aria-hidden = "true"
+                        />
+                        <span className="sr-only">Click the button down below</span>
+                    <button 
+                        className="end"
+                        // pass in the function definition of leaveHandler, in which it calls the leaveClickHandler function from the App.js component with props, which also includes the initialIntro value set to intro (initial state). Thanks to the ternary operators that check whether the generator state value is start or next, string values and classNames get added or changed accordingly (and then styled fittingly) => if form's className=noContent, that invokes display:none of the whole quiz, which is what I want for when the user either hasn't hit the start button yet or when the user wants to quit the game and return to the initial start display
+                        onClick={leaveHandler}
+                        aria-label="Click this button to exit the trivia and return to start">
+                        Leave Trivia Party/ Restart game
+                        </button> 
+                </div> : null
+        }
+        
         
         {/* BACKGROUND IMG CONTAINER only when user has started quiz, outside of wrapper */}  
         {
